@@ -22,5 +22,15 @@
   "year-end-action-checklist-calendar.png": {
     "webp": "year-end-action-checklist-calendar-1400.webp",
     "og": null
+  },
+  "hero-atelier.jpg": {
+    "webp": "hero-atelier-1402.webp",
+    "webp_srcset": "hero-atelier-1402.webp 1402w, hero-atelier-1000.webp 1000w, hero-atelier-720.webp 720w",
+    "og": null
+  },
+  "glass-light-study.jpg": {
+    "webp": "glass-light-study-1122.webp",
+    "webp_srcset": "glass-light-study-1122.webp 1122w, glass-light-study-760.webp 760w, glass-light-study-520.webp 520w",
+    "og": null
   }
 }

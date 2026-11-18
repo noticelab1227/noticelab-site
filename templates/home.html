@@ -1,149 +1,173 @@
-<section class="hero">
+<section class="hero" id="hero" aria-label="노티스랩 소개">
+  <div class="hero-media">
+    {{hero_media}}
+    <span class="hero-scrim" aria-hidden="true"></span>
+    <span class="hero-grid" aria-hidden="true"></span>
+  </div>
+
   <div class="wrap hero-inner">
-    <div class="hero-copy">
-      <p class="eyebrow eyebrow--light">B2B 마케팅 연구소 · 경기 남부에서 전국까지</p>
-      <h1>조회수가 아닌<br><em>매출</em>을 연구합니다.</h1>
-      <p class="hero-lede">
-        블로그 조회수는 오르는데 문의가 없다면, 문제는 글의 양이 아니라 글과 매장 사이에 있습니다.
-        노티스랩은 검색 유입 → 비교 정보 → 상담·예약의 세 단계에서 어느 칸이 비었는지부터 확인합니다.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn--primary btn--lg" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">
-          네이버 톡톡으로 상담하기<span class="sr-only"> (새 탭에서 열림)</span>
-        </a>
-        <a class="btn btn--ghost btn--lg" href="#latest">최신 인사이트 읽기</a>
+    <p class="hero-eyebrow" data-reveal>B2B MARKETING &amp; BRAND STUDIO <span aria-hidden="true">—</span> 경기 남부 · 수도권 · 전국</p>
+
+    <h1 class="hero-title" data-reveal>
+      <span>조회수가 아닌</span>
+      <span>매출을 연구합니다<em aria-hidden="true">.</em></span>
+    </h1>
+
+    <div class="hero-foot">
+      <div class="hero-copy" data-reveal>
+        <p class="hero-lede">
+          블로그 조회수는 오르는데 문의가 없다면, 문제는 글의 양이 아니라 글과 매장 사이에 있습니다.
+          노티스랩은 검색 유입 → 비교 정보 → 상담·예약의 세 단계에서 어느 칸이 비었는지부터 확인합니다.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn--light" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">
+            네이버 톡톡 상담<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (새 탭에서 열림)</span>
+          </a>
+          <a class="btn btn--line" href="/insights/">인사이트 보기<span class="btn-arrow" aria-hidden="true">→</span></a>
+        </div>
       </div>
-      <ul class="hero-facts">
-        <li><strong>4</strong> 핵심 서비스</li>
-        <li><strong>3</strong> 단계 전환 점검</li>
-        <li>업체 제공 자료 기반 제작</li>
-      </ul>
+
+      <dl class="hero-meta" data-reveal>
+        <div><dt>CAPABILITIES</dt><dd>4</dd></div>
+        <div><dt>FUNNEL STEPS</dt><dd>4</dd></div>
+        <div><dt>MATERIAL</dt><dd>보유 자료 기반</dd></div>
+      </dl>
     </div>
-    {{hero_flow}}
   </div>
 </section>
 
-<section class="section" id="problem">
-  <div class="wrap">
-    <p class="eyebrow">문제 제기</p>
-    <h2 class="h2">조회수와 매출은<br>같은 숫자가 아닙니다</h2>
-    <p class="lede">
-      조회수는 검색 결과에서 글이 눌린 횟수이고, 매출은 그 사람이 매장을 찾아와 결제한 결과입니다.
-      그 사이에는 세 번의 갈림길이 있습니다. 검색 결과에서 우리 글을 고를지, 읽은 뒤 플레이스를 열지,
-      플레이스에서 전화를 걸거나 예약을 누를지. 한 번만 끊겨도 조회수는 매출이 되지 않습니다.
-    </p>
+<div class="section-indicator" id="section-indicator">
+  <p class="indicator-count"><span class="indicator-current" id="section-current">01</span><span class="indicator-sep">/</span><span class="indicator-total">04</span></p>
+  <div class="indicator-buttons">
+    <button class="indicator-btn" type="button" id="section-prev" aria-label="이전 섹션으로 이동">
+      <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 10V2M2.4 5.6 6 2l3.6 3.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+    <button class="indicator-btn" type="button" id="section-next" aria-label="다음 섹션으로 이동">
+      <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M6 2v8M2.4 6.4 6 10l3.6-3.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+    </button>
+  </div>
+</div>
 
-    <div class="problem-grid">
-      <article class="problem-card problem-card--muted">
-        <h3>조회수 보고서에 남는 것</h3>
-        <p>노출 수, 순위, 발행 편수. 측정이 쉽고 숫자가 잘 올라가는 지표입니다.</p>
-        <ul>
-          <li>이번 달 노출이 몇 회였는지</li>
-          <li>어떤 키워드에서 몇 위였는지</li>
-          <li>몇 편을 발행했는지</li>
-        </ul>
-        <p class="problem-q">그래서 다음 달에 무엇을 바꾸나요?</p>
-      </article>
-      <article class="problem-card problem-card--accent">
-        <h3>매출 보고서에 남는 것</h3>
-        <p>새로 들어온 검색어, 글에서 플레이스로 넘어간 사람, 다음 달에 바꿀 한 줄.</p>
-        <ul>
-          <li>이번 달 새로 생긴 검색어</li>
-          <li>글을 본 뒤 플레이스에서 일어난 행동</li>
-          <li>다음 달에 고칠 지점 한 가지</li>
-        </ul>
-        <p class="problem-q">다음 달에 할 일이 한 줄로 남습니다.</p>
-      </article>
-    </div>
-    <p class="section-note">숫자를 많이 보여주는 보고서보다, 결정을 하나 남기는 보고서를 만듭니다.</p>
+<section class="section section--dark" id="structure" data-section="1">
+  <div class="wrap">
+    <header class="section-head section-head--split" data-reveal>
+      <div class="section-head-main">
+        <p class="section-mark"><span class="section-no">01</span><span class="section-label">FUNNEL ARCHITECTURE</span></p>
+        <h2 class="section-title">유입에서 문의까지,<br>네 칸의 연결</h2>
+      </div>
+      <p class="section-note">발행 편수가 아니라 이 네 칸이 서로 맞물리는지를 먼저 봅니다. 한 칸만 끊겨도 조회수는 매출이 되지 않습니다.</p>
+    </header>
+
+    <ol class="arch" data-reveal>
+      {{structure_steps}}
+    </ol>
+
+    <p class="arch-foot"><span aria-hidden="true">*</span> 진단은 항상 01번 칸에서 시작해, 끊긴 지점에서 멈춥니다. 네 칸을 모두 손대는 제안은 하지 않습니다.</p>
   </div>
 </section>
 
-<section class="section section--soft" id="services">
+<section class="section section--paper" id="services" data-section="2">
   <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">서비스</p>
-        <h2 class="h2">네 가지 서비스,<br>하나의 전환 흐름</h2>
+    <header class="section-head section-head--split">
+      <div class="section-head-main">
+        <p class="section-mark"><span class="section-no">02</span><span class="section-label">CAPABILITIES</span></p>
+        <h2 class="section-title">네 가지 서비스,<br>하나의 전환 흐름</h2>
       </div>
-      <p class="section-desc">
-        제작물을 따로 팔지 않습니다. 어떤 채널이 어떤 단계를 맡을지 정하고, 문의로 이어지는 순서에 맞춰 배치합니다.
-      </p>
-    </div>
+      <p class="section-note">제작물을 따로 팔지 않습니다. 어떤 채널이 어느 단계를 맡을지 정하고, 문의로 이어지는 순서에 맞춰 배치합니다.</p>
+    </header>
 
-    <div class="services">
+    <ol class="index-list" data-reveal>
       {{services}}
-    </div>
+    </ol>
 
-    <div class="principle">
-      <h3>제작 원칙 <span>필수 안내</span></h3>
-      <p>
-        업체가 제공한 기존 사진·영상을 바탕으로 기획·제작하며, <strong>별도 현장 촬영은 기본 서비스로 제공하지 않습니다.</strong>
-        촬영이 꼭 필요하다고 판단되는 경우에는 기본 서비스가 아니므로 별도로 상의합니다.
-        보유하신 매장 사진, 메뉴판, 외관 사진, 짧은 영상만 있으면 첫 달부터 발행을 시작할 수 있습니다.
-      </p>
-      <p>
-        성공 사례, 매출 수치, 고객 후기는 실제 확인된 자료만 사용합니다.
-        상위 노출이나 매출을 보장하는 문구는 쓰지 않습니다.
-      </p>
+    <div class="principles" data-reveal>
+      <article class="principle">
+        <p class="principle-label">PRODUCTION PRINCIPLE</p>
+        <h3>제작 원칙</h3>
+        <p>
+          업체가 제공한 기존 사진·영상을 바탕으로 기획·제작하며, <strong>별도 현장 촬영은 기본 서비스로 제공하지 않습니다.</strong>
+          촬영이 필요한 경우에는 기본 범위가 아니므로 별도로 상의합니다.
+        </p>
+        <p>보유하신 매장 사진, 메뉴판, 외관 사진, 짧은 영상만 있으면 첫 달부터 발행을 시작할 수 있습니다.</p>
+      </article>
+      <article class="principle">
+        <p class="principle-label">NO GUARANTEES</p>
+        <h3>허위 사례 · 노출 보장 금지</h3>
+        <p>
+          성공 사례, 매출 수치, 고객 후기는 실제로 확인된 자료만 사용합니다.
+          <strong>상위 노출이나 매출을 보장하는 문구는 쓰지 않습니다.</strong>
+        </p>
+        <p>대신 어느 지점을 왜 바꾸는지, 다음 달에 무엇을 확인할지 근거와 순서로 남깁니다.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<section class="section" id="region">
-  <div class="wrap region-inner">
-    <div>
-      <p class="eyebrow">대응 지역</p>
-      <h2 class="h2">경기 남부에서 시작해<br>수도권·전국까지</h2>
-      <p class="lede">
-        용인·수원·화성·성남·경기 광주를 시작으로 수도권과 전국 원격으로 진행합니다.
-        지역 글은 손님이 실제로 움직이는 생활권 단위로 나누고, 원거리 상담은 자료 정리와 화상 미팅으로 대신합니다.
-      </p>
-      <ul class="region-chips">{{regions}}</ul>
-    </div>
-    <aside class="region-card">
-      <h3>이런 상담을 받습니다</h3>
-      <ul>
-        <li>블로그 대행 견적과 업무 범위 비교</li>
-        <li>조회수는 오르는데 문의가 없는 이유 진단</li>
-        <li>플레이스와 블로그 정보 불일치 점검</li>
-        <li>릴스·클립 소재가 부족할 때 구성 방법</li>
-        <li>연말·시즌 예약을 위한 글 순서 정리</li>
-      </ul>
-      <a class="btn btn--primary" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">톡톡으로 문의하기</a>
-    </aside>
-  </div>
-</section>
-
-<section class="section section--soft" id="latest">
+<section class="section section--dark" id="latest" data-section="3">
   <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">인사이트</p>
-        <h2 class="h2">최근 연구 노트</h2>
+    <header class="section-head section-head--split">
+      <div class="section-head-main">
+        <p class="section-mark"><span class="section-no">03</span><span class="section-label">RESEARCH NOTES</span></p>
+        <h2 class="section-title">최근 연구 노트</h2>
       </div>
-      <p class="section-desc">대행사 소개가 아니라, 사장님이 직접 확인하고 적용할 수 있는 기준을 정리합니다.</p>
-    </div>
-    <div class="cards">
+      <p class="section-note">대행사 소개가 아니라, 사장님이 직접 확인하고 적용할 수 있는 기준을 정리합니다.</p>
+    </header>
+
+    <div class="cards cards--index" data-reveal>
       {{latest_posts}}
     </div>
+
     <div class="section-actions">
-      <a class="more-link" href="/insights/">인사이트 전체 보기 <span aria-hidden="true">→</span></a>
+      <a class="btn btn--line" href="/insights/">인사이트 전체 보기<span class="btn-arrow" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 
-<section class="cta-band">
-  <div class="wrap">
-    <p class="eyebrow eyebrow--light">상담</p>
-    <h2>지금 하고 있는 마케팅이 어디서 끊기는지, 한 번 정리해 보세요.</h2>
-    <p>
+<section class="section section--dark coverage" id="region" data-section="4">
+  <div class="wrap coverage-inner">
+    <header class="section-head section-head--split">
+      <div class="section-head-main">
+        <p class="section-mark"><span class="section-no">04</span><span class="section-label">COVERAGE</span></p>
+        <h2 class="section-title">용인에서 시작해<br>수도권·전국까지</h2>
+      </div>
+      <p class="section-note">지역 글은 손님이 실제로 움직이는 생활권 단위로 나눕니다. 원거리 상담은 자료 정리와 화상 미팅으로 대신합니다.</p>
+    </header>
+
+    <ul class="region-type" data-reveal>
+      {{regions}}
+      <li class="region-item region-item--note">
+        <p>지역 글은 손님이 실제로 움직이는 생활권 단위로 나누고, 원거리 상담은 자료 정리와 화상 미팅으로 진행합니다.</p>
+      </li>
+    </ul>
+
+    <div class="coverage-foot" data-reveal>
+      <div class="coverage-media">{{coverage_media}}</div>
+      <div class="coverage-note">
+        <h3>이런 상담을 받습니다</h3>
+        <ul class="consult-list">
+          <li>블로그 대행 견적과 업무 범위 비교</li>
+          <li>조회수는 오르는데 문의가 없는 이유 진단</li>
+          <li>플레이스와 블로그 정보 불일치 점검</li>
+          <li>릴스·클립 소재가 부족할 때 구성 방법</li>
+          <li>연말·시즌 예약을 위한 글 순서 정리</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="closing-title">
+  <div class="wrap closing-inner">
+    <p class="closing-label">FREE DIAGNOSIS <span aria-hidden="true">—</span> 무료 진단</p>
+    <h2 class="closing-title" id="closing-title">지금 막힌 지점부터<br>진단하세요<em>.</em></h2>
+    <p class="closing-lede">
       업종과 운영 중인 블로그·플레이스 주소만 알려주시면, 유입 → 행동 → 문의 중 어느 단계가 비었는지 정리해 드립니다.
       자료는 참고만 하시고 진행 여부는 따로 정하셔도 됩니다.
     </p>
-    <a class="btn btn--primary btn--lg" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">
-      {{consult_label}}<span class="sr-only"> (새 탭에서 열림)</span>
+    <a class="closing-talk" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">
+      <span class="closing-talk-text">네이버 톡톡으로 상담하기</span>
+      <span class="closing-talk-arrow" aria-hidden="true">→</span>
     </a>
-    <p class="cta-note">상담은 무료입니다. 상위 노출이나 매출을 보장하지 않으며, 진단 결과에 근거해 안내합니다.</p>
+    <p class="closing-note">상담은 무료입니다. 상위 노출이나 매출을 보장하지 않으며, 진단 결과에 근거해 안내합니다.</p>
   </div>
 </section>

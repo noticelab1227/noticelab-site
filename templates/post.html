@@ -1,39 +1,54 @@
 <article class="post">
   <header class="post-hero">
-    <div class="wrap post-hero-inner">
+    <div class="wrap">
       <nav class="breadcrumb" aria-label="현재 위치">
         <a href="/">홈</a><span aria-hidden="true">/</span>
         <a href="/insights/">인사이트</a><span aria-hidden="true">/</span>
         <span aria-current="page">{{post_category}}</span>
       </nav>
+
       <p class="post-meta">
-        <span class="badge badge--{{post_category}}">{{post_category}}</span>
+        <span class="post-cat">{{post_category}}</span>
+        <span class="post-sep" aria-hidden="true">/</span>
         <time datetime="{{post_date_iso}}">{{post_date}}</time>
-        <span>읽는 시간 약 {{post_reading_time}}분</span>
+        <span class="post-sep" aria-hidden="true">/</span>
+        <span>READ {{post_reading_time}} MIN</span>
       </p>
+
       <h1 class="post-title">{{post_title}}</h1>
       <p class="post-lede">{{post_description}}</p>
     </div>
   </header>
 
-  <div class="wrap post-layout">
-    <div class="post-main">
-      {{post_cover}}
-      <div class="article">
-        {{post_body}}
-        {{post_cta}}
-      </div>
+  {{post_cover}}
 
-      <section class="related" aria-labelledby="related-title">
-        <h2 class="related-title" id="related-title">이어서 읽기</h2>
-        <div class="cards">
-          {{related_cards}}
+  <div class="post-paper">
+    <div class="wrap post-layout">
+      <aside class="post-aside">
+        {{post_toc}}
+      </aside>
+
+      <div class="post-main">
+        <div class="article">
+          {{post_body}}
+          {{post_cta}}
         </div>
-      </section>
+      </div>
     </div>
-
-    <aside class="post-aside">
-      {{post_toc}}
-    </aside>
   </div>
+
+  <section class="section section--dark related" aria-labelledby="related-title">
+    <div class="wrap">
+      <header class="section-head section-head--split">
+        <div class="section-head-main">
+          <p class="section-mark"><span class="section-label">KEEP READING</span></p>
+          <h2 class="section-title" id="related-title">이어서 읽기</h2>
+        </div>
+        <p class="section-note">같은 흐름에서 이어지는 글입니다. 지금 매장에 해당하는 지점부터 읽으시면 됩니다.</p>
+      </header>
+      <div class="cards cards--index cards--related">
+        {{related_cards}}
+      </div>
+    </div>
+  </section>
 </article>

@@ -68,14 +68,35 @@ def read_text(path: str) -> str:
         return fh.read()
 
 
-def png_size(path: str) -> tuple[int, int] | None:
+def image_size(path: str) -> tuple[int, int] | None:
+    """PNG·JPEG 파일의 가로·세로를 읽습니다 (레이아웃 흔들림 방지용)."""
     try:
         with open(path, "rb") as fh:
             head = fh.read(24)
-        if head[:8] != b"\x89PNG\r\n\x1a\n":
-            return None
-        width, height = struct.unpack(">II", head[16:24])
-        return width, height
+            if head[:8] == b"\x89PNG\r\n\x1a\n":
+                width, height = struct.unpack(">II", head[16:24])
+                return width, height
+            if head[:2] != b"\xff\xd8":
+                return None
+            fh.seek(2)
+            while True:
+                marker = fh.read(2)
+                if len(marker) < 2 or marker[0] != 0xFF:
+                    return None
+                code = marker[1]
+                if code in (0xD8, 0xD9):
+                    continue
+                raw_length = fh.read(2)
+                if len(raw_length) < 2:
+                    return None
+                length = struct.unpack(">H", raw_length)[0]
+                if 0xC0 <= code <= 0xCF and code not in (0xC4, 0xC8, 0xCC):
+                    block = fh.read(5)
+                    if len(block) < 5:
+                        return None
+                    height, width = struct.unpack(">HH", block[1:5])
+                    return width, height
+                fh.seek(length - 2, 1)
     except OSError:
         return None
 
@@ -117,19 +138,33 @@ def load_image_index() -> dict:
     derivative_path = os.path.join(image_dir, "derivatives.json")
     if os.path.exists(derivative_path):
         with open(derivative_path, encoding="utf-8") as fh:
-            for original, info in json.load(fh).items():
-                derivatives[original] = info.get("webp")
+            derivatives = json.load(fh)
+
+    def existing(names: list[str]) -> list[str]:
+        return [name for name in names if name and os.path.exists(os.path.join(image_dir, name))]
 
     for name in sorted(os.listdir(image_dir)):
         if not name.lower().endswith((".png", ".jpg", ".jpeg")):
             continue
         full = os.path.join(image_dir, name)
-        size = png_size(full) if name.lower().endswith(".png") else None
-        webp = derivatives.get(name)
+        size = image_size(full)
+        info = derivatives.get(name, {})
+        webp = info.get("webp")
+        srcset = ""
+        entries = info.get("webp_srcset")
+        if entries:
+            pairs = []
+            for part in entries.split(","):
+                bits = part.split()
+                if not bits or not os.path.exists(os.path.join(image_dir, bits[0])):
+                    continue
+                pairs.append(f"/assets/images/{bits[0]}" + (" " + " ".join(bits[1:]) if len(bits) > 1 else ""))
+            srcset = ", ".join(pairs)
         index[f"/assets/images/{name}"] = {
             "width": size[0] if size else None,
             "height": size[1] if size else None,
-            "webp": f"/assets/images/{webp}" if webp and os.path.exists(os.path.join(image_dir, webp)) else None,
+            "webp": f"/assets/images/{webp}" if existing([webp]) else None,
+            "srcset": srcset,
         }
     return index
 
@@ -146,11 +181,14 @@ def picture(src: str, alt: str, *, cls: str = "", eager: bool = False, sizes: st
         attrs += [f'width="{width}"', f'height="{height}"']
     attrs.append('loading="eager"' if eager else 'loading="lazy"')
     attrs.append('decoding="async"')
+    if eager:
+        attrs.append('fetchpriority="high"')
     if cls:
         attrs.append(f'class="{esc(cls)}"')
     img = f'<img {" ".join(attrs)}>'
-    if webp:
-        srcset = f'srcset="{esc(webp)}"'
+    candidates = info.get("srcset") or webp
+    if candidates:
+        srcset = f'srcset="{esc(candidates)}"'
         if sizes:
             srcset += f' sizes="{esc(sizes)}"'
         return f'<picture><source type="image/webp" {srcset}>{img}</picture>'
@@ -487,21 +525,54 @@ def build_base_context(config: dict) -> dict:
 
 def nav_html(config: dict, active: str) -> str:
     items = [
-        ("home", "/", "홈"),
-        ("services", "/#services", "서비스"),
-        ("insights", "/insights/", "인사이트"),
-        ("region", "/#region", "지역"),
+        ("home", "/", "01", "HOME", "홈"),
+        ("structure", "/#structure", "02", "APPROACH", "전환 구조"),
+        ("services", "/#services", "03", "CAPABILITIES", "핵심 서비스"),
+        ("insights", "/insights/", "04", "INSIGHTS", "인사이트"),
+        ("region", "/#region", "05", "COVERAGE", "대응 지역"),
     ]
-    links = []
-    for key, href, label in items:
+    rows = []
+    for key, href, number, label, ko in items:
         current = ' aria-current="page"' if key == active else ""
-        klass = "site-nav-link is-active" if key == active else "site-nav-link"
-        links.append(f'<a class="{klass}" href="{href}"{current}>{label}</a>')
-    links.append(
-        f'<a class="btn btn--primary btn--nav" href="{esc(config["consultUrl"])}" '
-        'target="_blank" rel="noopener noreferrer">톡톡 상담</a>'
+        rows.append(
+            f'<li class="nav-item"><a class="nav-link" href="{href}"{current}>'
+            f'<span class="nav-no">{number}</span>'
+            f'<span class="nav-en">{esc(label)}</span>'
+            f'<span class="nav-ko">{esc(ko)}</span>'
+            f'<span class="nav-arrow" aria-hidden="true">→</span></a></li>'
+        )
+    rows.append(
+        f'<li class="nav-item nav-item--talk"><a class="nav-link" href="{esc(config["consultUrl"])}" '
+        'target="_blank" rel="noopener noreferrer">'
+        '<span class="nav-no">06</span><span class="nav-en">TALK</span>'
+        f'<span class="nav-ko">{esc(config["siteNameKo"])} 상담</span>'
+        '<span class="nav-arrow" aria-hidden="true">→</span></a></li>'
     )
-    return '<nav class="site-nav" id="site-nav" aria-label="주 메뉴">' + "".join(links) + "</nav>"
+
+    business = config["business"]
+    return (
+        '<div class="nav-overlay" id="site-nav">\n'
+        '  <div class="nav-overlay-inner">\n'
+        '    <nav class="nav-main" aria-label="주 메뉴">\n'
+        '      <ol class="nav-list">\n        ' + "\n        ".join(rows) + "\n      </ol>\n"
+        '    </nav>\n'
+        '    <div class="nav-meta">\n'
+        '      <div class="nav-meta-col">\n'
+        '        <p class="nav-meta-label">CONSULT</p>\n'
+        f'        <a href="{esc(config["consultUrl"])}" target="_blank" rel="noopener noreferrer">'
+        f'{esc(config["consultLabel"])} →</a>\n'
+        f'        <a href="tel:{esc(business["phone"])}">{esc(business["phone"])}</a>\n'
+        f'        <a href="mailto:{esc(business["email"])}">{esc(business["email"])}</a>\n'
+        '      </div>\n'
+        '      <div class="nav-meta-col">\n'
+        '        <p class="nav-meta-label">STUDIO</p>\n'
+        f'        <p>{esc(business["address"])}</p>\n'
+        f'        <p>사업자등록번호 {esc(business["registrationNumber"])}</p>\n'
+        '      </div>\n'
+        '    </div>\n'
+        '  </div>\n'
+        '</div>'
+    )
 
 
 def organization_jsonld(config: dict) -> dict:
@@ -553,32 +624,31 @@ def jsonld_block(*objects: dict) -> str:
 def cta_box(config: dict, variant: str = "inline") -> str:
     return f"""<aside class="cta-box cta-box--{variant}" aria-label="상담 안내">
   <div class="cta-box-text">
-    <p class="cta-box-kicker">무료 진단 상담</p>
-    <p class="cta-box-title">지금 운영 중인 블로그·플레이스 링크를 보내주시면, 흐름이 끊긴 지점을 정리해 드립니다.</p>
+    <p class="cta-box-kicker">FREE DIAGNOSIS <span aria-hidden="true">/</span> 무료 진단</p>
+    <p class="cta-box-title">운영 중인 블로그·플레이스 링크를 보내주시면, 흐름이 끊긴 지점을 정리해 드립니다.</p>
     <p class="cta-box-sub">진단 내용을 보시고 진행 여부를 정하셔도 됩니다. 별도 비용은 없습니다.</p>
   </div>
-  <a class="btn btn--primary" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
-    {esc(config['consultLabel'])}<span class="sr-only"> (네이버 톡톡, 새 탭에서 열림)</span>
+  <a class="btn btn--solid" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+    {esc(config['consultLabel'])}<span aria-hidden="true"> →</span><span class="sr-only"> (네이버 톡톡, 새 탭에서 열림)</span>
   </a>
 </aside>"""
 
 
-def post_card(config: dict, post: dict, *, eager: bool = False, heading_level: str = "h3") -> str:
+def post_card(config: dict, post: dict, *, eager: bool = False, heading_level: str = "h3",
+              excerpt: bool = True) -> str:
     media = ""
     if post["cover"]:
         media = (f'<a class="card-media" href="{post["path"]}" tabindex="-1" aria-hidden="true">'
                  + picture(post["cover"], post["cover_alt"], eager=eager,
-                           sizes="(max-width: 720px) 100vw, 360px")
+                           sizes="(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 420px")
                  + "</a>")
-    return f"""<article class="card">
+    text = f'\n    <p class="card-text">{esc(post["description"])}</p>' if excerpt else ""
+    return f"""<article class="card" data-category="{esc(post['category'])}">
   {media}
   <div class="card-body">
-    <p class="card-meta"><span class="badge badge--{esc(post['category'])}">{esc(post['category'])}</span>
-      <time datetime="{post['date'].isoformat()}">{post['date'].strftime('%Y.%m.%d')}</time>
-      <span>읽기 {post['reading_time']}분</span></p>
-    <{heading_level} class="card-title"><a href="{post['path']}">{esc(post['title'])}</a></{heading_level}>
-    <p class="card-text">{esc(post['description'])}</p>
-    <a class="card-link" href="{post['path']}" aria-label="{esc(post['title'])} 글 읽기">글 읽기<span aria-hidden="true"> →</span></a>
+    <p class="card-meta"><span class="card-cat">{esc(post['category'])}</span><span class="card-sep" aria-hidden="true">/</span><time datetime="{post['date'].isoformat()}">{post['date'].strftime('%Y.%m.%d')}</time><span class="card-sep" aria-hidden="true">/</span><span>읽기 {post['reading_time']}분</span></p>
+    <{heading_level} class="card-title"><a href="{post['path']}">{esc(post['title'])}</a></{heading_level}>{text}
+    <span class="card-link" aria-hidden="true">READ <span>→</span></span>
   </div>
 </article>"""
 
@@ -588,9 +658,9 @@ def toc_html(post: dict, consult_url: str) -> str:
         return ""
     items = "".join(f'<li><a href="#{h["id"]}">{esc(h["text"])}</a></li>' for h in post["headings"])
     return f"""<nav class="toc" aria-label="이 글의 목차">
-  <p class="toc-title">목차</p>
+  <p class="toc-title">CONTENTS</p>
   <ol class="toc-list">{items}</ol>
-  <a class="toc-cta" href="{esc(consult_url)}" target="_blank" rel="noopener noreferrer">톡톡으로 질문하기</a>
+  <a class="toc-cta" href="{esc(consult_url)}" target="_blank" rel="noopener noreferrer">톡톡으로 질문하기 <span aria-hidden="true">→</span></a>
 </nav>"""
 
 
@@ -604,55 +674,85 @@ def write(path: str, content: str, depth: int = 0) -> None:
     canonical, OG, JSON-LD 의 절대 URL(https://...)은 건드리지 않습니다.
     """
     prefix = "../" * depth if depth else "./"
-    content = re.sub(r'(href|src|srcset)="/', lambda m: f'{m.group(1)}="{prefix}', content)
+
+    def rewrite(match: re.Match) -> str:
+        attr, value = match.group(1), match.group(2)
+        if attr == "srcset":
+            parts = []
+            for part in value.split(","):
+                bit = part.strip()
+                if not bit:
+                    continue
+                if bit.startswith("/"):
+                    bit = prefix + bit[1:]
+                parts.append(bit)
+            return f'{attr}="{esc(", ".join(parts))}"'
+        return f'{attr}="{prefix}{value[1:]}"'
+
+    content = re.sub(r'(href|src|srcset)="(/[^"]*)"', rewrite, content)
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(content)
 
 
 def build_home(config: dict, posts: list[dict], base: dict) -> str:
-    services = config["services"]
-    icon_paths = {
-        "megaphone": '<path d="M4 10v4a1 1 0 0 0 1 1h2l4 3V6L7 9H5a1 1 0 0 0-1 1Z"/><path d="M14 8a4 4 0 0 1 0 8"/><path d="M17 5a8 8 0 0 1 0 14"/>',
-        "document": '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v5h5"/><path d="M10 12h6"/><path d="M10 16h6"/>',
-        "play": '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M11 9.5v5l4-2.5-4-2.5Z"/>',
-        "palette": '<path d="M12 3a9 9 0 1 0 0 18h1.5a2.5 2.5 0 0 0 0-5H13a2 2 0 0 1 0-4h4a3 3 0 0 0 3-3 5 5 0 0 0-5-3Z"/><circle cx="7.5" cy="10.5" r="1.2"/><circle cx="10" cy="7" r="1.2"/><circle cx="14" cy="7" r="1.2"/>',
-    }
-    service_cards = []
-    for index, service in enumerate(services, start=1):
-        points = "".join(f"<li>{esc(point)}</li>" for point in service["points"])
-        service_cards.append(f"""<article class="service" id="service-{index}">
-  <div class="service-head">
-    <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{icon_paths.get(service['icon'], icon_paths['document'])}</svg></span>
-    <span class="service-no">0{index}</span>
+    steps = [
+        ("SEARCH", "검색", "손님이 실제로 입력하는 조건에서 시작합니다. 업종·지역·상황이 겹치는 검색어를 먼저 찾습니다."),
+        ("CONTENT", "콘텐츠", "비교에 필요한 정보를 글로 남깁니다. 가격, 진행 과정, 전후 사진, 자주 묻는 질문까지."),
+        ("PLACE", "플레이스", "영업시간·가격·사진을 글과 일치시킵니다. 여기서 어긋나면 읽던 사람이 멈춥니다."),
+        ("CONVERSION", "상담·예약", "행동 지점을 하나로 좁힙니다. 톡톡·전화·예약 중 하나만 남기고 나머지는 뒤로 뺍니다."),
+    ]
+    arch_items = []
+    for index, (en, ko, text) in enumerate(steps, start=1):
+        arch_items.append(f"""<li class="arch-step">
+  <span class="arch-no" aria-hidden="true">{index:02d}</span>
+  <div class="arch-head">
+    <p class="arch-en">{en}</p>
+    <h3 class="arch-ko">{ko}</h3>
   </div>
-  <h3 class="service-title">{esc(service['title'])}</h3>
+  <p class="arch-text">{text}</p>
+</li>""")
+
+    service_rows = []
+    for index, service in enumerate(config["services"], start=1):
+        points = "".join(f"<li>{esc(point)}</li>" for point in service["points"])
+        en = service.get("en", "")
+        service_rows.append(f"""<li class="service-row">
+  <span class="service-no" aria-hidden="true">{index:02d}</span>
+  <div class="service-head">
+    <p class="service-en">{esc(en)}</p>
+    <h3 class="service-title">{esc(service['title'])}</h3>
+  </div>
   <p class="service-summary">{esc(service['summary'])}</p>
   <ul class="service-points">{points}</ul>
-</article>""")
+</li>""")
 
-    region_chips = "".join(f"<li>{esc(region)}</li>" for region in config["regions"])
-    latest = "".join(post_card(config, post, eager=(i == 0), heading_level="h3")
+    region_items = []
+    for index, region in enumerate(config["regions"], start=1):
+        wide = " region-item--wide" if index > 5 else ""
+        region_items.append(
+            f'<li class="region-item{wide}"><span class="region-no" aria-hidden="true">{index:02d}</span>'
+            f'<span class="region-name">{esc(region)}</span></li>'
+        )
+
+    latest = "".join(post_card(config, post, eager=(i == 0), heading_level="h3", excerpt=False)
                      for i, post in enumerate(posts[:3]))
 
-    hero_flow = """
-      <div class="hero-panel" aria-label="노티스랩이 확인하는 전환 흐름">
-        <p class="hero-panel-title">유입에서 문의까지, 어느 칸이 비었습니까</p>
-        <ol class="flow">
-          <li class="flow-step"><span class="flow-dot"></span><strong>검색</strong><span>조건이 담긴 검색어</span></li>
-          <li class="flow-step"><span class="flow-dot"></span><strong>콘텐츠</strong><span>비교에 필요한 정보</span></li>
-          <li class="flow-step"><span class="flow-dot"></span><strong>플레이스</strong><span>영업시간·가격·사진</span></li>
-          <li class="flow-step"><span class="flow-dot"></span><strong>상담·예약</strong><span>행동 지점 하나</span></li>
-        </ol>
-        <p class="hero-panel-note">발행 편수가 아니라 이 네 칸의 연결을 먼저 봅니다.</p>
-      </div>"""
+    hero_media = picture("/assets/images/hero-atelier.jpg",
+                         "어두운 콘크리트 전시 공간으로 길게 떨어지는 자연광과 유리벽",
+                         cls="hero-img", eager=True, sizes="100vw")
+    coverage_media = picture("/assets/images/glass-light-study.jpg",
+                             "검은 유리와 강철 패널 사이로 스치는 날카로운 빛의 결",
+                             cls="coverage-img", sizes="(max-width: 900px) 100vw, 46vw")
 
     content = render_template("home.html", {
         **base,
-        "services": "".join(service_cards),
-        "regions": region_chips,
+        "structure_steps": "\n".join(arch_items),
+        "services": "\n".join(service_rows),
+        "regions": "\n".join(region_items),
         "latest_posts": latest,
-        "hero_flow": hero_flow,
+        "hero_media": hero_media,
+        "coverage_media": coverage_media,
         "post_count": len(posts),
     })
 
@@ -715,11 +815,7 @@ def build_insights_index(config: dict, posts: list[dict], base: dict) -> str:
             f'<span class="chip-count">{count}</span></button>'
         )
 
-    cards = []
-    for index, post in enumerate(posts):
-        card = post_card(config, post, eager=index < 2, heading_level="h2")
-        cards.append(card.replace('<article class="card">',
-                                  f'<article class="card" data-category="{esc(post["category"])}">', 1))
+    cards = [post_card(config, post, eager=index < 2, heading_level="h2") for index, post in enumerate(posts)]
 
     content = render_template("insights.html", {
         **base,
@@ -804,7 +900,10 @@ def build_post(config: dict, post: dict, posts: list[dict], base: dict) -> str:
         "post_reading_time": post["reading_time"],
         "post_body": body,
         "post_toc": toc_html(post, config["consultUrl"]),
-        "post_cover": picture(post["cover"], post["cover_alt"], eager=True, cls="post-cover-img", sizes="(max-width: 960px) 100vw, 720px") if post["cover"] else "",
+        "post_cover": ('<div class="post-media">'
+                       + picture(post["cover"], post["cover_alt"], eager=True, cls="post-cover-img",
+                                 sizes="100vw")
+                       + "</div>") if post["cover"] else "",
         "post_cover_alt": esc(post["cover_alt"]),
         "post_cta": cta_box(config, "bottom"),
         "related_cards": related_cards,
