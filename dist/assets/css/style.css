@@ -1073,6 +1073,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   font-weight: 600;
   color: var(--ink);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .closing-title em { font-style: normal; color: var(--coral-ink); }
 .closing-lede {
@@ -1140,6 +1141,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   letter-spacing: -.055em;
   font-weight: 600;
   color: var(--white);
+  overflow-wrap: break-word;
 }
 .page-lede {
   margin-top: clamp(22px, 3vw, 34px);
@@ -1269,6 +1271,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   font-weight: 600;
   color: var(--white);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .post-lede {
   max-width: 62ch;
@@ -1640,6 +1643,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   font-weight: 600;
   color: var(--white);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 .notfound-title em { font-style: normal; color: var(--coral); }
 .notfound-text {
