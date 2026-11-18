@@ -1,0 +1,95 @@
+{
+  "baseUrl": "https://noticelab.pages.dev",
+  "siteName": "NOTICE LAB",
+  "siteNameKo": "노티스랩",
+  "slogan": "조회수가 아닌 매출을 연구합니다.",
+  "description": "소상공인·자영업자·중소기업의 검색 유입이 문의와 예약으로 이어지도록 설계합니다. 광고대행·컨설팅, 네이버 블로그·카페 운영, 숏폼 제작, 브랜드 디자인을 경기 남부에서 전국까지 진행합니다.",
+  "consultUrl": "https://talk.naver.com/ct/w5z4wz?frm=mblog#nafullscreen",
+  "consultLabel": "네이버 톡톡으로 상담하기",
+  "author": "NOTICE LAB",
+  "locale": "ko_KR",
+  "language": "ko",
+  "timezone": "Asia/Seoul",
+  "business": {
+    "name": "NOTICE LAB (노티스랩)",
+    "ceo": "김지은",
+    "registrationNumber": "266-76-00532",
+    "mailOrderNumber": "",
+    "address": "경기도 용인시 처인구 포곡읍",
+    "email": "noticelab@naver.com",
+    "phone": "010-2000-0239",
+    "industries": "광고대행업 · 전자상거래 소매업 · 경영컨설팅업 · 시각디자인업"
+  },
+  "categories": [
+    {
+      "name": "검색형",
+      "slug": "search",
+      "description": "지역·업종 키워드로 검색 유입을 만드는 글"
+    },
+    {
+      "name": "홈판형",
+      "slug": "feed",
+      "description": "시의성과 문제 제기로 관심을 만드는 글"
+    },
+    {
+      "name": "상담전환형",
+      "slug": "consult",
+      "description": "비교·점검 단계의 독자를 상담으로 잇는 글"
+    }
+  ],
+  "services": [
+    {
+      "title": "광고대행 · 마케팅 컨설팅",
+      "icon": "megaphone",
+      "summary": "예산과 목표를 먼저 정하고, 채널·소재·측정 지점을 한 장의 계획으로 정리합니다.",
+      "points": [
+        "현재 유입·문의 진단",
+        "채널별 역할 분담",
+        "월 1회 보고와 다음 달 수정"
+      ]
+    },
+    {
+      "title": "네이버 블로그 · 카페 운영",
+      "icon": "document",
+      "summary": "검색 조건이 담긴 글을 기획하고, 발행 주기와 내부 링크까지 함께 관리합니다.",
+      "points": [
+        "생활권·상황 키워드 설계",
+        "정보형·비교형 글 구성",
+        "플레이스 정보 일치 점검"
+      ]
+    },
+    {
+      "title": "숏폼 제작 (릴스 · 클립 · 쇼츠)",
+      "icon": "play",
+      "summary": "업체가 가진 사진과 영상으로 기획·편집합니다. 촬영 없이도 시작할 수 있는 구성을 먼저 제안합니다.",
+      "points": [
+        "보유 소재 정리",
+        "후킹·자막·길이 설계",
+        "채널별 세로·정방형 편집"
+      ]
+    },
+    {
+      "title": "브랜드 디자인 · 홍보물",
+      "icon": "palette",
+      "summary": "포스터, 메뉴판, 배너, 상세페이지처럼 매장에서 바로 쓰는 홍보물을 제작합니다.",
+      "points": [
+        "브랜드 톤 정리",
+        "인쇄·온라인 규격 대응",
+        "수정 가능한 원본 제공"
+      ]
+    }
+  ],
+  "regions": [
+    "용인",
+    "수원",
+    "화성",
+    "성남",
+    "경기 광주",
+    "수도권",
+    "전국"
+  ],
+  "verification": {
+    "google": "",
+    "naver": ""
+  }
+}
