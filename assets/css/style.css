@@ -277,7 +277,7 @@ section[id] { scroll-margin-top: 88px; }
   transition: background-color .5s var(--ease), border-color .5s var(--ease);
 }
 .site-header.is-scrolled {
-  background: rgba(10, 10, 12, .96);
+  background: var(--ink);
   border-bottom-color: var(--line);
 }
 body.nav-open .site-header {
@@ -1507,7 +1507,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
 .footer-head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  gap: clamp(20px, 4vw, 64px);
+  gap: 0 clamp(20px, 4vw, 64px);
   align-items: end;
   padding-bottom: clamp(36px, 5vw, 64px);
   border-bottom: 1px solid var(--line);
