@@ -32,5 +32,29 @@
     "webp": "glass-light-study-1122.webp",
     "webp_srcset": "glass-light-study-1122.webp 1122w, glass-light-study-760.webp 760w, glass-light-study-520.webp 520w",
     "og": null
+  },
+  "agency-checklist-thumbnail.png": {
+    "webp": "agency-checklist-thumbnail-1600.webp",
+    "og": "og-agency-checklist-thumbnail.jpg"
+  },
+  "ten-photos-reels-thumbnail.png": {
+    "webp": "ten-photos-reels-thumbnail-1536.webp",
+    "og": "og-ten-photos-reels-thumbnail.jpg"
+  },
+  "pogok-suji-thumbnail.png": {
+    "webp": "pogok-suji-thumbnail-1535.webp",
+    "og": "og-pogok-suji-thumbnail.jpg"
+  },
+  "agency-five-checks-diagram.png": {
+    "webp": "agency-five-checks-diagram-1400.webp",
+    "og": null
+  },
+  "ten-photos-production-flow.png": {
+    "webp": "ten-photos-production-flow-1400.webp",
+    "og": null
+  },
+  "pogok-suji-search-patterns.png": {
+    "webp": "pogok-suji-search-patterns-1400.webp",
+    "og": null
   }
 }

@@ -18,7 +18,10 @@ website/
 ├── posts/                    글 원본 (마크다운 + front matter)
 │   ├── 01-blog-traffic-without-inquiries.md
 │   ├── 02-yongin-blog-marketing-living-areas.md
-│   └── 03-card-spending-store-quiet.md
+│   ├── 03-card-spending-store-quiet.md
+│   ├── 04-agency-checklist-before-hiring.md
+│   ├── 05-making-blog-and-reels-from-10-photos.md
+│   └── 06-yongin-pogok-vs-suji-strategy.md
 ├── templates/                HTML 템플릿 (base / home / insights / post / 404)
 ├── assets/
 │   ├── css/style.css         디자인 (딥 옵시디언 #0A0A0C · 오프화이트 #F4F4F2 · 코랄 #FF3B30)
@@ -106,6 +109,7 @@ faq_heading: 자주 묻는 질문
 - `site.json` 의 `business` 는 실제 정보로 채워졌습니다(대표 김지은, 사업자등록번호 266-76-00532, 주소 경기도 용인시 처인구 포곡읍, 이메일 noticelab@naver.com, 전화 010-2000-0239). 통신판매업 신고번호는 값이 없어 푸터에서 해당 줄을 출력하지 않습니다.
 - `baseUrl` 은 **`https://noticelab.pages.dev`** 로 확정되었습니다(Cloudflare Pages). canonical·OG·sitemap·robots 주소가 모두 이 주소로 출력됩니다. 도메인이 바뀌면 `site.json` 의 `baseUrl` 만 고치고 다시 빌드하면 됩니다.
 - 소스와 빌드 결과물(`dist/`)을 함께 GitHub `noticelab-site` 저장소(`main`)에 올려 두었습니다. `dist/` 는 `python3 build.py --clean` 로 언제든 재생성됩니다.
+- 2026-11-19 Day 2: 인사이트 6편(기존 3편 보완 + 신규 3편)으로 확장했습니다. 신규 3편의 네이버 블로그 발행용 원고·이미지는 `noticelab/day2/` 에 있습니다.
 
 ### 재빌드·배포 스크립트
 
