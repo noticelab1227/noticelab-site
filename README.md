@@ -21,11 +21,12 @@ website/
 │   └── 03-card-spending-store-quiet.md
 ├── templates/                HTML 템플릿 (base / home / insights / post / 404)
 ├── assets/
-│   ├── css/style.css         디자인 (네이비 #0F172A · 화이트 · 코랄 · 블루)
-│   ├── js/site.js            메뉴 · 카테고리 필터 · 목차 하이라이트
+│   ├── css/style.css         디자인 (딥 옵시디언 #0A0A0C · 오프화이트 #F4F4F2 · 코랄 #FF3B30)
+│   ├── js/site.js            풀스크린 메뉴 · 히어로 패럴랙스 · 섹션 인디케이터 · 필터 · 목차
 │   ├── favicon.svg
-│   └── images/               썸네일 · 본문 도식 · OG 카드 · 로고
+│   └── images/               히어로·커버·도식 · OG 카드 · 로고
 ├── scripts/prepare_images.py 이미지 경량화(WebP) · OG 카드 생성 (선택, Pillow 필요)
+├── scripts/prepare_hero_images.py 히어로 비주얼 그레이딩 · WebP 다중 폭 생성 (선택)
 └── dist/                     빌드 결과물 (배포 대상)
 ```
 
@@ -159,11 +160,15 @@ faq_heading: 자주 묻는 질문
 
 ## 7. 디자인 메모
 
-- 색: 네이비 `#0F172A`, 화이트, 코랄 `#F97362`, 블루 `#2563EB` (CSS 변수는 `assets/css/style.css` 상단 `:root`).
-- 폰트: Pretendard(CDN) → 시스템 폰트 순으로 대체됩니다. CDN을 쓰지 않으려면 `templates/base.html` 의 Pretendard `<link>` 한 줄을 지우면 됩니다.
-- 반응형: 980px(2단 → 1단), 820px(카드 2열), 720px(모바일 메뉴 · 1열).
-- 접근성: 건너뛰기 링크, `aria-current`, `aria-pressed`, `aria-live` 필터 안내, `prefers-reduced-motion`, 인쇄 스타일 포함.
-- 이미지: `<picture>` 로 WebP를 먼저 제공하고 PNG로 폴백합니다. 모든 `<img>` 에 `width`/`height` 와 대체 텍스트가 있습니다.
+- 톤: Plus X 벤치마킹. 딥 옵시디언 `#0A0A0C` + 오프화이트 `#F4F4F2` + 화이트, 포인트는 에디토리얼 코랄 `#FF3B30`(밝은 지면에서는 `#C4291F`). 둥근 모서리·그라데이션·그림자 없이 1px 헤어라인 그리드와 직각 면으로만 구성합니다. CSS 변수는 `assets/css/style.css` 상단 `:root`.
+- 타이포: 국문은 Pretendard(CDN) → 시스템 폰트, 라벨·수치는 모노스페이스. 디스플레이는 `letter-spacing: -.04em`, `line-height: 1.05` 안팎의 스위스 조판.
+- 지면 리듬: 다크(01 전환 구조) → 페이퍼(02 서비스) → 다크(03 인사이트) → 다크(04 대응 지역) → 페이퍼(클로징 CTA) → 다크(푸터). 섹션은 01~04 번호와 영문 라벨로 고정됩니다.
+- 헤더: NL 모노그램 + 브랜드 마키 티커 + 사각 `MENU`(풀스크린 오버레이) + `TALK` 버튼. 스크롤 시 배경이 불투명 잉크로 바뀝니다.
+- 히어로: `assets/images/hero-atelier.jpg`(WebP 3폭)를 풀블리드 배경으로 쓰고 스크림·그리드·미세 패럴랙스를 겹칩니다. 비주얼은 `scripts/prepare_hero_images.py` 로 다시 만들 수 있습니다.
+- 반응형: 1180px(전환 구조 2열 · 서비스 그리드 축소), 980px(티커 숨김 · 전환 구조/카드 재배치 · 목차 상단), 720px(1열 · 히어로 타이포 축소), 420px(헤더 압축).
+- 접근성: 건너뛰기 링크, `aria-current`, `aria-expanded`, `aria-pressed`, `aria-live` 필터 안내, `prefers-reduced-motion`(패럴랙스·등장 모션 정지), 포커스 링.
+- 이미지: `<picture>` 로 WebP를 먼저 제공하고 JPEG/PNG로 폴백합니다. 모든 `<img>` 에 `width`/`height` 와 대체 텍스트가 있습니다.
+- 정적 자산 캐시: `templates/base.html` 의 `style.css?v=` · `site.js?v=` 값을 CSS/JS 수정 시 올립니다.
 
 ## 8. 검증 항목 (`verify.py`)
 
