@@ -76,6 +76,12 @@ button { font: inherit; color: inherit; }
 h1, h2, h3, h4, p, dl, dd, dt, figure, blockquote { margin: 0; }
 ul, ol { margin: 0; padding: 0; list-style: none; }
 
+@supports (scrollbar-color: auto) {
+  html {
+    scrollbar-color: rgba(244, 244, 242, .26) #0A0A0C;
+  }
+}
+
 ::selection { background: var(--coral); color: #fff; }
 
 :focus-visible {
