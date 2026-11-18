@@ -552,6 +552,7 @@ def nav_html(config: dict, active: str) -> str:
     business = config["business"]
     return (
         '<div class="nav-overlay" id="site-nav">\n'
+        f'  <p class="nav-topline"><span>MENU</span><span>{esc(config["siteName"])} — {esc(config["siteNameKo"])}</span></p>\n'
         '  <div class="nav-overlay-inner">\n'
         '    <nav class="nav-main" aria-label="주 메뉴">\n'
         '      <ol class="nav-list">\n        ' + "\n        ".join(rows) + "\n      </ol>\n"
