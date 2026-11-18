@@ -5,7 +5,7 @@ Node.js나 별도 패키지 없이 **Python 표준 라이브러리만으로** �
 GitHub Pages · Vercel · Cloudflare Pages 어디에나 그대로 올릴 수 있습니다.
 
 - 슬로건: 조회수가 아닌 매출을 연구합니다.
-- 상담 채널(모든 CTA): <https://talk.naver.com/ct/w5z4wz?frm=mblog#nafullscreen> (새 탭)
+- 상담 채널(모든 CTA): <https://pf.kakao.com/_xdMIvX/chat> — 카카오톡 채널 「노티스랩」 1:1 채팅 (새 탭)
 - 대응 지역: 용인 · 수원 · 화성 · 성남 · 경기 광주 → 수도권 · 전국
 
 ## 1. 폴더 구조

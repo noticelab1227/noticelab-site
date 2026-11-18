@@ -630,7 +630,7 @@ def cta_box(config: dict, variant: str = "inline") -> str:
     <p class="cta-box-sub">진단 내용을 보시고 진행 여부를 정하셔도 됩니다. 별도 비용은 없습니다.</p>
   </div>
   <a class="btn btn--solid" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
-    {esc(config['consultLabel'])}<span aria-hidden="true"> →</span><span class="sr-only"> (네이버 톡톡, 새 탭에서 열림)</span>
+    {esc(config['consultLabel'])}<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
   </a>
 </aside>"""
 
@@ -661,7 +661,7 @@ def toc_html(post: dict, consult_url: str) -> str:
     return f"""<nav class="toc" aria-label="이 글의 목차">
   <p class="toc-title">CONTENTS</p>
   <ol class="toc-list">{items}</ol>
-  <a class="toc-cta" href="{esc(consult_url)}" target="_blank" rel="noopener noreferrer">톡톡으로 질문하기 <span aria-hidden="true">→</span></a>
+  <a class="toc-cta" href="{esc(consult_url)}" target="_blank" rel="noopener noreferrer">카카오톡으로 질문하기 <span aria-hidden="true">→</span></a>
 </nav>"""
 
 
@@ -701,7 +701,7 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
         ("SEARCH", "검색", "손님이 실제로 입력하는 조건에서 시작합니다. 업종·지역·상황이 겹치는 검색어를 먼저 찾습니다."),
         ("CONTENT", "콘텐츠", "비교에 필요한 정보를 글로 남깁니다. 가격, 진행 과정, 전후 사진, 자주 묻는 질문까지."),
         ("PLACE", "플레이스", "영업시간·가격·사진을 글과 일치시킵니다. 여기서 어긋나면 읽던 사람이 멈춥니다."),
-        ("CONVERSION", "상담·예약", "행동 지점을 하나로 좁힙니다. 톡톡·전화·예약 중 하나만 남기고 나머지는 뒤로 뺍니다."),
+        ("CONVERSION", "상담·예약", "행동 지점을 하나로 좁힙니다. 카카오톡·전화·예약 중 하나만 남기고 나머지는 뒤로 뺍니다."),
     ]
     arch_items = []
     for index, (en, ko, text) in enumerate(steps, start=1):
