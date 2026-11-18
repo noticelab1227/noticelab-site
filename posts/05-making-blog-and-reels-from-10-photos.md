@@ -2,7 +2,7 @@
 title: "매장 사진 10장으로 블로그와 릴스까지 만들 수 있을까?"
 slug: making-blog-and-reels-from-10-photos
 description: "촬영 없이 매장 사진 10장으로 블로그 글 세 편과 릴스 한 편을 만드는 실제 순서를 정리했습니다. 사진을 고르는 기준, 글과 영상에 컷을 나누는 법, 자막과 편집에서 정하는 것, 10장으로 안 되는 경우까지."
-category: 홈판형
+category: 시장·제작 방식
 date: 2026-11-19T10:30:00+09:00
 updated: 2026-11-19T10:30:00+09:00
 cover: /assets/images/ten-photos-reels-thumbnail.png

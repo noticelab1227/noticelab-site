@@ -75,7 +75,7 @@ python3 scripts/prepare_images.py
 title: "글 제목 (H1으로 그대로 출력됩니다)"
 slug: url-에-들어갈-영문-슬러그
 description: "검색 결과에 나올 80~120자 요약"
-category: 검색형            # 검색형 | 홈판형 | 상담전환형
+category: 지역·검색 전략     # 지역·검색 전략 | 시장·제작 방식 | 전환·대행 기준
 date: 2026-11-20T09:00:00+09:00
 updated: 2026-11-20T09:00:00+09:00
 cover: /assets/images/파일명.png

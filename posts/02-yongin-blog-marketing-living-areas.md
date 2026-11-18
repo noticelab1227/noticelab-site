@@ -2,7 +2,7 @@
 title: "용인 블로그 마케팅: 수지·기흥·처인 생활권별 키워드 설계 5단계"
 slug: yongin-blog-marketing-living-areas
 description: "용인은 하나의 상권이 아닙니다. 수지·기흥·처인 생활권을 나누고 지역 키워드를 동네·이동 지점·상황 순서로 쌓는 방법과, 플레이스와 블로그의 역할 분담을 다섯 단계로 정리했습니다."
-category: 검색형
+category: 지역·검색 전략
 date: 2026-11-19T08:30:00+09:00
 updated: 2026-11-19T10:00:00+09:00
 cover: /assets/images/yongin-local-marketing-thumbnail.png

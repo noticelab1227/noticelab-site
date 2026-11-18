@@ -2,7 +2,7 @@
 title: "카드 결제는 역대 두 번째로 늘었는데 매장은 조용한 이유 (2026년 3분기 가계신용 읽기)"
 slug: card-spending-store-quiet-2026-q3
 description: "2026년 3분기 판매신용은 5조 원 늘어 133조 7,000억 원, 증가 폭은 역대 두 번째입니다. 같은 분기 민간소비는 0.2% 줄었습니다. 결제 통계와 매장 매출이 어긋나는 이유와 연말에 바꿀 네 가지를 정리했습니다."
-category: 홈판형
+category: 시장·제작 방식
 date: 2026-11-19T09:30:00+09:00
 updated: 2026-11-19T10:00:00+09:00
 cover: /assets/images/year-end-store-sales-thumbnail.png

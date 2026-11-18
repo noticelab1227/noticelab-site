@@ -2,7 +2,7 @@
 title: "블로그 조회수는 오르는데 문의가 없을 때, 대행사 보고서에서 확인할 세 줄"
 slug: blog-traffic-without-inquiries
 description: "조회수는 오르는데 문의가 없다면 원인은 네 갈래입니다. 대행사 보고서에서 새 검색어·플레이스 행동·다음 달 수정 한 줄을 확인하는 법과 사장님이 직접 하는 월간 점검 다섯 가지를 정리했습니다."
-category: 상담전환형
+category: 전환·대행 기준
 date: 2026-11-19T09:00:00+09:00
 updated: 2026-11-19T10:00:00+09:00
 cover: /assets/images/notice-lab-blog-traffic-thumbnail.png

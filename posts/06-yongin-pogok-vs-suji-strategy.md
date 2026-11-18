@@ -2,7 +2,7 @@
 title: "용인 소상공인 마케팅, 포곡과 수지에서 같은 전략이 안 통하는 이유"
 slug: yongin-pogok-vs-suji-strategy
 description: "같은 용인이라도 포곡읍과 수지구는 손님이 움직이는 방식이 다릅니다. 주말 목적 방문과 차량 이동, 생활권 밀집과 도보 반복 소비로 나눠 검색 목적과 키워드 설계가 어떻게 갈리는지 정리했습니다."
-category: 검색형
+category: 지역·검색 전략
 date: 2026-11-19T11:00:00+09:00
 updated: 2026-11-19T11:00:00+09:00
 cover: /assets/images/pogok-suji-thumbnail.png

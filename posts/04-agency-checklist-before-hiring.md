@@ -2,7 +2,7 @@
 title: "블로그 대행 맡기기 전, 월 관리비보다 먼저 확인할 5가지"
 slug: agency-checklist-before-hiring
 description: "월 관리비만 비교하면 이름이 같은 다른 서비스를 견주게 됩니다. 견적 구성, 업무 범위, 원고 소유권, 보고서 기준, 제작 방식까지 계약 전에 확인할 다섯 가지와 그대로 물어볼 문장을 정리했습니다."
-category: 상담전환형
+category: 전환·대행 기준
 date: 2026-11-19T10:00:00+09:00
 updated: 2026-11-19T10:00:00+09:00
 cover: /assets/images/agency-checklist-thumbnail.png

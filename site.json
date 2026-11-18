@@ -22,19 +22,19 @@
   },
   "categories": [
     {
-      "name": "검색형",
+      "name": "지역·검색 전략",
       "slug": "search",
-      "description": "지역·업종 키워드로 검색 유입을 만드는 글"
+      "description": "지역·업종 검색 유입과 상권별 키워드 설계를 다루는 글"
     },
     {
-      "name": "홈판형",
+      "name": "시장·제작 방식",
       "slug": "feed",
-      "description": "시의성과 문제 제기로 관심을 만드는 글"
+      "description": "시의성 시장 흐름과 노티스랩의 실제 제작 과정을 다루는 글"
     },
     {
-      "name": "상담전환형",
+      "name": "전환·대행 기준",
       "slug": "consult",
-      "description": "비교·점검 단계의 독자를 상담으로 잇는 글"
+      "description": "조회수를 문의로 바꾸는 구조와 대행 전 확인 기준을 다루는 글"
     }
   ],
   "services": [
@@ -94,6 +94,6 @@
   ],
   "verification": {
     "google": "",
-    "naver": ""
+    "naver": "96a2e5b179f30e42b8f2b4504fd5e21fd85bef22"
   }
 }
