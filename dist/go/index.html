@@ -55,6 +55,9 @@
   --ink:#0A0A0C;
   --paper:#F4F4F2;
   --coral:#FF3B30;
+  --kakao:#FEE500;
+  --kakao-hover:#F5DC00;
+  --kakao-ink:#191600;
   --muted:#8B8B92;
   --dim:#55555C;
   --line:rgba(244,244,242,.14);
@@ -182,6 +185,7 @@ a{color:inherit}
   font-size:17px;
   line-height:1;
 }
+.link-svg{display:block;width:20px;height:20px}
 .link-body{min-width:0}
 .link-label{
   display:block;
@@ -206,19 +210,19 @@ a{color:inherit}
 .link:hover .link-arrow,
 .link:focus-visible .link-arrow{transform:translateX(4px);color:var(--paper)}
 .link--primary{
-  border-color:var(--coral);
-  background:var(--coral);
-  color:var(--ink);
-  box-shadow:0 15px 40px -22px rgba(255,59,48,.85);
+  border-color:var(--kakao);
+  background:var(--kakao);
+  color:var(--kakao-ink);
+  box-shadow:0 15px 40px -22px rgba(254,229,0,.55);
 }
-.link--primary .link-no{color:rgba(10,10,12,.55)}
-.link--primary .link-icon{border-color:rgba(10,10,12,.22);background:rgba(10,10,12,.10)}
+.link--primary .link-no{color:rgba(25,22,0,.52)}
+.link--primary .link-icon{border-color:rgba(25,22,0,.16);background:rgba(25,22,0,.06);color:var(--kakao-ink)}
 .link--primary .link-label{font-weight:700}
-.link--primary .link-sub{color:rgba(10,10,12,.72)}
-.link--primary .link-arrow{color:rgba(10,10,12,.78)}
-.link--primary:hover{background:#FF5145;border-color:#FF5145}
+.link--primary .link-sub{color:var(--kakao-ink)}
+.link--primary .link-arrow{color:rgba(25,22,0,.72)}
+.link--primary:hover{background:var(--kakao-hover);border-color:var(--kakao-hover)}
 .link--primary:hover .link-arrow,
-.link--primary:focus-visible .link-arrow{color:var(--ink)}
+.link--primary:focus-visible .link-arrow{color:var(--kakao-ink)}
 .link--primary:focus-visible{outline-color:var(--paper)}
 .hub-foot{
   margin:26px 0 0;
@@ -244,6 +248,7 @@ a{color:inherit}
   .link-label{font-size:14px}
   .link-sub{font-size:11px}
   .link-icon{width:34px;height:34px;font-size:16px}
+  .link-svg{width:18px;height:18px}
   .link-arrow{font-size:12px}
 }
 @media (min-width:600px){
@@ -284,7 +289,7 @@ a{color:inherit}
   <nav class="links" aria-label="노티스랩 주요 링크">
     <a class="link link--primary" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">
       <span class="link-no">01</span>
-      <span class="link-icon" aria-hidden="true">💬</span>
+      <span class="link-icon" aria-hidden="true"><svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><ellipse cx="12" cy="10.4" rx="10.1" ry="7.75" fill="currentColor"/><path fill="currentColor" d="M4.5 15.3 3 19.9l3.6-3.4Z"/></svg></span>
       <span class="link-body">
         <span class="link-label">카카오톡 채널 1:1 무료 상담</span>
         <span class="link-sub">가장 빠른 문의 · 매장 진단 요청</span>

@@ -103,7 +103,7 @@
         "label": "카카오톡 채널 1:1 무료 상담",
         "sub": "가장 빠른 문의 · 매장 진단 요청",
         "url": "https://pf.kakao.com/_xdMIvX/chat",
-        "icon": "💬",
+        "icon_svg": "kakaotalk",
         "primary": true
       },
       {

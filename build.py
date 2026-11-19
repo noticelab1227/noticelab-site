@@ -1009,12 +1009,26 @@ def build_404(config: dict, base: dict) -> str:
 
 # 인스타그램·스레드 프로필 링크용 멀티링크 허브 (/go/)
 GO_PATH = "/go/"
+
+# /go/ 버튼 아이콘 — 이모지 대신 쓰는 인라인 SVG. site.json 의 "icon_svg" 값으로 고릅니다.
+# currentColor 로 그려서 버튼 글자색(카카오 옐로 버튼은 #191600)을 그대로 따라갑니다.
+LINK_ICON_SVGS = {
+    # 카카오톡 말풍선 심벌 — 가로로 넓은 둥근 말풍선 + 왼쪽 아래 짧은 꼬리
+    "kakaotalk": (
+        '<svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" '
+        'aria-hidden="true" focusable="false">'
+        '<ellipse cx="12" cy="10.4" rx="10.1" ry="7.75" fill="currentColor"/>'
+        '<path fill="currentColor" d="M4.5 15.3 3 19.9l3.6-3.4Z"/>'
+        '</svg>'
+    ),
+}
+
 GO_DEFAULT_LINKS = [
     {
         "label": "카카오톡 채널 1:1 무료 상담",
         "sub": "가장 빠른 문의 · 매장 진단 요청",
         "url": "https://pf.kakao.com/_xdMIvX/chat",
-        "icon": "💬",
+        "icon_svg": "kakaotalk",
         "primary": True,
     },
     {
@@ -1043,10 +1057,12 @@ def go_link_rows(config: dict) -> str:
             continue
         primary = bool(link.get("primary"))
         classes = "link link--primary" if primary else "link"
+        icon_svg = LINK_ICON_SVGS.get(str(link.get("icon_svg", "")).strip())
+        icon_html = icon_svg if icon_svg else esc(link.get("icon", ""))
         rows.append(
             f'    <a class="{classes}" href="{esc(url)}" target="_blank" rel="noopener noreferrer">\n'
             f'      <span class="link-no">{index:02d}</span>\n'
-            f'      <span class="link-icon" aria-hidden="true">{esc(link.get("icon", ""))}</span>\n'
+            f'      <span class="link-icon" aria-hidden="true">{icon_html}</span>\n'
             '      <span class="link-body">\n'
             f'        <span class="link-label">{esc(link.get("label", ""))}</span>\n'
             f'        <span class="link-sub">{esc(link.get("sub", ""))}</span>\n'
