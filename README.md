@@ -118,19 +118,19 @@ faq_heading: 자주 묻는 질문
 
 ### 링크 허브(`/go/`) 문구·링크 고치기
 
-인스타그램·스레드 프로필에 거는 링크 페이지입니다. 버튼은 `site.json` 의 `linkHub.links` 배열 순서대로 출력되고, `"primary": true` 인 항목만 코랄 버튼으로 강조됩니다.
+인스타그램·스레드 프로필에 거는 링크 페이지입니다. 버튼은 `site.json` 의 `linkHub.links` 배열 순서대로 출력되고, `"primary": true` 인 항목만 **카카오 옐로(`#FEE500`, 호버 `#F5DC00`) 버튼에 `#191600` 글자·카카오톡 말풍선 심벌 SVG**로 강조됩니다. 말풍선 심벌은 이모지 대신 `build.py` 의 `LINK_ICON_SVGS` 에 들어 있는 인라인 SVG 이고, `"icon_svg": "kakaotalk"` 로 지정합니다. 나머지 버튼과 페이지 전체는 옵시디언·코랄 톤 그대로입니다.
 
 ```json
 "linkHub": {
   "slogan": "광고보다 결과, 조회수보다 매출을 연구합니다.",
   "links": [
     { "label": "카카오톡 채널 1:1 무료 상담", "sub": "가장 빠른 문의 · 매장 진단 요청",
-      "url": "https://pf.kakao.com/_xdMIvX/chat", "icon": "💬", "primary": true }
+      "url": "https://pf.kakao.com/_xdMIvX/chat", "icon_svg": "kakaotalk", "primary": true }
   ]
 }
 ```
 
-`label`·`sub`·`url`·`icon` 을 고친 뒤 `python3 build.py --clean && python3 verify.py` → `git commit` → `git push` 만 하면 됩니다. 페이지의 레이아웃·색은 `templates/go.html` 안의 `<style>` 에 있습니다. 공유 카드 이미지는 `scripts/prepare_go_og.py` 로 다시 만들고, 사업자 정보는 `site.json` 의 `business` 값을 그대로 씁니다.
+`label`·`sub`·`url`·`icon`(이모지)·`icon_svg`(인라인 SVG 이름) 을 고친 뒤 `python3 build.py --clean && python3 verify.py` → `git commit` → `git push` 만 하면 됩니다. 페이지의 레이아웃·색은 `templates/go.html` 안의 `<style>` 에 있습니다. 공유 카드 이미지는 `scripts/prepare_go_og.py` 로 다시 만들고, 사업자 정보는 `site.json` 의 `business` 값을 그대로 씁니다.
 
 ### 재빌드·배포 스크립트
 
