@@ -1068,7 +1068,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   line-height: 1.9;
   color: var(--t-2);
 }
-.social-copy strong { color: var(--t-1); font-weight: 600; }
+.social-copy strong { color: var(--t-1); font-weight: 600; white-space: nowrap; }
 
 .social-terms {
   display: grid;
