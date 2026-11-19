@@ -530,6 +530,7 @@ def nav_html(config: dict, active: str) -> str:
         ("services", "/#services", "03", "CAPABILITIES", "핵심 서비스"),
         ("insights", "/insights/", "04", "INSIGHTS", "인사이트"),
         ("region", "/#region", "05", "COVERAGE", "대응 지역"),
+        ("social", "/#social", "06", "SOCIAL", "사회공헌"),
     ]
     rows = []
     for key, href, number, label, ko in items:
@@ -544,7 +545,7 @@ def nav_html(config: dict, active: str) -> str:
     rows.append(
         f'<li class="nav-item nav-item--talk"><a class="nav-link" href="{esc(config["consultUrl"])}" '
         'target="_blank" rel="noopener noreferrer">'
-        '<span class="nav-no">06</span><span class="nav-en">TALK</span>'
+        '<span class="nav-no">07</span><span class="nav-en">TALK</span>'
         f'<span class="nav-ko">{esc(config["siteNameKo"])} 상담</span>'
         '<span class="nav-arrow" aria-hidden="true">→</span></a></li>'
     )

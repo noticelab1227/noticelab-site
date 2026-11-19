@@ -59,7 +59,7 @@
   var stops = [];
 
   if (indicator) {
-    ["hero", "structure", "services", "latest", "region"].forEach(function (id) {
+    ["hero", "structure", "services", "latest", "region", "social"].forEach(function (id) {
       var node = document.getElementById(id);
       if (node) stops.push(node);
     });
@@ -70,7 +70,7 @@
       stops.forEach(function (node, index) {
         if (node.getBoundingClientRect().top <= mark) active = index;
       });
-      var label = Math.max(1, Math.min(active, 4));
+      var label = Math.max(1, Math.min(active, stops.length - 1));
       if (currentLabel) currentLabel.textContent = label < 10 ? "0" + label : String(label);
 
       if (stops[active].classList.contains("section--paper")) {
