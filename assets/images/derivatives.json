@@ -56,5 +56,29 @@
   "pogok-suji-search-patterns.png": {
     "webp": "pogok-suji-search-patterns-1400.webp",
     "og": null
+  },
+  "suwon-district-thumbnail.png": {
+    "webp": "suwon-district-thumbnail-1536.webp",
+    "og": "og-suwon-district-thumbnail.jpg"
+  },
+  "season-search-thumbnail.png": {
+    "webp": "season-search-thumbnail-1536.webp",
+    "og": "og-season-search-thumbnail.jpg"
+  },
+  "place-booking-thumbnail.png": {
+    "webp": "place-booking-thumbnail-1536.webp",
+    "og": "og-place-booking-thumbnail.jpg"
+  },
+  "suwon-district-four-areas.png": {
+    "webp": "suwon-district-four-areas-1199.webp",
+    "og": null
+  },
+  "season-search-curve.png": {
+    "webp": "season-search-curve-1400.webp",
+    "og": null
+  },
+  "place-booking-five-gates.png": {
+    "webp": "place-booking-five-gates-1400.webp",
+    "og": null
   }
 }
