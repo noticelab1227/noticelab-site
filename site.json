@@ -116,7 +116,7 @@
         "label": "노티스랩 네이버 블로그",
         "sub": "네이버 블로그 바로가기",
         "url": "https://blog.naver.com/noticelab",
-        "icon": "📝"
+        "icon_svg": "naverblog"
       }
     ]
   }

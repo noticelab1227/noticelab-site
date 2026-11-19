@@ -1021,6 +1021,22 @@ LINK_ICON_SVGS = {
         '<path fill="currentColor" d="M4.5 15.3 3 19.9l3.6-3.4Z"/>'
         '</svg>'
     ),
+    # 네이버 블로그 엠블럼 — 네이버 그린(#03C75A) 타일 위에 흰 말풍선 + 그린 N
+    # 타일 색은 templates/go.html 의 .link-icon--naver 가 칠하고, 이 SVG 는 흰 말풍선과
+    # 타일과 같은 그린으로 뚫린 N 만 그립니다.
+    "naverblog": (
+        '<svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" '
+        'aria-hidden="true" focusable="false">'
+        '<rect x="2.1" y="2.7" width="19.8" height="14.7" rx="3.8" fill="#fff"/>'
+        '<path fill="#fff" d="M6.1 16.4h4.3l-5.2 5.1Z"/>'
+        '<path fill="#03C75A" d="M8.4 13.9V6.4h2.05l3.1 4.6V6.4H15.6v7.5h-2.05l-3.1-4.6v4.6Z"/>'
+        '</svg>'
+    ),
+}
+
+# 아이콘 타일 색 — SVG 이름별로 타일 배경 클래스를 붙입니다.
+LINK_ICON_TILES = {
+    "naverblog": "naver",
 }
 
 GO_DEFAULT_LINKS = [
@@ -1041,7 +1057,7 @@ GO_DEFAULT_LINKS = [
         "label": "노티스랩 네이버 블로그",
         "sub": "네이버 블로그 바로가기",
         "url": "https://blog.naver.com/noticelab",
-        "icon": "📝",
+        "icon_svg": "naverblog",
     },
 ]
 
@@ -1057,12 +1073,18 @@ def go_link_rows(config: dict) -> str:
             continue
         primary = bool(link.get("primary"))
         classes = "link link--primary" if primary else "link"
-        icon_svg = LINK_ICON_SVGS.get(str(link.get("icon_svg", "")).strip())
+        icon_name = str(link.get("icon_svg", "")).strip()
+        icon_svg = LINK_ICON_SVGS.get(icon_name)
         icon_html = icon_svg if icon_svg else esc(link.get("icon", ""))
+        icon_classes = "link-icon"
+        tile = LINK_ICON_TILES.get(icon_name)
+        if tile and not primary:
+            icon_classes += f" link-icon--{tile}"
+            classes += f" link--{tile}"
         rows.append(
             f'    <a class="{classes}" href="{esc(url)}" target="_blank" rel="noopener noreferrer">\n'
             f'      <span class="link-no">{index:02d}</span>\n'
-            f'      <span class="link-icon" aria-hidden="true">{icon_html}</span>\n'
+            f'      <span class="{icon_classes}" aria-hidden="true">{icon_html}</span>\n'
             '      <span class="link-body">\n'
             f'        <span class="link-label">{esc(link.get("label", ""))}</span>\n'
             f'        <span class="link-sub">{esc(link.get("sub", ""))}</span>\n'

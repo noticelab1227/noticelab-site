@@ -58,6 +58,8 @@
   --kakao:#FEE500;
   --kakao-hover:#F5DC00;
   --kakao-ink:#191600;
+  --naver:#03C75A;
+  --naver-hover:#02B351;
   --muted:#8B8B92;
   --dim:#55555C;
   --line:rgba(244,244,242,.14);
@@ -224,6 +226,24 @@ a{color:inherit}
 .link--primary:hover .link-arrow,
 .link--primary:focus-visible .link-arrow{color:var(--kakao-ink)}
 .link--primary:focus-visible{outline-color:var(--paper)}
+/* 네이버 블로그 — 네이버 그린 타일 엠블럼과 그린 계열 호버 */
+.link-icon--naver{
+  border-color:var(--naver);
+  background:var(--naver);
+  box-shadow:0 6px 18px -10px rgba(3,199,90,.65);
+}
+.link-icon--naver .link-svg{width:21px;height:21px}
+.link--naver:hover{
+  background:rgba(3,199,90,.07);
+  border-color:rgba(3,199,90,.55);
+}
+.link--naver:hover .link-icon--naver,
+.link--naver:focus-visible .link-icon--naver{
+  background:var(--naver-hover);
+  border-color:var(--naver-hover);
+}
+.link--naver:hover .link-arrow,
+.link--naver:focus-visible .link-arrow{color:var(--naver)}
 .hub-foot{
   margin:26px 0 0;
   padding-top:14px;
@@ -305,9 +325,9 @@ a{color:inherit}
       </span>
       <span class="link-arrow" aria-hidden="true">→</span>
     </a>
-    <a class="link" href="https://blog.naver.com/noticelab" target="_blank" rel="noopener noreferrer">
+    <a class="link link--naver" href="https://blog.naver.com/noticelab" target="_blank" rel="noopener noreferrer">
       <span class="link-no">03</span>
-      <span class="link-icon" aria-hidden="true">📝</span>
+      <span class="link-icon link-icon--naver" aria-hidden="true"><svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><rect x="2.1" y="2.7" width="19.8" height="14.7" rx="3.8" fill="#fff"/><path fill="#fff" d="M6.1 16.4h4.3l-5.2 5.1Z"/><path fill="#03C75A" d="M8.4 13.9V6.4h2.05l3.1 4.6V6.4H15.6v7.5h-2.05l-3.1-4.6v4.6Z"/></svg></span>
       <span class="link-body">
         <span class="link-label">노티스랩 네이버 블로그</span>
         <span class="link-sub">네이버 블로그 바로가기</span>
