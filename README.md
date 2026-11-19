@@ -22,7 +22,7 @@ website/
 │   ├── 04-agency-checklist-before-hiring.md
 │   ├── 05-making-blog-and-reels-from-10-photos.md
 │   └── 06-yongin-pogok-vs-suji-strategy.md
-├── templates/                HTML 템플릿 (base / home / insights / post / 404)
+├── templates/                HTML 템플릿 (base / home / insights / post / 404 / go)
 ├── assets/
 │   ├── css/style.css         디자인 (딥 옵시디언 #0A0A0C · 오프화이트 #F4F4F2 · 코랄 #FF3B30)
 │   ├── js/site.js            풀스크린 메뉴 · 히어로 패럴랙스 · 섹션 인디케이터 · 필터 · 목차
@@ -30,6 +30,7 @@ website/
 │   └── images/               히어로·커버·도식 · OG 카드 · 로고
 ├── scripts/prepare_images.py 이미지 경량화(WebP) · OG 카드 생성 (선택, Pillow 필요)
 ├── scripts/prepare_hero_images.py 히어로 비주얼 그레이딩 · WebP 다중 폭 생성 (선택)
+├── scripts/prepare_go_og.py  /go/ 링크 허브 공유 카드(1200×630) 생성 (선택, Pillow 필요)
 └── dist/                     빌드 결과물 (배포 대상)
 ```
 
@@ -41,6 +42,7 @@ dist/
 ├── insights/index.html               인사이트 목록 (카테고리 필터)
 ├── insights/<slug>/index.html        개별 글 (Article + FAQPage + BreadcrumbList JSON-LD)
 ├── sitemap.xml · robots.txt · rss.xml · llms.txt
+├── go/index.html                     링크 허브 (인스타그램·스레드 프로필 링크)
 ├── 404.html · .nojekyll
 └── assets/...
 ```
@@ -112,6 +114,23 @@ faq_heading: 자주 묻는 질문
 - 2026-11-19 Day 2: 인사이트 6편(기존 3편 보완 + 신규 3편)으로 확장했습니다. 신규 3편의 네이버 블로그 발행용 원고·이미지는 `noticelab/day2/` 에 있습니다.
 - 2026-11-19 Day 3: 인사이트 9편으로 확장했습니다. 신규 3편(수원 생활권 검색 · 시즌 검색 달력 · 플레이스 전환)의 구글 SEO/GEO 버전이며, 네이버 블로그 발행용 원고·이미지는 `noticelab/day3/` 에 그대로 두었습니다. 네이버 블로그에는 자동 발행하지 않았습니다.
 - 2026-11-20 Day 4: 인사이트 12편으로 확장했습니다. 신규 3편은 구글 비즈니스 프로필 점검(지역·검색 전략), 10월 소비자물가 기반 메뉴 가격 공지(시장·제작 방식), 대행 종료 시 인수인계(전환·대행 기준)이며 이미지 파생본은 `scripts/prepare_day4_images.py` 로 만듭니다. 네이버 블로그에는 발행하지 않았습니다.
+- 2026-11-20 링크 허브: 인스타그램·스레드 프로필에 거는 **`https://noticelab.pages.dev/go/`** 를 `templates/go.html` + `build.py` 의 `build_go()` 로 생성합니다(`--clean` 빌드에서도 항상 함께 생성). 버튼 문구·순서·주소는 `site.json` 의 `linkHub.links` 에서 고칩니다. 공유 카드는 `python3 scripts/prepare_go_og.py` 로 재생성합니다.
+
+### 링크 허브(`/go/`) 문구·링크 고치기
+
+인스타그램·스레드 프로필에 거는 링크 페이지입니다. 버튼은 `site.json` 의 `linkHub.links` 배열 순서대로 출력되고, `"primary": true` 인 항목만 코랄 버튼으로 강조됩니다.
+
+```json
+"linkHub": {
+  "slogan": "광고보다 결과, 조회수보다 매출을 연구합니다.",
+  "links": [
+    { "label": "카카오톡 채널 1:1 무료 상담", "sub": "가장 빠른 문의 · 매장 진단 요청",
+      "url": "https://pf.kakao.com/_xdMIvX/chat", "icon": "💬", "primary": true }
+  ]
+}
+```
+
+`label`·`sub`·`url`·`icon` 을 고친 뒤 `python3 build.py --clean && python3 verify.py` → `git commit` → `git push` 만 하면 됩니다. 페이지의 레이아웃·색은 `templates/go.html` 안의 `<style>` 에 있습니다. 공유 카드 이미지는 `scripts/prepare_go_og.py` 로 다시 만들고, 사업자 정보는 `site.json` 의 `business` 값을 그대로 씁니다.
 
 ### 재빌드·배포 스크립트
 

@@ -1061,6 +1061,8 @@ def build_go(config: dict, base: dict) -> str:
     """인스타그램·스레드 프로필에 거는 모바일 우선 멀티링크 허브."""
     business = config["business"]
     hub = config.get("linkHub") or {}
+    phone_digits = re.sub(r"[^0-9]", "", business["phone"])
+    phone_intl = "+82" + phone_digits.lstrip("0") if phone_digits.startswith("0") else phone_digits
     organization = {
         "@context": "https://schema.org",
         "@type": "Organization",
@@ -1068,7 +1070,7 @@ def build_go(config: dict, base: dict) -> str:
         "alternateName": config["siteNameKo"],
         "url": url_for(config, "/"),
         "email": business["email"],
-        "telephone": "+82-10-2000-0239",
+        "telephone": phone_intl,
         "founder": {"@type": "Person", "name": business["ceo"]},
         "slogan": hub.get("slogan", "광고보다 결과, 조회수보다 매출을 연구합니다."),
         "sameAs": [link["url"] for link in (hub.get("links") or GO_DEFAULT_LINKS)
@@ -1084,6 +1086,7 @@ def build_go(config: dict, base: dict) -> str:
         "og_image_alt": "NOTICE LAB 노티스랩 링크 — 광고보다 결과, 조회수보다 매출을 연구합니다",
         "jsonld": jsonld_block(organization),
         "region_line": "경기 남부 · 전국",
+        "biz_tel": "tel:" + phone_intl,
         "link_rows": go_link_rows(config),
     }
     return render_template("go.html", {**base, **context})
