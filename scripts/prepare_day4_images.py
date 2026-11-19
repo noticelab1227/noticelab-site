@@ -19,7 +19,7 @@ from prepare_images import IMG, make_og, make_webp  # noqa: E402
 DERIVATIVES = {
     "google-profile-thumbnail.png": (1600, ("구글 지도에서 비어 보이는 이유", "무료 프로필 다섯 칸")),
     "menu-price-thumbnail.png": (1600, ("외식 2.9%, 채소 -11.2%", "연말 메뉴판 고치기")),
-    "agency-handover-thumbnail.png": (1600, ("대행을 그만둘 때", "30일 안에 넘겨받을 다섯 가지")),
+    "agency-handover-thumbnail.png": (1600, ("대행을 그만둘 때", "넘겨받을 다섯 가지")),
     "google-profile-checklist.png": (1400, None),
     "menu-cost-split.png": (1400, None),
     "agency-handover-handoff.png": (1400, None),
