@@ -80,5 +80,29 @@
   "place-booking-five-gates.png": {
     "webp": "place-booking-five-gates-1400.webp",
     "og": null
+  },
+  "google-profile-thumbnail.png": {
+    "webp": "google-profile-thumbnail-1600.webp",
+    "og": "og-google-profile-thumbnail.jpg"
+  },
+  "menu-price-thumbnail.png": {
+    "webp": "menu-price-thumbnail-1600.webp",
+    "og": "og-menu-price-thumbnail.jpg"
+  },
+  "agency-handover-thumbnail.png": {
+    "webp": "agency-handover-thumbnail-1600.webp",
+    "og": "og-agency-handover-thumbnail.jpg"
+  },
+  "google-profile-checklist.png": {
+    "webp": "google-profile-checklist-1400.webp",
+    "og": null
+  },
+  "menu-cost-split.png": {
+    "webp": "menu-cost-split-1400.webp",
+    "og": null
+  },
+  "agency-handover-handoff.png": {
+    "webp": "agency-handover-handoff-1400.webp",
+    "og": null
   }
 }
