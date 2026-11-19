@@ -110,6 +110,7 @@ faq_heading: 자주 묻는 질문
 - `baseUrl` 은 **`https://noticelab.pages.dev`** 로 확정되었습니다(Cloudflare Pages). canonical·OG·sitemap·robots 주소가 모두 이 주소로 출력됩니다. 도메인이 바뀌면 `site.json` 의 `baseUrl` 만 고치고 다시 빌드하면 됩니다.
 - 소스와 빌드 결과물(`dist/`)을 함께 GitHub `noticelab-site` 저장소(`main`)에 올려 두었습니다. `dist/` 는 `python3 build.py --clean` 로 언제든 재생성됩니다.
 - 2026-11-19 Day 2: 인사이트 6편(기존 3편 보완 + 신규 3편)으로 확장했습니다. 신규 3편의 네이버 블로그 발행용 원고·이미지는 `noticelab/day2/` 에 있습니다.
+- 2026-11-19 Day 3: 인사이트 9편으로 확장했습니다. 신규 3편(수원 생활권 검색 · 시즌 검색 달력 · 플레이스 전환)의 구글 SEO/GEO 버전이며, 네이버 블로그 발행용 원고·이미지는 `noticelab/day3/` 에 그대로 두었습니다. 네이버 블로그에는 자동 발행하지 않았습니다.
 
 ### 재빌드·배포 스크립트
 
