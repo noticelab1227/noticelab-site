@@ -104,5 +104,29 @@
   "agency-handover-handoff.png": {
     "webp": "agency-handover-handoff-1400.webp",
     "og": null
+  },
+  "group-booking-calendar-thumbnail.png": {
+    "webp": "group-booking-calendar-thumbnail-1402.webp",
+    "og": "og-group-booking-calendar-thumbnail.jpg"
+  },
+  "senior-owner-dawn-store-thumbnail.png": {
+    "webp": "senior-owner-dawn-store-thumbnail-1402.webp",
+    "og": "og-senior-owner-dawn-store-thumbnail.jpg"
+  },
+  "review-stars-five-tiles-thumbnail.png": {
+    "webp": "review-stars-five-tiles-thumbnail-1536.webp",
+    "og": "og-review-stars-five-tiles-thumbnail.jpg"
+  },
+  "group-booking-private-room.png": {
+    "webp": "group-booking-private-room-1400.webp",
+    "og": null
+  },
+  "senior-owner-ten-prints.png": {
+    "webp": "senior-owner-ten-prints-1400.webp",
+    "og": null
+  },
+  "review-receipt-counter.png": {
+    "webp": "review-receipt-counter-1400.webp",
+    "og": null
   }
 }
