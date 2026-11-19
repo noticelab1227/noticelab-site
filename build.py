@@ -1027,9 +1027,9 @@ LINK_ICON_SVGS = {
     "naverblog": (
         '<svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" '
         'aria-hidden="true" focusable="false">'
-        '<rect x="2.1" y="2.7" width="19.8" height="14.7" rx="3.8" fill="#fff"/>'
-        '<path fill="#fff" d="M6.1 16.4h4.3l-5.2 5.1Z"/>'
-        '<path fill="#03C75A" d="M8.4 13.9V6.4h2.05l3.1 4.6V6.4H15.6v7.5h-2.05l-3.1-4.6v4.6Z"/>'
+        '<rect x="1.2" y="2.3" width="21.6" height="15.6" rx="4.2" fill="#fff"/>'
+        '<path fill="#fff" d="M5.2 16.9h5.7L4.4 23.1Z"/>'
+        '<path fill="#03C75A" d="M8 14.4V6h2.6l3 4.5V6h2.6v8.4h-2.6l-3-4.5v4.5Z"/>'
         '</svg>'
     ),
 }
