@@ -95,5 +95,29 @@
   "verification": {
     "google": "BovIgHhduOAlDU-Ko6CmQ0eEtTw2BeddDCCzGDa41Qo",
     "naver": "96a2e5b179f30e42b8f2b4504fd5e21fd85bef22"
+  },
+  "linkHub": {
+    "slogan": "광고보다 결과, 조회수보다 매출을 연구합니다.",
+    "links": [
+      {
+        "label": "카카오톡 채널 1:1 무료 상담",
+        "sub": "가장 빠른 문의 · 매장 진단 요청",
+        "url": "https://pf.kakao.com/_xdMIvX/chat",
+        "icon": "💬",
+        "primary": true
+      },
+      {
+        "label": "노티스랩 공식 홈페이지 · 인사이트",
+        "sub": "서비스 안내 · 실무 노트 보기",
+        "url": "https://noticelab.pages.dev/",
+        "icon": "🌐"
+      },
+      {
+        "label": "노티스랩 네이버 블로그",
+        "sub": "네이버 블로그 바로가기",
+        "url": "https://blog.naver.com/noticelab",
+        "icon": "📝"
+      }
+    ]
   }
 }

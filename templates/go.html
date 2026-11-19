@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{page_title}}</title>
+<meta name="description" content="{{description}}">
+<meta name="robots" content="{{robots}}">
+<meta name="author" content="NOTICE LAB">
+<meta name="theme-color" content="#0A0A0C">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="{{canonical}}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NOTICE LAB">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="{{og_title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{og_image}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{og_image_alt}}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{og_title}}">
+<meta name="twitter:description" content="{{description}}">
+<meta name="twitter:image" content="{{og_image}}">
+{{verify_meta}}
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/images/logo.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+{{jsonld}}
+<style>
+:root{
+  --ink:#0A0A0C;
+  --paper:#F4F4F2;
+  --coral:#FF3B30;
+  --muted:#8B8B92;
+  --dim:#55555C;
+  --line:rgba(244,244,242,.14);
+  --line-strong:rgba(244,244,242,.30);
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100svh;
+  display:flex;
+  justify-content:center;
+  padding:calc(22px + env(safe-area-inset-top)) 20px calc(22px + env(safe-area-inset-bottom));
+  background-color:var(--ink);
+  background-image:radial-gradient(115% 55% at 50% -8%,rgba(255,59,48,.16) 0%,rgba(255,59,48,.05) 38%,rgba(255,59,48,0) 68%);
+  background-repeat:no-repeat;
+  color:var(--paper);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;
+}
+a{color:inherit}
+.hub{
+  width:100%;
+  max-width:436px;
+  min-height:calc(100svh - 44px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:10px 0;
+}
+.hub-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:0;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--line);
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+.hub-top .top-left{color:var(--coral)}
+.hub-top .top-right{color:var(--dim);letter-spacing:.1em}
+.brand{
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:2px 8px;
+  margin:26px 0 0;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--paper);
+}
+.brand .brand-nl{
+  font-family:var(--mono);
+  font-size:16px;
+  letter-spacing:.02em;
+  color:var(--coral);
+}
+.brand .brand-ko{
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:.14em;
+  color:var(--muted);
+}
+.slogan{
+  margin:16px 0 0;
+  font-size:clamp(25px,7.6vw,31px);
+  font-weight:700;
+  line-height:1.42;
+  letter-spacing:-.028em;
+  word-break:keep-all;
+}
+.slogan em{font-style:normal;color:var(--coral)}
+.slogan .dot{color:var(--coral)}
+.rule{
+  height:0;
+  margin:28px 0 18px;
+  border:0;
+  border-top:1px solid var(--line);
+}
+.links{display:flex;flex-direction:column;gap:10px}
+.link{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto auto minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  min-height:66px;
+  padding:14px 15px;
+  border:1px solid var(--line);
+  border-radius:3px;
+  background:rgba(244,244,242,.035);
+  text-decoration:none;
+  color:var(--paper);
+  transition:background-color .22s ease,border-color .22s ease,transform .18s ease;
+}
+.link:hover{background:rgba(244,244,242,.075);border-color:var(--line-strong)}
+.link:active{transform:translateY(1px)}
+.link:focus-visible{outline:2px solid var(--coral);outline-offset:3px}
+.link-no{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.06em;
+  color:var(--dim);
+}
+.link-icon{
+  display:grid;
+  place-items:center;
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:2px;
+  background:rgba(244,244,242,.05);
+  font-size:17px;
+  line-height:1;
+}
+.link-body{min-width:0}
+.link-label{
+  display:block;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:-.015em;
+  line-height:1.35;
+}
+.link-sub{
+  display:block;
+  margin-top:3px;
+  font-size:11.5px;
+  line-height:1.4;
+  color:var(--muted);
+  letter-spacing:.005em;
+}
+.link-arrow{
+  font-size:13px;
+  color:var(--dim);
+  transition:transform .22s ease,color .22s ease;
+}
+.link:hover .link-arrow,
+.link:focus-visible .link-arrow{transform:translateX(4px);color:var(--paper)}
+.link--primary{
+  border-color:var(--coral);
+  background:var(--coral);
+  color:var(--ink);
+  box-shadow:0 15px 40px -22px rgba(255,59,48,.85);
+}
+.link--primary .link-no{color:rgba(10,10,12,.55)}
+.link--primary .link-icon{border-color:rgba(10,10,12,.22);background:rgba(10,10,12,.10)}
+.link--primary .link-label{font-weight:700}
+.link--primary .link-sub{color:rgba(10,10,12,.72)}
+.link--primary .link-arrow{color:rgba(10,10,12,.78)}
+.link--primary:hover{background:#FF5145;border-color:#FF5145}
+.link--primary:hover .link-arrow,
+.link--primary:focus-visible .link-arrow{color:var(--ink)}
+.link--primary:focus-visible{outline-color:var(--paper)}
+.hub-foot{
+  margin:26px 0 0;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  font-family:var(--mono);
+  font-size:10.5px;
+  letter-spacing:.01em;
+  line-height:1.9;
+  color:var(--dim);
+}
+.hub-foot p{margin:0}
+.hub-foot a{color:var(--muted);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s ease,border-color .2s ease}
+.hub-foot a:hover,.hub-foot a:focus-visible{color:var(--paper);border-bottom-color:var(--line-strong)}
+.hub-foot .sep{color:#33333A;margin:0 6px}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+@media (min-width:600px){
+  body{padding:40px 24px}
+  .hub{max-width:420px;min-height:auto}
+  .link{min-height:70px;padding:16px 17px}
+}
+@media (max-height:680px){
+  .hub{justify-content:flex-start}
+  .brand{margin-top:20px}
+  .slogan{font-size:23px}
+  .rule{margin:22px 0 14px}
+  .link{min-height:60px;padding:12px 14px}
+  .hub-foot{margin-top:20px}
+}
+@keyframes hubRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hub-top,.brand,.slogan,.rule,.links,.hub-foot{animation:hubRise .55s cubic-bezier(.22,1,.36,1) both}
+.brand{animation-delay:.04s}
+.slogan{animation-delay:.08s}
+.rule{animation-delay:.12s}
+.links{animation-delay:.16s}
+.hub-foot{animation-delay:.24s}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<main class="hub">
+  <p class="hub-top"><span class="top-left">NL. LINK</span><span class="top-right">{{region_line}}</span></p>
+
+  <h1 class="brand"><span class="brand-nl">NL.</span><span>NOTICE LAB</span><span class="brand-ko">· 노티스랩</span></h1>
+
+  <p class="slogan">광고보다 <em>결과</em>,<br>조회수보다 <em>매출</em>을 연구합니다<span class="dot">.</span></p>
+
+  <hr class="rule">
+
+  <nav class="links" aria-label="노티스랩 주요 링크">
+{{link_rows}}
+  </nav>
+
+  <footer class="hub-foot">
+    <p>대표 김지은<span class="sep">|</span><a href="tel:+821020000239">010-2000-0239</a><span class="sep">|</span><a href="mailto:noticelab@naver.com">noticelab@naver.com</a></p>
+  </footer>
+</main>
+</body>
+</html>

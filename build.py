@@ -1007,10 +1007,93 @@ def build_404(config: dict, base: dict) -> str:
     return render_template("base.html", context)
 
 
+# 인스타그램·스레드 프로필 링크용 멀티링크 허브 (/go/)
+GO_PATH = "/go/"
+GO_DEFAULT_LINKS = [
+    {
+        "label": "카카오톡 채널 1:1 무료 상담",
+        "sub": "가장 빠른 문의 · 매장 진단 요청",
+        "url": "https://pf.kakao.com/_xdMIvX/chat",
+        "icon": "💬",
+        "primary": True,
+    },
+    {
+        "label": "노티스랩 공식 홈페이지 · 인사이트",
+        "sub": "서비스 안내 · 실무 노트 보기",
+        "url": "https://noticelab.pages.dev/",
+        "icon": "🌐",
+    },
+    {
+        "label": "노티스랩 네이버 블로그",
+        "sub": "네이버 블로그 바로가기",
+        "url": "https://blog.naver.com/noticelab",
+        "icon": "📝",
+    },
+]
+
+
+def go_link_rows(config: dict) -> str:
+    """site.json 의 linkHub.links 를 /go/ 페이지 버튼 마크업으로 바꿉니다."""
+    hub = config.get("linkHub") or {}
+    links = hub.get("links") or GO_DEFAULT_LINKS
+    rows = []
+    for index, link in enumerate(links, start=1):
+        url = str(link.get("url", "")).strip()
+        if not url:
+            continue
+        primary = bool(link.get("primary"))
+        classes = "link link--primary" if primary else "link"
+        rows.append(
+            f'    <a class="{classes}" href="{esc(url)}" target="_blank" rel="noopener noreferrer">\n'
+            f'      <span class="link-no">{index:02d}</span>\n'
+            f'      <span class="link-icon" aria-hidden="true">{esc(link.get("icon", ""))}</span>\n'
+            '      <span class="link-body">\n'
+            f'        <span class="link-label">{esc(link.get("label", ""))}</span>\n'
+            f'        <span class="link-sub">{esc(link.get("sub", ""))}</span>\n'
+            '      </span>\n'
+            '      <span class="link-arrow" aria-hidden="true">→</span>\n'
+            '    </a>'
+        )
+    return "\n".join(rows)
+
+
+def build_go(config: dict, base: dict) -> str:
+    """인스타그램·스레드 프로필에 거는 모바일 우선 멀티링크 허브."""
+    business = config["business"]
+    hub = config.get("linkHub") or {}
+    organization = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": config["siteName"],
+        "alternateName": config["siteNameKo"],
+        "url": url_for(config, "/"),
+        "email": business["email"],
+        "telephone": "+82-10-2000-0239",
+        "founder": {"@type": "Person", "name": business["ceo"]},
+        "slogan": hub.get("slogan", "광고보다 결과, 조회수보다 매출을 연구합니다."),
+        "sameAs": [link["url"] for link in (hub.get("links") or GO_DEFAULT_LINKS)
+                   if link.get("url") and "noticelab.pages.dev" not in link["url"]],
+    }
+    context = {
+        "page_title": "노티스랩 링크 | NOTICE LAB",
+        "description": ("노티스랩 공식 링크 모음입니다. 카카오톡 채널 1:1 무료 상담, "
+                        "홈페이지·인사이트, 네이버 블로그로 바로 이동할 수 있습니다."),
+        "canonical": url_for(config, GO_PATH),
+        "og_title": "NOTICE LAB · 노티스랩 — 링크",
+        "og_image": url_for(config, "/assets/images/og-go-linkhub.jpg"),
+        "og_image_alt": "NOTICE LAB 노티스랩 링크 — 광고보다 결과, 조회수보다 매출을 연구합니다",
+        "jsonld": jsonld_block(organization),
+        "region_line": "경기 남부 · 전국",
+        "link_rows": go_link_rows(config),
+    }
+    return render_template("go.html", {**base, **context})
+
+
 def build_sitemap(config: dict, posts: list[dict]) -> str:
     entries = [
         (url_for(config, "/"), datetime.now(KST).date().isoformat(), "1.0", "weekly"),
         (url_for(config, "/insights/"), datetime.now(KST).date().isoformat(), "0.9", "daily"),
+        (url_for(config, GO_PATH), datetime.now(KST).date().isoformat(), "0.7", "monthly"),
     ]
     for post in posts:
         entries.append((url_for(config, post["path"]), post["updated"].date().isoformat(), "0.8", "monthly"))
@@ -1129,11 +1212,13 @@ def main() -> int:
         pages.append((os.path.join(DIST_DIR, "insights", post["slug"], "index.html"),
                       build_post(config, post, posts, base)))
     pages.append((os.path.join(DIST_DIR, "404.html"), build_404(config, base)))
+    pages.append((os.path.join(DIST_DIR, "go", "index.html"), build_go(config, base)))
 
     depths = {
         os.path.join(DIST_DIR, "index.html"): 0,
         os.path.join(DIST_DIR, "404.html"): 0,
         os.path.join(DIST_DIR, "insights", "index.html"): 1,
+        os.path.join(DIST_DIR, "go", "index.html"): 1,
     }
     for path, content in pages:
         depth = depths.get(path, 2)
