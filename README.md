@@ -167,18 +167,20 @@ faq_heading: 자주 묻는 질문
 
 세 곳 모두 무료 플랜으로 운영할 수 있고, 커스텀 도메인을 붙이면 `baseUrl` 과 같은 주소로 맞춰 주세요.
 
-### 방문자 통계 (Cloudflare Web Analytics)
+### 방문자 통계 (Cloudflare Web Analytics) — 2026-11-20 연결 완료
 
-무료 방문자 통계는 두 가지 방식 중 하나로 켭니다.
+무료 통계는 **Cloudflare Pages 프로젝트 쪽 스위치**로 켑니다. 계정 단위 `Web Analytics → Add a site` 화면은 `pages.dev` 호스트를 "Cloudflare 사이트가 아님"으로 처리해 이 사이트에는 맞지 않습니다.
 
-1. **자동 설정(권장)** — Cloudflare 대시보드 → **Web Analytics** → 사이트 추가에서 `noticelab.pages.dev`(Pages 프로젝트)를 고르면 Cloudflare가 비콘을 자동으로 넣습니다. 코드·재빌드 불필요, 토큰 노출 없음.
-2. **수동 스니펫** — 자동 설정이 안 되는 경우에만 아래를 씁니다.
+1. **자동 삽입(현재 사용 중)** — 대시보드 → **Workers & Pages** → `noticelab` → **Metrics** 탭 → Web Analytics 카드의 **Enable**. Cloudflare가 **다음 배포부터** HTML에 비콘을 자동으로 넣습니다. 코드·토큰 작업 불필요.
+2. **수동 스니펫(대체 경로)** — 자동 삽입이 동작하지 않을 때만 아래를 씁니다. 자동 삽입과 동시에 켜면 조회수가 두 번 집계되니, 먼저 Pages 프로젝트의 Web Analytics를 끄고 쓰세요.
 
 ```json
 "analytics": { "cloudflareBeaconToken": "여기에_32자_토큰" }
 ```
 
 `site.json` 의 `analytics.cloudflareBeaconToken` 값을 채우고 `python3 build.py --clean && python3 verify.py` → `git push` 하면 끝입니다.
+
+현재 상태(2026-11-20): Pages 자동 삽입이 켜져 있고, `https://noticelab.pages.dev/` `/go/` `/insights/` 글 페이지 응답 HTML에 비콘이 1회씩 들어갑니다(토큰 `0e05fb1000f242958ab86565ea10b1c5`, `/404.html` 은 404 상태라 미삽입). 통계는 대시보드 **Workers & Pages → noticelab → Metrics**, 또는 **Analytics → Web Analytics** 에서 봅니다. 배포 직후 HTML에 비콘이 보이는지 확인하려면 `curl -s https://noticelab.pages.dev/ | grep -o cloudflareinsights`.
 
 - 비콘은 `build.py` 의 `analytics_snippet()` 이 만들고, `templates/base.html`·`templates/go.html` 의 `{{analytics_head}}` 자리(둘 다 `</head>` 직전)에 한 번만 출력됩니다. 이 두 템플릿으로 모든 페이지(홈·인사이트 목록·글 18편·404·`/go/`)가 만들어지므로 페이지마다 코드를 고칠 필요가 없습니다.
 - 토큰이 비어 있으면 아무것도 출력하지 않아 빌드 결과물이 달라지지 않습니다.
