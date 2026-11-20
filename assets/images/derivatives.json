@@ -128,5 +128,29 @@
   "review-receipt-counter.png": {
     "webp": "review-receipt-counter-1400.webp",
     "og": null
+  },
+  "map-filter-thumbnail.png": {
+    "webp": "map-filter-thumbnail-1600.webp",
+    "og": "og-map-filter-thumbnail.jpg"
+  },
+  "delivery-cost-thumbnail.png": {
+    "webp": "delivery-cost-thumbnail-1600.webp",
+    "og": "og-delivery-cost-thumbnail.jpg"
+  },
+  "reply-time-thumbnail.png": {
+    "webp": "reply-time-thumbnail-1600.webp",
+    "og": "og-reply-time-thumbnail.jpg"
+  },
+  "map-filter-five-cards.png": {
+    "webp": "map-filter-five-cards-1400.webp",
+    "og": null
+  },
+  "delivery-cost-split.png": {
+    "webp": "delivery-cost-split-1400.webp",
+    "og": null
+  },
+  "reply-three-lines.png": {
+    "webp": "reply-three-lines-1400.webp",
+    "og": null
   }
 }
