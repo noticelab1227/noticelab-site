@@ -176,5 +176,29 @@
   "gift-card-ledger.png": {
     "webp": "gift-card-ledger-1400.webp",
     "og": null
+  },
+  "gyeonggi-eight-cities-thumbnail.png": {
+    "webp": "gyeonggi-eight-cities-thumbnail-1402.webp",
+    "og": "og-gyeonggi-eight-cities-thumbnail.jpg"
+  },
+  "online-md-meeting-thumbnail.png": {
+    "webp": "online-md-meeting-thumbnail-1402.webp",
+    "og": "og-online-md-meeting-thumbnail.jpg"
+  },
+  "year-end-hours-thumbnail.png": {
+    "webp": "year-end-hours-thumbnail-1402.webp",
+    "og": "og-year-end-hours-thumbnail.jpg"
+  },
+  "gyeonggi-eight-cities-spine.png": {
+    "webp": "gyeonggi-eight-cities-spine-1122.webp",
+    "og": null
+  },
+  "online-md-five-checks.png": {
+    "webp": "online-md-five-checks-1400.webp",
+    "og": null
+  },
+  "year-end-hours-three-boards.png": {
+    "webp": "year-end-hours-three-boards-1254.webp",
+    "og": null
   }
 }
