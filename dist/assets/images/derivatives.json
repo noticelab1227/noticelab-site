@@ -152,5 +152,29 @@
   "reply-three-lines.png": {
     "webp": "reply-three-lines-1400.webp",
     "og": null
+  },
+  "ai-answer-thumbnail.png": {
+    "webp": "ai-answer-thumbnail-1600.webp",
+    "og": "og-ai-answer-thumbnail.jpg"
+  },
+  "support-fund-thumbnail.png": {
+    "webp": "support-fund-thumbnail-1600.webp",
+    "og": "og-support-fund-thumbnail.jpg"
+  },
+  "gift-card-thumbnail.png": {
+    "webp": "gift-card-thumbnail-1600.webp",
+    "og": "og-gift-card-thumbnail.jpg"
+  },
+  "ai-answer-slips.png": {
+    "webp": "ai-answer-slips-1400.webp",
+    "og": null
+  },
+  "support-four-forms.png": {
+    "webp": "support-four-forms-1400.webp",
+    "og": null
+  },
+  "gift-card-ledger.png": {
+    "webp": "gift-card-ledger-1400.webp",
+    "og": null
   }
 }
