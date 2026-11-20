@@ -487,6 +487,24 @@ def mail_order_row(value: str) -> str:
     return f'\n        <div><dt>통신판매업</dt><dd>{ph(value.strip())}</dd></div>'
 
 
+def analytics_snippet(config: dict) -> str:
+    """Cloudflare Web Analytics 비콘 스니펫.
+
+    site.json 의 analytics.cloudflareBeaconToken 값이 있을 때만 출력합니다.
+    토큰은 사이트별 공개 식별자라 페이지에 노출되어도 안전하지만, 형식이 어긋난 값은
+    HTML 을 깨뜨리지 않도록 빌드 단계에서 거부합니다.
+    """
+    analytics = config.get("analytics") or {}
+    token = str(analytics.get("cloudflareBeaconToken", "")).strip()
+    if not token:
+        return ""
+    if not re.fullmatch(r"[A-Za-z0-9_-]{16,64}", token):
+        raise ValueError("site.json 의 analytics.cloudflareBeaconToken 값이 올바르지 않습니다 "
+                         "(영문·숫자·-·_ 16~64자)")
+    return ("\n<script defer src='https://static.cloudflareinsights.com/beacon.min.js' "
+            f'data-cf-beacon=\'{{"token": "{token}"}}\'></script>')
+
+
 def build_base_context(config: dict) -> dict:
     business = config["business"]
     verification = config.get("verification", {})
@@ -500,6 +518,7 @@ def build_base_context(config: dict) -> dict:
                            "Search Console·서치어드바이저 확인값을 넣으면 메타 태그가 자동 생성됩니다. -->")
     return {
         "verify_meta": "\n".join(verify_tags),
+        "analytics_head": analytics_snippet(config),
         "brand": esc(config["siteName"]),
         "brand_ko": esc(config["siteNameKo"]),
         "slogan": esc(config["slogan"]),

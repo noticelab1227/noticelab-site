@@ -96,6 +96,9 @@
     "google": "BovIgHhduOAlDU-Ko6CmQ0eEtTw2BeddDCCzGDa41Qo",
     "naver": "96a2e5b179f30e42b8f2b4504fd5e21fd85bef22"
   },
+  "analytics": {
+    "cloudflareBeaconToken": ""
+  },
   "linkHub": {
     "slogan": "광고보다 결과, 조회수보다 매출을 연구합니다.",
     "links": [

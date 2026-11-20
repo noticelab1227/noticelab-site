@@ -579,6 +579,27 @@ def check_business_info() -> None:
         warn("예시 도메인(example.com)이 빌드 결과물에 남아 있음 — 배포 전 site.json 의 baseUrl 확정 필요")
 
 
+def check_analytics(pages: list[str]) -> None:
+    """Cloudflare Web Analytics 비콘: 토큰이 설정돼 있으면 모든 페이지에 정확히 1회 출력돼야 합니다."""
+    with open(CONFIG, encoding="utf-8") as fh:
+        config = json.load(fh)
+    token = str((config.get("analytics") or {}).get("cloudflareBeaconToken", "")).strip()
+    if not token:
+        INFO.append("Web Analytics: 토큰 없음 (비콘 미출력)")
+        return
+    problems = []
+    for page in pages:
+        with open(page, encoding="utf-8") as fh:
+            html = fh.read()
+        count = html.count("static.cloudflareinsights.com/beacon.min.js")
+        if count != 1 or f'"{token}"' not in html:
+            problems.append(f"{dist_rel(page)}({count}회)")
+    if problems:
+        fail("Cloudflare Web Analytics 비콘 누락·중복: " + ", ".join(problems))
+    else:
+        INFO.append(f"Web Analytics 비콘: {len(pages)}개 페이지 모두 1회 출력")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="NOTICE LAB dist 검증")
     parser.add_argument("--verbose", action="store_true")
@@ -607,6 +628,7 @@ def main() -> int:
     check_duplicates()
     check_placeholders()
     check_business_info()
+    check_analytics(pages)
 
     print(f"검사한 HTML {len(pages)}개")
     for page in pages:
