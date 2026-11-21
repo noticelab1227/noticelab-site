@@ -224,5 +224,29 @@
   "ad-duration-columns.png": {
     "webp": "ad-duration-columns-1400.webp",
     "og": null
+  },
+  "radius-first-thumbnail.png": {
+    "webp": "radius-first-thumbnail-1537.webp",
+    "og": "og-radius-first-thumbnail.jpg"
+  },
+  "margin-budget-thumbnail.png": {
+    "webp": "margin-budget-thumbnail-1536.webp",
+    "og": "og-margin-budget-thumbnail.jpg"
+  },
+  "place-ad-slots-thumbnail.png": {
+    "webp": "place-ad-slots-thumbnail-1536.webp",
+    "og": "og-place-ad-slots-thumbnail.jpg"
+  },
+  "radius-three-bands.png": {
+    "webp": "radius-three-bands-1400.webp",
+    "og": null
+  },
+  "margin-three-blocks.png": {
+    "webp": "margin-three-blocks-1400.webp",
+    "og": null
+  },
+  "place-ad-slots-grid.png": {
+    "webp": "place-ad-slots-grid-1254.webp",
+    "og": null
   }
 }

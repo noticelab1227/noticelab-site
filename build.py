@@ -307,6 +307,32 @@ class MarkdownRenderer:
                 out.append(f"<ol>{lis}</ol>")
                 continue
 
+            if stripped.startswith("|"):
+                rows: list[list[str]] = []
+                while i < total and lines[i].strip().startswith("|"):
+                    cells = [c.strip() for c in lines[i].strip().strip("|").split("|")]
+                    rows.append(cells)
+                    i += 1
+                if len(rows) >= 2 and all(
+                    c and set(c) <= set("-: ") for c in rows[1]
+                ):
+                    head, body_rows = rows[0], rows[2:]
+                else:
+                    head, body_rows = [], rows
+                thead = ""
+                if head:
+                    thead = (
+                        "<thead><tr>"
+                        + "".join(f"<th>{self.inline(c)}</th>" for c in head)
+                        + "</tr></thead>"
+                    )
+                tbody = "<tbody>" + "".join(
+                    "<tr>" + "".join(f"<td>{self.inline(c)}</td>" for c in row) + "</tr>"
+                    for row in body_rows
+                ) + "</tbody>"
+                out.append(f"<table>{thead}{tbody}</table>")
+                continue
+
             paragraph: list[str] = []
             while i < total:
                 peek = lines[i].strip()
@@ -316,7 +342,7 @@ class MarkdownRenderer:
                     break
                 if re.match(r"^\d+\.\s+", peek) or peek.startswith("> "):
                     break
-                if peek in {"---", "***", "___"} or re.match(r"^!\[", peek):
+                if peek in {"---", "***", "___"} or re.match(r"^!\[", peek) or peek.startswith("|"):
                     break
                 paragraph.append(peek)
                 i += 1

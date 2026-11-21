@@ -1553,6 +1553,38 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
 }
 .article :is(h2, h3):hover .anchor { opacity: 1; }
 
+.article table {
+  width: 100%;
+  margin: 1.9em 0;
+  border-collapse: collapse;
+  border-top: 1px solid var(--d-line-strong);
+  font-size: .93em;
+  line-height: 1.5;
+}
+.article thead th {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--d-line-strong);
+  font-family: var(--mono);
+  font-size: .74em;
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--d-3);
+  text-align: left;
+  white-space: nowrap;
+}
+.article tbody td {
+  padding: 11px 12px 11px 0;
+  border-bottom: 1px solid var(--d-line);
+  vertical-align: top;
+  color: var(--d-2);
+}
+.article tbody td:first-child { color: var(--d-1); }
+.article tbody tr:last-child td { border-bottom: 0; }
+@media (max-width: 720px) {
+  .article table { font-size: .86em; display: block; overflow-x: auto; }
+  .article thead th { white-space: normal; }
+}
+
 .post-figure { margin: 2.2em 0; }
 .post-figure-img {
   width: 100%;

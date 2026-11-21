@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Day 6 (2026-11-20 12:00 회차) 신규 이미지의 파생본(WebP 경량본·OG 카드)을 만듭니다.
+"""2026-11-22 08:00 회차(글 28~30) 신규 이미지의 파생본(WebP 경량본·OG 카드)을 만듭니다.
 
-기존 derivatives.json 의 항목은 그대로 두고 새 항목만 병합합니다.
+기존 derivatives.json 항목은 그대로 두고 새 항목만 병합합니다.
     python3 scripts/prepare_day6_images.py
 """
 
@@ -17,12 +17,12 @@ from prepare_images import IMG, make_og, make_webp  # noqa: E402
 
 # 원본 → (경량본 최대 폭, OG 카드 문구). 문구가 None 이면 OG 카드를 만들지 않습니다.
 DERIVATIVES = {
-    "map-filter-thumbnail.png": (1600, ("필터에 없으면", "목록에도 없습니다")),
-    "delivery-cost-thumbnail.png": (1600, ("배달 매출 100만 원 중", "26만 원이 플랫폼으로")),
-    "reply-time-thumbnail.png": (1600, ("문의는 오는데", "예약은 안 됩니다")),
-    "map-filter-five-cards.png": (1400, None),
-    "delivery-cost-split.png": (1400, None),
-    "reply-three-lines.png": (1400, None),
+    "radius-first-thumbnail.png": (1600, ("키워드보다", "반경이 먼저입니다")),
+    "margin-budget-thumbnail.png": (1600, ("지출 3.2% 줄였는데", "이익은 8.3% 줄었습니다")),
+    "place-ad-slots-thumbnail.png": (1600, ("광고 자리는 6개에서 9개로", "클릭이 늘어도 손님은 따로")),
+    "radius-three-bands.png": (1400, None),
+    "margin-three-blocks.png": (1400, None),
+    "place-ad-slots-grid.png": (1400, None),
 }
 
 
