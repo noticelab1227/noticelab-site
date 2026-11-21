@@ -248,5 +248,29 @@
   "place-ad-slots-grid.png": {
     "webp": "place-ad-slots-grid-1254.webp",
     "og": null
+  },
+  "order-link-thumbnail.png": {
+    "webp": "order-link-thumbnail-1600.webp",
+    "og": "og-order-link-thumbnail.jpg"
+  },
+  "year-end-experience-thumbnail.png": {
+    "webp": "year-end-experience-thumbnail-1600.webp",
+    "og": "og-year-end-experience-thumbnail.jpg"
+  },
+  "reservation-mask-thumbnail.png": {
+    "webp": "reservation-mask-thumbnail-1600.webp",
+    "og": "og-reservation-mask-thumbnail.jpg"
+  },
+  "order-link-two-switches.png": {
+    "webp": "order-link-two-switches-1400.webp",
+    "og": null
+  },
+  "experience-three-cards.png": {
+    "webp": "experience-three-cards-1400.webp",
+    "og": null
+  },
+  "staff-operator-badges.png": {
+    "webp": "staff-operator-badges-1400.webp",
+    "og": null
   }
 }

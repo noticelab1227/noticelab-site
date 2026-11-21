@@ -220,6 +220,7 @@ class MarkdownRenderer:
         text = esc(text)
         text = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: self._link(m.group(1), m.group(2)), text)
         text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+        text = text.replace("\\*", "*")
         for i, markup in enumerate(stash):
             text = text.replace(f"\x00{i}\x00", markup)
         return text
