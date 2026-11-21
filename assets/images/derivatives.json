@@ -200,5 +200,29 @@
   "year-end-hours-three-boards.png": {
     "webp": "year-end-hours-three-boards-1254.webp",
     "og": null
+  },
+  "gbp-message-thumbnail.png": {
+    "webp": "gbp-message-thumbnail-1600.webp",
+    "og": "og-gbp-message-thumbnail.jpg"
+  },
+  "winter-search-thumbnail.png": {
+    "webp": "winter-search-thumbnail-1600.webp",
+    "og": "og-winter-search-thumbnail.jpg"
+  },
+  "ad-library-thumbnail.png": {
+    "webp": "ad-library-thumbnail-1600.webp",
+    "og": "og-ad-library-thumbnail.jpg"
+  },
+  "gbp-three-panels.png": {
+    "webp": "gbp-three-panels-1400.webp",
+    "og": null
+  },
+  "shortform-texture-shoot.png": {
+    "webp": "shortform-texture-shoot-1400.webp",
+    "og": null
+  },
+  "ad-duration-columns.png": {
+    "webp": "ad-duration-columns-1400.webp",
+    "og": null
   }
 }
