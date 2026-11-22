@@ -320,5 +320,29 @@
   "gbp-appeal-body.png": {
     "webp": "gbp-appeal-body-1400.webp",
     "og": null
+  },
+  "place-name-three-layers-thumbnail.png": {
+    "webp": "place-name-three-layers-thumbnail-1536.webp",
+    "og": "og-place-name-three-layers-thumbnail.jpg"
+  },
+  "food-business-count-thumbnail.png": {
+    "webp": "food-business-count-thumbnail-1536.webp",
+    "og": "og-food-business-count-thumbnail.jpg"
+  },
+  "reservation-cancel-thumbnail.png": {
+    "webp": "reservation-cancel-thumbnail-1536.webp",
+    "og": "og-reservation-cancel-thumbnail.jpg"
+  },
+  "place-name-three-sheets.png": {
+    "webp": "place-name-three-sheets-1400.webp",
+    "og": null
+  },
+  "domestic-demand-three-columns.png": {
+    "webp": "domestic-demand-three-columns-1329.webp",
+    "og": null
+  },
+  "reservation-cancel-three-steps.png": {
+    "webp": "reservation-cancel-three-steps-1400.webp",
+    "og": null
   }
 }
