@@ -272,5 +272,29 @@
   "staff-operator-badges.png": {
     "webp": "staff-operator-badges-1400.webp",
     "og": null
+  },
+  "gbp-edit-thumbnail.png": {
+    "webp": "gbp-edit-thumbnail-1122.webp",
+    "og": "og-gbp-edit-thumbnail.jpg"
+  },
+  "visiting-education-thumbnail.png": {
+    "webp": "visiting-education-thumbnail-1402.webp",
+    "og": "og-visiting-education-thumbnail.jpg"
+  },
+  "gemini-scope-thumbnail.png": {
+    "webp": "gemini-scope-thumbnail-1402.webp",
+    "og": "og-gemini-scope-thumbnail.jpg"
+  },
+  "gbp-edit-four-days.png": {
+    "webp": "gbp-edit-four-days-1400.webp",
+    "og": null
+  },
+  "visiting-education-apply.png": {
+    "webp": "visiting-education-apply-1400.webp",
+    "og": null
+  },
+  "gemini-agency-scope.png": {
+    "webp": "gemini-agency-scope-1400.webp",
+    "og": null
   }
 }
