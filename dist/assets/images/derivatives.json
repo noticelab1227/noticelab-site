@@ -296,5 +296,29 @@
   "gemini-agency-scope.png": {
     "webp": "gemini-agency-scope-1400.webp",
     "og": null
+  },
+  "gbp-offers-thumbnail.png": {
+    "webp": "gbp-offers-thumbnail-1402.webp",
+    "og": "og-gbp-offers-thumbnail.jpg"
+  },
+  "november-outlook-thumbnail.png": {
+    "webp": "november-outlook-thumbnail-1402.webp",
+    "og": "og-november-outlook-thumbnail.jpg"
+  },
+  "gbp-appeal-thumbnail.png": {
+    "webp": "gbp-appeal-thumbnail-1402.webp",
+    "og": "og-gbp-appeal-thumbnail.jpg"
+  },
+  "gbp-offers-body.png": {
+    "webp": "gbp-offers-body-1400.webp",
+    "og": null
+  },
+  "november-outlook-body.png": {
+    "webp": "november-outlook-body-1400.webp",
+    "og": null
+  },
+  "gbp-appeal-body.png": {
+    "webp": "gbp-appeal-body-1400.webp",
+    "og": null
   }
 }
