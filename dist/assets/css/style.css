@@ -284,10 +284,19 @@ section[id] { scroll-margin-top: 88px; }
   border-bottom-color: var(--line);
 }
 body.nav-open .site-header {
-  background: var(--paper);
+  background: transparent;
   border-bottom-color: transparent;
 }
 body.nav-open .ticker { opacity: 0; }
+/* 메뉴가 열려 있고 안에서 스크롤될 때, 항목이 헤더 뒤로 비치지 않도록 상단 74px를 지면색으로 가림 */
+body.nav-open .nav-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: 74px;
+  background: var(--paper);
+  pointer-events: none;
+}
 
 .brand {
   display: inline-flex;
