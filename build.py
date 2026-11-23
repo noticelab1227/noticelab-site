@@ -327,11 +327,21 @@ class MarkdownRenderer:
                         + "".join(f"<th>{self.inline(c)}</th>" for c in head)
                         + "</tr></thead>"
                     )
+                def body_cell(value: str, index: int) -> str:
+                    # 모바일 카드형 표에서 각 값 위에 머리글을 붙일 수 있도록 data-label 을 남깁니다.
+                    if head and index < len(head):
+                        label = strip_markdown(head[index])
+                        if label:
+                            return f'<td data-label="{esc(label)}">{self.inline(value)}</td>'
+                    return f"<td>{self.inline(value)}</td>"
+
                 tbody = "<tbody>" + "".join(
-                    "<tr>" + "".join(f"<td>{self.inline(c)}</td>" for c in row) + "</tr>"
+                    "<tr>" + "".join(body_cell(c, i) for i, c in enumerate(row)) + "</tr>"
                     for row in body_rows
                 ) + "</tbody>"
-                out.append(f'<div class="table-wrap"><table>{thead}{tbody}</table></div>')
+                width = len(head) if head else (len(rows[0]) if rows else 0)
+                cols = f' data-cols="{width}"' if 2 <= width <= 4 else ""
+                out.append(f'<div class="table-wrap"{cols}><table>{thead}{tbody}</table></div>')
                 continue
 
             paragraph: list[str] = []
@@ -705,10 +715,18 @@ def toc_html(post: dict, consult_url: str) -> str:
     if len(post["headings"]) < 2:
         return ""
     items = "".join(f'<li><a href="#{h["id"]}">{esc(h["text"])}</a></li>' for h in post["headings"])
-    return f"""<nav class="toc" aria-label="이 글의 목차">
-  <p class="toc-title">CONTENTS</p>
-  <ol class="toc-list">{items}</ol>
-  <a class="toc-cta" href="{esc(consult_url)}" target="_blank" rel="noopener noreferrer">카카오톡으로 질문하기 <span aria-hidden="true">→</span></a>
+    count = len(post["headings"])
+    # 모바일(980px 이하)에서는 기본 접힘 — <button> 토글로 펼칩니다. PC 에서는 버튼을 숨기고 목록을 그대로 둡니다.
+    return f"""<nav class="toc is-collapsed" aria-label="이 글의 목차">
+  <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc-panel">
+    <span class="toc-toggle-text">목차 보기 <span class="toc-toggle-count">({count})</span></span>
+    <span class="toc-toggle-icon" aria-hidden="true"></span>
+  </button>
+  <div class="toc-panel" id="toc-panel">
+    <p class="toc-title">CONTENTS</p>
+    <ol class="toc-list">{items}</ol>
+    <a class="toc-cta" href="{esc(consult_url)}" target="_blank" rel="noopener noreferrer">카카오톡으로 질문하기 <span aria-hidden="true">→</span></a>
+  </div>
 </nav>"""
 
 

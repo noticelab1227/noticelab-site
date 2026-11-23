@@ -218,4 +218,35 @@
     }, { rootMargin: "-90px 0px -70% 0px", threshold: 0 });
     headings.forEach(function (heading) { observer.observe(heading); });
   }
+  /* ------------------------------------------------------------ 모바일 목차 접기 */
+  var toc = document.querySelector(".post-aside .toc");
+  if (toc) {
+    var tocButton = toc.querySelector(".toc-toggle");
+    var tocPanel = toc.querySelector(".toc-panel");
+    var tocMedia = window.matchMedia("(max-width: 980px)");
+
+    var setToc = function (open) {
+      toc.classList.toggle("is-collapsed", !open);
+      if (tocButton) tocButton.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+
+    setToc(!tocMedia.matches);
+
+    if (tocButton) {
+      tocButton.addEventListener("click", function () {
+        setToc(toc.classList.contains("is-collapsed"));
+      });
+    }
+
+    /* 모바일에서 항목을 고르면 목차를 도로 접어, 이동한 소제목이 바로 보이게 합니다 */
+    if (tocPanel) {
+      tocPanel.addEventListener("click", function (event) {
+        if (tocMedia.matches && event.target.closest('a[href^="#"]')) setToc(false);
+      });
+    }
+
+    var onTocBreakpoint = function (event) { setToc(!event.matches); };
+    if (tocMedia.addEventListener) tocMedia.addEventListener("change", onTocBreakpoint);
+    else if (tocMedia.addListener) tocMedia.addListener(onTocBreakpoint);
+  }
 })();
