@@ -548,6 +548,9 @@ def build_base_context(config: dict) -> dict:
     verify_tags = []
     if verification.get("google"):
         verify_tags.append(f'<meta name="google-site-verification" content="{esc(verification["google"])}">')
+    for extra in verification.get("googleExtra") or []:
+        if str(extra).strip():
+            verify_tags.append(f'<meta name="google-site-verification" content="{esc(str(extra).strip())}">')
     if verification.get("naver"):
         verify_tags.append(f'<meta name="naver-site-verification" content="{esc(verification["naver"])}">')
     if not verify_tags:
