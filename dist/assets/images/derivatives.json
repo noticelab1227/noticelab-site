@@ -416,5 +416,29 @@
   "own-channel-body.png": {
     "webp": "own-channel-body-1400.webp",
     "og": null
+  },
+  "theme-slots-thumbnail.png": {
+    "webp": "theme-slots-thumbnail-1086.webp",
+    "og": "og-theme-slots-thumbnail.jpg"
+  },
+  "tiktok-first-second-thumbnail.png": {
+    "webp": "tiktok-first-second-thumbnail-1122.webp",
+    "og": "og-tiktok-first-second-thumbnail.jpg"
+  },
+  "auto-ad-counter-thumbnail.png": {
+    "webp": "auto-ad-counter-thumbnail-1086.webp",
+    "og": "og-auto-ad-counter-thumbnail.jpg"
+  },
+  "theme-slots-body.png": {
+    "webp": "theme-slots-body-1400.webp",
+    "og": null
+  },
+  "tiktok-first-second-body.png": {
+    "webp": "tiktok-first-second-body-1086.webp",
+    "og": null
+  },
+  "auto-ad-counter-body.png": {
+    "webp": "auto-ad-counter-body-1086.webp",
+    "og": null
   }
 }
