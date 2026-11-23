@@ -344,5 +344,29 @@
   "reservation-cancel-three-steps.png": {
     "webp": "reservation-cancel-three-steps-1400.webp",
     "og": null
+  },
+  "cheoin-age-thumbnail.png": {
+    "webp": "cheoin-age-thumbnail-1536.webp",
+    "og": "og-cheoin-age-thumbnail.jpg"
+  },
+  "holiday-sentence-thumbnail.png": {
+    "webp": "holiday-sentence-thumbnail-1536.webp",
+    "og": "og-holiday-sentence-thumbnail.jpg"
+  },
+  "review-reply-thumbnail.png": {
+    "webp": "review-reply-thumbnail-1536.webp",
+    "og": "og-review-reply-thumbnail.jpg"
+  },
+  "cheoin-age-body.png": {
+    "webp": "cheoin-age-body-1400.webp",
+    "og": null
+  },
+  "holiday-sentence-body.png": {
+    "webp": "holiday-sentence-body-1400.webp",
+    "og": null
+  },
+  "review-reply-body.png": {
+    "webp": "review-reply-body-1400.webp",
+    "og": null
   }
 }
