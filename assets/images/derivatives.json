@@ -368,5 +368,29 @@
   "review-reply-body.png": {
     "webp": "review-reply-body-1400.webp",
     "og": null
+  },
+  "winter-entrance-thumbnail.png": {
+    "webp": "winter-entrance-thumbnail-1536.webp",
+    "og": "og-winter-entrance-thumbnail.jpg"
+  },
+  "december-booking-thumbnail.png": {
+    "webp": "december-booking-thumbnail-1536.webp",
+    "og": "og-december-booking-thumbnail.jpg"
+  },
+  "agency-baseline-thumbnail.png": {
+    "webp": "agency-baseline-thumbnail-1536.webp",
+    "og": "og-agency-baseline-thumbnail.jpg"
+  },
+  "winter-entrance-body.png": {
+    "webp": "winter-entrance-body-1400.webp",
+    "og": null
+  },
+  "december-booking-body.png": {
+    "webp": "december-booking-body-1400.webp",
+    "og": null
+  },
+  "agency-baseline-body.png": {
+    "webp": "agency-baseline-body-1400.webp",
+    "og": null
   }
 }
