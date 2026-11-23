@@ -392,5 +392,29 @@
   "agency-baseline-body.png": {
     "webp": "agency-baseline-body-1400.webp",
     "og": null
+  },
+  "voucher-map-thumbnail.png": {
+    "webp": "voucher-map-thumbnail-1600.webp",
+    "og": "og-voucher-map-thumbnail.jpg"
+  },
+  "small-often-thumbnail.png": {
+    "webp": "small-often-thumbnail-1536.webp",
+    "og": "og-small-often-thumbnail.jpg"
+  },
+  "own-channel-thumbnail.png": {
+    "webp": "own-channel-thumbnail-1537.webp",
+    "og": "og-own-channel-thumbnail.jpg"
+  },
+  "voucher-map-body.png": {
+    "webp": "voucher-map-body-1400.webp",
+    "og": null
+  },
+  "small-often-body.png": {
+    "webp": "small-often-body-1400.webp",
+    "og": null
+  },
+  "own-channel-body.png": {
+    "webp": "own-channel-body-1400.webp",
+    "og": null
   }
 }
