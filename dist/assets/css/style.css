@@ -1682,8 +1682,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
     display: block;
     margin: 0 0 10px;
     padding: 4px 14px;
-    border: 1px solid var(--d-line);
-    border-left: 3px solid var(--d-line-strong);
+    border: 1px solid var(--d-line-strong);
     background: var(--white);
   }
   .article .table-wrap[data-cols="3"] tr:last-child,
