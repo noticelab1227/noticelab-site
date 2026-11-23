@@ -142,6 +142,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .section--paper { background: var(--paper); color: var(--d-1); }
 
 section[id] { scroll-margin-top: 88px; }
+/* 목차·앵커 이동 시 소제목이 고정 헤더(74px)에 가리지 않도록 96px 확보 */
+.article h2[id],
+.article h3[id] { scroll-margin-top: 96px; }
 
 /* ------------------------------------------------------------ 섹션 헤더 */
 .section-head {
@@ -281,7 +284,7 @@ section[id] { scroll-margin-top: 88px; }
   border-bottom-color: var(--line);
 }
 body.nav-open .site-header {
-  background: transparent;
+  background: var(--paper);
   border-bottom-color: transparent;
 }
 body.nav-open .ticker { opacity: 0; }
@@ -1580,8 +1583,25 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
 }
 .article tbody td:first-child { color: var(--d-1); }
 .article tbody tr:last-child td { border-bottom: 0; }
+/* 좁은 화면에서 표는 표 안에서만 가로로 넘치게 — 페이지 전체 가로 스크롤은 만들지 않음 */
+.article .table-wrap {
+  margin: 1.9em 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  /* 좌우로 더 넘길 수 있다는 것을 알리는 가장자리 그늘 — 끝에 닿으면 사라짐 */
+  background:
+    linear-gradient(to right, var(--paper) 25%, rgba(244, 244, 242, 0)) left center,
+    linear-gradient(to left, var(--paper) 25%, rgba(244, 244, 242, 0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(10, 10, 12, .15), rgba(10, 10, 12, 0)) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(10, 10, 12, .15), rgba(10, 10, 12, 0)) right center;
+  background-repeat: no-repeat;
+  background-size: 22px 100%, 22px 100%, 11px 100%, 11px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+.article .table-wrap > table { margin: 0; }
 @media (max-width: 720px) {
-  .article table { font-size: .86em; display: block; overflow-x: auto; }
+  .article table { font-size: .86em; min-width: 520px; }
   .article thead th { white-space: normal; }
 }
 
@@ -1696,8 +1716,11 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   color: var(--t-3);
   margin-bottom: clamp(14px, 2vw, 22px);
 }
-.footer-links { display: grid; gap: 9px; }
+.footer-links { display: grid; gap: 0; }
 .footer-links a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   font-size: .87rem;
   color: var(--t-2);
   transition: color .3s;
@@ -1828,7 +1851,21 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   .hero-foot { grid-template-columns: minmax(0, 1fr); }
   .hero-meta { justify-content: flex-start; text-align: left; padding-right: 0; }
   .hero-meta > div:first-child { padding-left: 0; border-left: 0; }
-  .nav-overlay-inner { grid-template-columns: minmax(0, 1fr); }
+  .nav-overlay-inner { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  /* 전체화면 메뉴: 아래 정렬 대신 위에서부터 흐르게 하고, 넘치는 만큼 오버레이 안에서 스크롤 */
+  .nav-overlay {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding-block: 88px clamp(30px, 7vh, 56px);
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-topline {
+    position: static;
+    flex: none;
+    margin: 0 0 16px;
+  }
   .nav-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .coverage-foot { grid-template-columns: minmax(0, 1fr); }
   .coverage-media { min-height: clamp(220px, 42vw, 340px); }
@@ -1837,6 +1874,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   .post-layout { grid-template-columns: minmax(0, 1fr); }
   .post-aside { position: static; }
   .post-aside .toc-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .post-aside .toc-list a { display: flex; align-items: center; min-height: 44px; }
   .principles { grid-template-columns: minmax(0, 1fr); }
   .cat-notes { grid-template-columns: minmax(0, 1fr); }
   .section-indicator { display: none; }
@@ -1883,6 +1921,7 @@ body.nav-open .btn-talk { background: var(--ink); color: var(--paper); }
   .post-media img { height: clamp(180px, 34vh, 300px); }
   .closing-talk { padding: 18px; }
   .closing-talk-text { font-size: .95rem; }
+  .menu-toggle, .btn-talk { min-height: 44px; }
 }
 
 @media (max-width: 420px) {

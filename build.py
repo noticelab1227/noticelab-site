@@ -331,7 +331,7 @@ class MarkdownRenderer:
                     "<tr>" + "".join(f"<td>{self.inline(c)}</td>" for c in row) + "</tr>"
                     for row in body_rows
                 ) + "</tbody>"
-                out.append(f"<table>{thead}{tbody}</table>")
+                out.append(f'<div class="table-wrap"><table>{thead}{tbody}</table></div>')
                 continue
 
             paragraph: list[str] = []

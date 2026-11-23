@@ -17,6 +17,7 @@
     toggle.setAttribute("aria-expanded", open ? "true" : "false");
     toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
     if (open) {
+      overlay.scrollTop = 0;
       var first = overlay.querySelector(".nav-link");
       if (first) first.focus({ preventScroll: true });
     } else {
