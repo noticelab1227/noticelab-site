@@ -3505,15 +3505,17 @@ body.nav-open .brand-mark { color: var(--ink); }
   /* 가격 조건표: 열 제목이 숨겨진 모바일에서 값마다 어느 상품인지 표시 */
   .cond-row p:nth-of-type(2)::before,
   .cond-row p:nth-of-type(3)::before {
-    display: block;
-    margin-bottom: 1px;
+    margin-right: 6px;
     font-family: var(--mono);
     font-size: 9px;
-    letter-spacing: .1em;
+    letter-spacing: .06em;
     color: var(--ink-3);
   }
-  .cond-row p:nth-of-type(2)::before { content: "입문 첫 세팅"; margin-top: 5px; }
-  .cond-row p:nth-of-type(3)::before { content: "월간 브랜드 관리"; }
+  .cond-row p:nth-of-type(2)::before { content: "입문 세팅"; }
+  .cond-row p:nth-of-type(3)::before { content: "월간 관리"; }
+
+  /* 무료 점검 신청 버튼도 다른 섹션처럼 폭을 꽉 채워 */
+  .doc-copy > .btn { display: flex; width: 100%; justify-content: space-between; }
 
   /* 가격 아래 버튼은 다른 섹션처럼 폭을 꽉 채워 누르기 쉽게 */
   .pricing-foot { flex-direction: column; align-items: stretch; }
