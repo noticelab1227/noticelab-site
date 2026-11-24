@@ -1053,30 +1053,45 @@ body.nav-open .brand-mark { color: var(--ink); }
   color: var(--ink-3);
 }
 .sample-media {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
   margin-top: clamp(30px, 4vw, 52px);
   border: 1px solid var(--hair);
+  background: var(--white);
+}
+.sample-media-img {
   overflow: hidden;
   background: var(--paper);
 }
 .sample-media img {
   width: 100%;
-  height: clamp(180px, 26vw, 330px);
+  height: 100%;
+  min-height: 190px;
+  max-height: 250px;
   object-fit: cover;
   object-position: 50% 56%;
 }
 .sample-media figcaption {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-  padding: 12px 16px;
-  border-top: 1px solid var(--hair);
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: clamp(18px, 2.2vw, 28px);
+  border-left: 1px solid var(--hair);
   font-family: var(--mono);
   font-size: 9.5px;
   letter-spacing: .04em;
-  line-height: 1.7;
+  line-height: 1.9;
   color: var(--ink-3);
 }
-.sample-media figcaption strong { color: var(--ink); font-weight: 600; }
+.sample-media figcaption strong {
+  display: block;
+  font-family: var(--font);
+  font-size: .96rem;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--ink);
+}
 
 /* --------------------------------------------------- 기준 가격 04 */
 .pricing {
@@ -2437,7 +2452,9 @@ body.nav-open .brand-mark { color: var(--ink); }
   /* Before/After: 좁은 화면에서 세로로 쌓되 라벨 순서는 유지 */
   .ba { grid-template-columns: minmax(0, 1fr); }
   .ba-panel { padding: 14px; }
-  .sample-media img { height: clamp(150px, 34vw, 220px); }
+  .sample-media { grid-template-columns: minmax(0, 1fr); }
+  .sample-media img { min-height: 0; height: clamp(150px, 34vw, 220px); }
+  .sample-media figcaption { border-left: 0; border-top: 1px solid var(--hair); }
 }
 
 @media (max-width: 420px) {
