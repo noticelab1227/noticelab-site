@@ -24,7 +24,7 @@ website/
 │   ├── 04-agency-checklist-before-hiring.md
 │   ├── 05-making-blog-and-reels-from-10-photos.md
 │   └── 06-yongin-pogok-vs-suji-strategy.md
-├── templates/                HTML 템플릿 (base / home / insights / post / 404 / go)
+├── templates/                HTML 템플릿 (base / home / page / insights / post / 404 / go)
 ├── assets/
 │   ├── css/style.css         디자인 (화이트 #FFFFFF · 페이퍼 #F7F7F5 · 먹색 #111111/#4A4A4A · 헤어라인 #E5E5E3 · 포인트 레드 #FF3B30)
 │   ├── js/site.js            풀스크린 메뉴 · 히어로 패럴랙스 · 섹션 인디케이터 · 필터 · 목차
@@ -40,7 +40,8 @@ website/
 
 ```
 dist/
-├── index.html                        홈
+├── index.html                        홈 (01~08 섹션)
+├── marketing/ consulting/ studio/ portfolio/ about/ contact/ privacy/   서브페이지
 ├── insights/index.html               인사이트 목록 (카테고리 필터)
 ├── insights/<slug>/index.html        개별 글 (Article + FAQPage + BreadcrumbList JSON-LD)
 ├── sitemap.xml · robots.txt · rss.xml · llms.txt
@@ -126,6 +127,7 @@ faq_heading: 자주 묻는 질문
 - 2026-11-25 CTA·버그 수정 3건: ① 네이버 톡톡(`talk.naver.com/ct/w5z4wz`, 개인 프로필 '꼬꼬찐이') 링크와 안내 문구를 히어로·가격표·FAQ 하단·클로징·푸터·인사이트 목록·`/go/`·글 하단 `cta-box`·`llms.txt` 에서 모두 걷어내고 카카오톡 채널(`https://pf.kakao.com/_xdMIvX/chat`) 하나로 통일했습니다(`site.json` 의 `consultNaverUrl`·`consultNaverLabel`·`linkHub` 톡톡 항목, `build.py` 의 `consult_naver_*`·`navertalk` 아이콘 삭제, 공유 카드 `scripts/prepare_go_og.py` 문구도 수정). 보조 버튼은 `카톡으로 3가지 무료 점검`, 클로징 두 번째 버튼 클래스는 `.closing-talk--sub` 로 바꿨습니다. ② `dist/404.html` 이 `./assets/...` 상대경로로 나와 `/foo/bar/baz/` 같은 하위 경로 404에서 CSS·링크가 깨지던 문제를 고쳤습니다. `build.py` 의 `write()` 에 `root_absolute` 옵션을 넣어 404만 루트 절대경로(`/assets/...`, `/insights/`)를 유지합니다. ③ `assets/css/style.css` 의 `.article` 에 `overflow-wrap: anywhere` 를 넣어 긴 구글 고객센터 URL이 모바일에서 잘리지 않고 줄바꿈됩니다. CSS 캐시 값은 `?v=13` 입니다.
 - 2026-11-25 가격표 전략 반영(`05 PRICING`): 저가 대행이 아닌 프리미엄 포지셔닝에 맞춰 3단 구조로 정리했습니다. ① `무료 3가지 점검 0원` 유지 ② `입문 첫 세팅 5만 원~` — 신규 고객 입문용 1건·사전 확정 범위·수정 1회 기준, 추가 제작은 별도 견적 ③ `월간 브랜드 관리 월 30만 원~` — 기본형 시작가로 두고 블로그·숏폼 통합(풀 패키지)·신규 브랜드 홍보·경영컨설팅은 진단 후 맞춤 견적으로 연결. `site.json` `pricing`(items·terms·note)을 고치고, `06 FAQ` 3번(입문/월간 차이)과 4번(수정 횟수) 답변을 `templates/home.html` 과 `build.py` 의 `HOME_FAQ`(FAQPage JSON-LD) 양쪽에 같은 문장으로 맞췄으며, Organization JSON-LD `priceRange` 도 새 구조로 바꿨습니다.
 - 2026-11-25 빌드 참고: 작업 사본이 `blob:none` sparse-checkout 이면 `build.py` 가 `assets/images` 를 못 읽어 WebP `<picture>` 가 빠집니다. 빌드 전에 전체 파일이 있는지 확인하고(`git ls-files` 대비 누락 0), `--clean` 대신 그냥 `python3 build.py` 로 돌린 뒤 `git diff dist/` 에서 webp·picture 삭제가 0건인지 확인합니다.
+- 2026-11-25 전면 리뉴얼(마스터 기획서 PART 01~13): 홈을 8개 섹션(01 HERO→02 SELECTED WORKS→03 FREE CHECK→04 WHAT WE DO→05 PRICING→06 OUR EXPERIENCE→07 PROCESS·INSIGHT·FAQ→08 LET'S TALK)으로 다시 짜고, 서브페이지 7개(`/marketing/` `/consulting/` `/studio/` `/portfolio/` `/about/` `/contact/` `/privacy/`)를 `templates/page.html` + `build.py` 의 `page_specs()` 로 추가했습니다. 홈에는 CSS/HTML로만 만든 `ONLINE BRAND CHECK` 진단서 샘플과 전환 구조 퍼널, 다크 섹션(WHAT WE DO·LET'S TALK)을 넣었고, 상단 메뉴 번호(01~08)는 홈 섹션 번호와 1:1로 맞췄습니다. `sitemap.xml`·`llms.txt`·JSON-LD(Organization·Service·FAQPage·BreadcrumbList)도 새 페이지에 맞춰 갱신했습니다. 사용하지 않는 장식 사진 2종(hero-atelier·glass-light-study)은 파일은 남기고 화면에서만 뺐습니다.
 - 2026-11-25 VAT 별도 표기: 일반과세자 세금계산서 기준을 미리 밝히도록 가격표 보조 문구를 `VAT 별도 · 추가 제작 별도 견적`(입문 세팅) / `기본형 시작가 · VAT 별도`(월간 관리)으로 바꾸고, `site.json` `pricing.terms` 3번에 `표시 금액은 부가가치세(VAT) 별도 기준` 을 넣었습니다. `06 FAQ` 3번(입문/월간 차이)·5번(세금계산서) 답변과 `build.py` `HOME_FAQ`(FAQPage JSON-LD), Organization JSON-LD `priceRange` 도 같은 기준으로 맞췄습니다.
 
 ### 링크 허브(`/go/`) 문구·링크 고치기
