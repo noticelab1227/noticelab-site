@@ -21,7 +21,7 @@
 - [광고·마케팅](https://noticelab.pages.dev/marketing/): 플레이스·블로그·SNS·SEO/GEO·전환 동선
 - [경영컨설팅](https://noticelab.pages.dev/consulting/): 사업 현황·수익구조·가격 전략 진단
 - [콘텐츠·디자인](https://noticelab.pages.dev/studio/): 글·이미지·영상 제작
-- [작업 사례](https://noticelab.pages.dev/portfolio/): 작업 유형과 설명용 예시
+- [작업 사례](https://noticelab.pages.dev/portfolio/): 업종별 설계 구조 공개, 상세 레퍼런스는 카카오톡 1:1로 비공개 전달
 - [기업 소개](https://noticelab.pages.dev/about/): 2007년부터 이어온 블로그 경험과 사회적 가치
 - [상담](https://noticelab.pages.dev/contact/): 카카오톡 채널 1:1 접수
 - [개인정보처리방침](https://noticelab.pages.dev/privacy/)
