@@ -981,6 +981,28 @@ def mix_html(services: list[dict]) -> str:
     )
 
 
+# 대표 크리에이터 채널에서 협찬·제품 제공·원고료·체험단으로 콘텐츠를 만든 브랜드.
+# 게시물 본문에 그 사실을 밝힌 건만 넣습니다. 표시광고법상 확인되지 않은 이력은 적지 않습니다.
+BRAND_GROUPS = [
+    ("건강·식품", ["정관장", "풀무원헬스케어", "링티", "휴럼", "헬스업", "바이오가이아",
+                "디에센셜", "동양당한약방", "새빨간거짓말", "플다", "크러시"]),
+    ("생활·가전·공간", ["시몬스", "에어메이드", "무티", "웨이워즈", "봄소와"]),
+    ("리빙·유아", ["아토보스", "세이지스푼풀", "마미바티", "아토아토"]),
+    ("뷰티·서비스·외식", ["오픈유어아이즈", "칼로", "배온니", "셀포랩", "청기와타운", "쿠우쿠우",
+                    "하이로왕마라탕"]),
+]
+BRAND_NAMES = [name for _, names in BRAND_GROUPS for name in names]
+BRAND_COUNT = len(BRAND_NAMES)
+BRAND_DISCLAIMER = (
+    "대표 크리에이터 채널(2007~)을 통해 콘텐츠 제작·리뷰 협업을 진행한 브랜드 이력이며, "
+    "해당 브랜드와의 공식 대행사 계약이나 상표권 제휴를 의미하지 않습니다."
+)
+BRAND_METHOD = (
+    "로고·상표 이미지는 쓰지 않고 이름만 표기했습니다. 게시물에 협찬·제품 제공·원고료·체험단으로 "
+    "진행한 사실을 밝힌 건만 골랐습니다."
+)
+
+
 def build_home(config: dict, posts: list[dict], base: dict) -> str:
     services = config["services"]
     service_rows = "\n".join(service_area_html(service, index) for index, service in enumerate(services, start=1))
@@ -1012,6 +1034,9 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
         "pricing_terms": price_terms,
         "faq_items": faq_html(HOME_FAQ),
         "post_count": len(posts),
+        "brand_chips": "".join(f"<li>{esc(name)}</li>" for name in BRAND_NAMES),
+        "brand_count": BRAND_COUNT,
+        "brand_note": esc(BRAND_DISCLAIMER + " " + BRAND_METHOD),
     })
 
     jsonld = jsonld_block(
@@ -1534,23 +1559,37 @@ def page_specs(config: dict) -> list[dict]:
                      "2007년부터 축적한 블로그 운영 경험, 소비자의 선택을 연구해 온 콘텐츠 제작 경험이 노티스랩의 출발점입니다.",
                      "SINCE 2007은 대표자의 블로그 운영 경험을 뜻합니다. 노티스랩의 설립연도나 광고대행 시작 연도가 아닙니다.",
                  ])),
-        sp_block("03", "ORGANIZATION", "하는 일", sp_list([
+        sp_block("03", "BRANDS", "콘텐츠로 함께한 브랜드",
+                 f'<p class="sp-display">BRAND COLLABORATION<br><b>{BRAND_COUNT} BRANDS</b></p>'
+                 + sp_paras([
+                     "대표 크리에이터 채널에서 리뷰·콘텐츠로 소개한 브랜드 가운데, 게시물에 협찬이나 "
+                     "제품 제공, 원고료를 받았다고 밝힌 곳만 적었습니다. 지금 공개된 게시물에서 확인되는 "
+                     "범위는 2015년부터 이어집니다.",
+                     "정관장(한국인삼공사)과는 2025년 9월부터 2026년 9월까지 선물세트 콘텐츠 7편을 "
+                     "함께 만들었습니다. 시몬스는 원고료를 받은 매트리스 매장 리뷰, 풀무원헬스케어는 "
+                     "제품 협찬 식단 콘텐츠입니다.",
+                 ])
+                 + sp_table([(field, " · ".join(names)) for field, names in BRAND_GROUPS])
+                 + f'<p class="sp-note">{esc(BRAND_DISCLAIMER)} {esc(BRAND_METHOD)} '
+                   "지역 매장·숙박·뷰티숍 체험단 콘텐츠는 별도로 진행했으며, 위 표에는 상호가 있는 "
+                   "브랜드만 담았습니다.</p>"),
+        sp_block("04", "ORGANIZATION", "하는 일", sp_list([
             "광고·브랜드 마케팅 (주력, 홈페이지 콘텐츠 비중 50%)",
             "경영컨설팅 (전략, 20%)",
             "콘텐츠·영상 제작 (실행, 15%)",
             "브랜드·시각디자인 (실행, 15%)",
         ]) + '<p class="sp-note">비중은 홈페이지 콘텐츠 구성 기준이며 실제 매출 비중이 아닙니다.</p>'),
-        sp_block("04", "IMPACT", "우리의 성장이 누군가의 시작이 되도록",
+        sp_block("05", "IMPACT", "우리의 성장이 누군가의 시작이 되도록",
                  sp_paras([
                      "노티스랩은 소상공인·기업 프로젝트(Track A)로 수익을 만듭니다. 그 수익과 일정의 일부를 신진 예술가, 청년 초기 창업자, 자립준비청년의 첫 홍보물을 만드는 데 쓰는 것을 목표로 합니다(Track B).",
                      "전체 사업의 10% 환원을 목표로 두고 있습니다. 다만 매출·순이익·작업시간 중 어떤 기준으로 산정할지는 확정 전이라, 구체적인 지원 실적이나 확정된 배정으로 표현하지 않습니다.",
                      "처음 일을 시작할 때 필요한 건 거창한 캠페인이 아닙니다. 내 일을 설명하는 소개서 한 장, 검색했을 때 걸리는 최소한의 구조입니다.",
                  ])),
-        sp_block("05", "VISION", "장기 목표", sp_paras([
+        sp_block("06", "VISION", "장기 목표", sp_paras([
             "기업 비전은 지속 가능한 동반 성장입니다. 일회성 홍보 지원을 넘어, 마케팅·브랜드 디자인·영상 제작 역량을 직접 배우고 활용할 수 있는 실무 교육 기반을 만드는 것을 장기 목표로 둡니다.",
             "고객의 성장이 노티스랩의 성장으로, 노티스랩의 성장이 새로운 도전자의 기회로 이어지게 하는 것이 목표입니다.",
         ])),
-        sp_block("06", "COMPANY", "기업 정보", sp_table([
+        sp_block("07", "COMPANY", "기업 정보", sp_table([
             ("상호", business["name"]),
             ("대표", business["ceo"]),
             ("사업자등록번호", business["registrationNumber"]),

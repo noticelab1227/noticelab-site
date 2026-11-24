@@ -3105,6 +3105,56 @@ body.nav-open .brand-mark { color: var(--ink); }
   color: var(--ink-3);
 }
 
+/* 브랜드 협업 — 로고 없이 이름만 */
+.brands {
+  margin-top: clamp(32px, 4vw, 56px);
+  padding-top: clamp(22px, 3vw, 34px);
+  border-top: 1px solid var(--hair-strong);
+}
+.brands-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+.brands-en { font-family: var(--mono); font-size: 10px; letter-spacing: .24em; color: var(--ink-3); }
+.brands-ko { font-size: .9rem; letter-spacing: -.01em; color: var(--ink-2); }
+.brands-ko b {
+  margin-left: 4px;
+  font-family: var(--mono);
+  font-size: .8rem;
+  letter-spacing: .02em;
+  color: var(--coral-ink);
+}
+.brands-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  margin: 16px 0 0;
+  padding: 1px;
+  border: 1px solid var(--hair);
+  background: var(--hair);
+  list-style: none;
+}
+.brands-list li {
+  flex: 1 1 auto;
+  padding: 11px 14px;
+  background: var(--white);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+.brands-note {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  line-height: 1.9;
+  color: var(--ink-3);
+}
+
+@media (max-width: 640px) {
+  .brands-list li { padding: 9px 10px; font-size: .76rem; }
+}
+
 /* --------------------------------------------------- 진행 과정 07 · 인사이트 */
 .notes-block {
   margin-top: clamp(48px, 6vw, 88px);
