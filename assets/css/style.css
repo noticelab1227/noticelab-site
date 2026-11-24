@@ -835,6 +835,11 @@ body.nav-open .brand-mark { color: var(--ink); }
 }
 .arch-foot span { color: var(--coral-ink); margin-right: 8px; }
 
+/* 진행 절차 04 — 여섯 단계는 3열로 (1180px 이하 2열, 720px 이하 1열은 반응형 규칙을 따릅니다) */
+.arch--process { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.arch--process .arch-step { min-height: clamp(210px, 20vw, 252px); }
+.arch--process .arch-head { padding-top: clamp(24px, 3vw, 44px); }
+
 /* --------------------------------------------------------------- 서비스 02 */
 .index-list {
   margin-top: clamp(40px, 5.2vw, 80px);
@@ -1198,6 +1203,78 @@ body.nav-open .brand-mark { color: var(--ink); }
   color: var(--ink-2);
 }
 .pricing-foot p strong { color: var(--ink); font-weight: 600; }
+
+/* ---------------------------------------------------- 자주 묻는 질문 06 */
+.faq {
+  margin-top: clamp(34px, 4.4vw, 66px);
+  border-top: 1px solid var(--hair-strong);
+}
+.faq-item { border-bottom: 1px solid var(--hair); }
+.faq-item summary {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 16px;
+  gap: clamp(10px, 1.6vw, 20px);
+  align-items: start;
+  padding: clamp(18px, 2.4vw, 28px) 0;
+  list-style: none;
+  cursor: pointer;
+  transition: color .3s;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-no {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: var(--coral-ink);
+  padding-top: .4em;
+}
+.faq-q {
+  font-size: clamp(1rem, 1.45vw, 1.14rem);
+  line-height: 1.55;
+  letter-spacing: -.03em;
+  font-weight: 600;
+  color: var(--ink);
+  text-wrap: balance;
+  transition: color .3s;
+}
+.faq-item summary:hover .faq-q,
+.faq-item[open] .faq-q { color: var(--coral-ink); }
+.faq-icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  margin-top: .45em;
+  justify-self: end;
+}
+.faq-icon::before,
+.faq-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 14px;
+  height: 1px;
+  background: var(--ink-3);
+  transition: transform .35s var(--ease), background-color .35s;
+}
+.faq-icon::after { transform: rotate(90deg); }
+.faq-item[open] .faq-icon::after { transform: rotate(0deg); }
+.faq-item[open] .faq-icon::before,
+.faq-item[open] .faq-icon::after { background: var(--coral-ink); }
+.faq-a {
+  padding: 0 clamp(0px, 3vw, 40px) clamp(20px, 2.6vw, 30px) calc(38px + clamp(10px, 1.6vw, 20px));
+  font-size: .89rem;
+  line-height: 1.85;
+  color: var(--ink-2);
+  max-width: 78ch;
+}
+.faq-a p + p { margin-top: .7em; }
+.faq-a strong { color: var(--ink); font-weight: 600; }
+
+@media (max-width: 720px) {
+  .faq-item summary { grid-template-columns: 26px minmax(0, 1fr) 15px; gap: 10px; }
+  .faq-a { padding-left: 36px; padding-right: 0; }
+}
 
 /* ------------------------------------------------------------------ 카드 */
 .cards {
