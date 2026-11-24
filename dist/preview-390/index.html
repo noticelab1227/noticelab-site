@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>390 preview</title>
+<style>html,body{margin:0;background:#8a8a8a}iframe{display:block;border:0;width:390px;margin:0 auto;background:#fff}</style>
+</head><body>
+<iframe id="f" src="/" height="5200" title="390px preview"></iframe>
+<script>
+var p = new URLSearchParams(location.search).get('u') || '/';
+document.getElementById('f').src = p;
+var h = Number(new URLSearchParams(location.search).get('h') || 5200);
+document.getElementById('f').height = h;
+</script>
+</body></html>
