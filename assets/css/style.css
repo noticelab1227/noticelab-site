@@ -1040,7 +1040,7 @@ body.nav-open .brand-mark { color: var(--ink); }
   color: var(--ink-2);
   overflow-wrap: break-word;
 }
-.ba-panel--before .ba-val { color: var(--ink-4); }
+.ba-panel--before .ba-val { color: var(--ink-3); }
 .ba-panel--after .ba-key { color: var(--coral-ink); }
 .ba-panel--after .ba-val { color: var(--ink); }
 .sample-note {
