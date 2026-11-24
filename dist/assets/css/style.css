@@ -2393,7 +2393,9 @@ body.nav-open .brand-mark { color: var(--ink); }
 @media (max-width: 720px) {
   body { font-size: 15.5px; }
   .hero { padding-block: calc(var(--header-h) + 28px) clamp(26px, 5vh, 44px); }
-  .hero-rules { background-size: 50% 100%; }
+  .hero-rules { display: none; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-actions .btn { width: 100%; }
   .hero-title { font-size: clamp(1.72rem, 8vw, 2.6rem); }
   .hero-title-top { font-size: .4em; }
   .hero-slogan { display: none; }
@@ -2464,7 +2466,7 @@ body.nav-open .brand-mark { color: var(--ink); }
   .menu-toggle { padding: 0 10px; }
   .btn-talk { padding: 0 12px; gap: 7px; }
   .header-tools { gap: 6px; }
-  .hero-meta { grid-template-columns: minmax(0, 1fr); }
+  .hero-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .region-type { grid-template-columns: minmax(0, 1fr); }
   .region-item { min-height: 88px; }
   .footer-word { font-size: 19vw; }
