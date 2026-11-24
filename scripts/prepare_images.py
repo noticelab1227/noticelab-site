@@ -139,14 +139,13 @@ def make_og(name: str, headline) -> str:
 
 
 def make_logo() -> str:
-    size = 512
-    card = Image.new("RGB", (size, size), NAVY)
-    draw = ImageDraw.Draw(card)
-    # 공지(notice) 라인 마크: 흰 막대 3개 + 코랄 점
-    for i, (x0, x1) in enumerate(((128, 336), (128, 296), (128, 256))):
-        y = 170 + i * 66
-        draw.rounded_rectangle((x0, y, x1, y + 34), radius=17, fill=WHITE)
-    draw.ellipse((330, 330, 386, 386), fill=CORAL)
+    """공식 NL. 심볼(검은 배경 + 흰 NL + 빨간 점) 기반 조직 로고.
+
+    아이콘·파비콘은 scripts/prepare_brand_assets.py 가 같은 심볼 도형으로 만듭니다.
+    """
+    from prepare_brand_assets import make_icon
+
+    card = make_icon(512, 0.62, ss=4)
     out = "logo.png"
     card.save(os.path.join(IMG, out), "PNG", optimize=True)
     return out

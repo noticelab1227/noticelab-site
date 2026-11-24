@@ -28,9 +28,11 @@ website/
 ├── assets/
 │   ├── css/style.css         디자인 (화이트 #FFFFFF · 페이퍼 #F7F7F5 · 먹색 #111111/#4A4A4A · 헤어라인 #E5E5E3 · 포인트 레드 #FF3B30)
 │   ├── js/site.js            풀스크린 메뉴 · 히어로 패럴랙스 · 섹션 인디케이터 · 필터 · 목차
-│   ├── favicon.svg
-│   └── images/               히어로·커버·도식 · OG 카드 · 로고
+│   ├── favicon.svg           공식 NL. 심볼 파비콘 (벡터)
+│   └── images/               히어로·커버·도식 · OG 카드 · 로고(logo.png · apple-touch-icon.png · favicon-32.png)
+├── brand/                    공식 로고 원본 3종(심볼 · 가로 락업 · 세로 락업) — 배포되지 않는 디자인 원본
 ├── scripts/prepare_images.py 이미지 경량화(WebP) · OG 카드 생성 (선택, Pillow 필요)
+├── scripts/prepare_brand_assets.py 공식 로고 → logo.png · 파비콘 · apple-touch-icon · 기본 OG 카드 생성 (선택)
 ├── scripts/prepare_hero_images.py 히어로 비주얼 그레이딩 · WebP 다중 폭 생성 (선택)
 ├── scripts/prepare_go_og.py  /go/ 링크 허브 공유 카드(1200×630) 생성 (선택, Pillow 필요)
 └── dist/                     빌드 결과물 (배포 대상)
@@ -128,6 +130,7 @@ faq_heading: 자주 묻는 질문
 - 2026-11-25 가격표 전략 반영(`05 PRICING`): 저가 대행이 아닌 프리미엄 포지셔닝에 맞춰 3단 구조로 정리했습니다. ① `무료 3가지 점검 0원` 유지 ② `입문 첫 세팅 5만 원~` — 신규 고객 입문용 1건·사전 확정 범위·수정 1회 기준, 추가 제작은 별도 견적 ③ `월간 브랜드 관리 월 30만 원~` — 기본형 시작가로 두고 블로그·숏폼 통합(풀 패키지)·신규 브랜드 홍보·경영컨설팅은 진단 후 맞춤 견적으로 연결. `site.json` `pricing`(items·terms·note)을 고치고, `06 FAQ` 3번(입문/월간 차이)과 4번(수정 횟수) 답변을 `templates/home.html` 과 `build.py` 의 `HOME_FAQ`(FAQPage JSON-LD) 양쪽에 같은 문장으로 맞췄으며, Organization JSON-LD `priceRange` 도 새 구조로 바꿨습니다.
 - 2026-11-25 빌드 참고: 작업 사본이 `blob:none` sparse-checkout 이면 `build.py` 가 `assets/images` 를 못 읽어 WebP `<picture>` 가 빠집니다. 빌드 전에 전체 파일이 있는지 확인하고(`git ls-files` 대비 누락 0), `--clean` 대신 그냥 `python3 build.py` 로 돌린 뒤 `git diff dist/` 에서 webp·picture 삭제가 0건인지 확인합니다.
 - 2026-11-25 전면 리뉴얼(마스터 기획서 PART 01~13): 홈을 8개 섹션(01 HERO→02 SELECTED WORKS→03 FREE CHECK→04 WHAT WE DO→05 PRICING→06 OUR EXPERIENCE→07 PROCESS·INSIGHT·FAQ→08 LET'S TALK)으로 다시 짜고, 서브페이지 7개(`/marketing/` `/consulting/` `/studio/` `/portfolio/` `/about/` `/contact/` `/privacy/`)를 `templates/page.html` + `build.py` 의 `page_specs()` 로 추가했습니다. 홈에는 CSS/HTML로만 만든 `ONLINE BRAND CHECK` 진단서 샘플과 전환 구조 퍼널, 다크 섹션(WHAT WE DO·LET'S TALK)을 넣었고, 상단 메뉴 번호(01~08)는 홈 섹션 번호와 1:1로 맞췄습니다. `sitemap.xml`·`llms.txt`·JSON-LD(Organization·Service·FAQPage·BreadcrumbList)도 새 페이지에 맞춰 갱신했습니다. 사용하지 않는 장식 사진 2종(hero-atelier·glass-light-study)은 파일은 남기고 화면에서만 뺐습니다.
+- 2026-11-25 공식 로고 적용: 받은 공식 로고 3종을 `brand/` 에 원본으로 두고, `scripts/prepare_brand_assets.py` 가 공식 `NL.` 심볼 비율(글자 높이 193 기준 기둥 40 · N 165 · L 126 · 점 38)을 그대로 옮겨 `assets/images/logo.png`(512) · `apple-touch-icon.png`(180) · `favicon-32.png` · `assets/favicon.svg` 를 만들고, `NOTICE LAB. / 조회수가 아닌 매출을 연구합니다 / BRAND · CONTENT · MARKETING` 락업으로 기본 공유 카드 `og-notice-lab-brand.jpg`(1200×630)를 만듭니다. 헤더·푸터 마크(`templates/base.html` 의 `.brand-mark`)는 얇은 외곽선 NL 대신 공식 굵은 기하학 NL + 빨간 정사각 점 SVG 로 바꿨고, 기본 `og:image` 는 홈·인사이트 목록·404·서브페이지 모두 새 브랜드 카드로, `/go/` 와 인사이트 개별 글 이미지는 그대로 두었습니다. CSS 캐시 값은 `?v=15` 입니다.
 - 2026-11-25 VAT 별도 표기: 일반과세자 세금계산서 기준을 미리 밝히도록 가격표 보조 문구를 `VAT 별도 · 추가 제작 별도 견적`(입문 세팅) / `기본형 시작가 · VAT 별도`(월간 관리)으로 바꾸고, `site.json` `pricing.terms` 3번에 `표시 금액은 부가가치세(VAT) 별도 기준` 을 넣었습니다. `06 FAQ` 3번(입문/월간 차이)·5번(세금계산서) 답변과 `build.py` `HOME_FAQ`(FAQPage JSON-LD), Organization JSON-LD `priceRange` 도 같은 기준으로 맞췄습니다.
 
 ### 링크 허브(`/go/`) 문구·링크 고치기
