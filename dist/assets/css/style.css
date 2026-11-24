@@ -3415,3 +3415,8 @@ body.nav-open .brand-mark { color: var(--ink); }
   .footer-grid { grid-template-columns: minmax(0, 1fr); }
   .footer-col--note { grid-column: auto; }
 }
+
+/* 서브페이지: 작업 예시처럼 넓게 써야 하는 블록 */
+.sp-block--wide { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.sp-block--wide .sp-block-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; }
+.sp-block--wide .sp-block-title { width: 100%; }

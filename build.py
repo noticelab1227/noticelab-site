@@ -1301,8 +1301,9 @@ def sp_table(rows: list[tuple[str, str]]) -> str:
     return f'<dl class="sp-table">{body}</dl>'
 
 
-def sp_block(no: str, label: str, title: str, body: str) -> str:
-    return f"""<section class="sp-block">
+def sp_block(no: str, label: str, title: str, body: str, wide: bool = False) -> str:
+    cls = "sp-block sp-block--wide" if wide else "sp-block"
+    return f"""<section class="{cls}">
   <div class="sp-block-head">
     <p class="sp-block-no">{no}</p>
     <p class="sp-block-label">{esc(label)}</p>
@@ -1510,7 +1511,8 @@ def page_specs(config: dict) -> list[dict]:
                  "<div class=\"samples samples--page\">" + "\n".join(
                      sample_html(sample, index) for index, sample in enumerate(SAMPLES, start=1)
                  ) + "</div>"
-                 + '<p class="sp-note">위 세 건은 D — 서비스 설명용 예시입니다. 실제 고객 화면 캡처가 아니며, 항목은 매장마다 달라집니다.</p>'),
+                 + '<p class="sp-note">위 세 건은 D — 서비스 설명용 예시입니다. 실제 고객 화면 캡처가 아니며, 항목은 매장마다 달라집니다.</p>',
+                 wide=True),
         sp_block("03", "HOW TO READ", "읽는 방법", sp_paras([
             "이 페이지는 결과 숫자보다 무엇을 왜 바꿨는지를 먼저 적습니다. 확인되지 않은 매출 상승률·검색 순위·예약 증가율은 표시하지 않습니다.",
             "실제 프로젝트가 진행되면 프로젝트명, 작업 목적, 대상 업종, 제작 방향, 결과물, 확인 가능한 성과를 기준으로 추가합니다.",
