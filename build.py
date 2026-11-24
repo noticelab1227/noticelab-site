@@ -53,6 +53,18 @@ def esc(text: str) -> str:
     return html.escape(str(text), quote=True)
 
 
+NB_RE = re.compile(r"\[\[(.+?)\]\]")
+
+
+def nb(text: str) -> str:
+    """esc 하되 '[[구절]]'은 한 덩어리로 묶어 모바일에서 어색하게 끊기지 않게 합니다."""
+    parts = NB_RE.split(str(text))
+    return "".join(
+        f'<span class="nb">{esc(part)}</span>' if index % 2 else esc(part)
+        for index, part in enumerate(parts)
+    )
+
+
 def base_url(config: dict) -> str:
     return config["baseUrl"].rstrip("/")
 
@@ -1015,7 +1027,7 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
         free = " price-row--free" if item.get("free") else ""
         price_rows.append(f"""<div class="price-row{free}">
   <p class="price-name"><span class="price-en">{esc(item.get('en', ''))}</span>{esc(item['name'])}</p>
-  <p class="price-scope">{esc(item.get('scope', ''))}</p>
+  <p class="price-scope">{nb(item.get('scope', ''))}</p>
   <p class="price-tag">{esc(item['price'])}<small>{esc(item.get('priceNote', ''))}</small></p>
 </div>""")
     price_terms = "".join(f"<li>{esc(term)}</li>" for term in pricing.get("terms", []))
@@ -1301,7 +1313,7 @@ def sp_steps(items: list[tuple[str, str, str]]) -> str:
     rows = "".join(
         f'<li class="sp-step"><span class="sp-step-no" aria-hidden="true">{index:02d}</span>'
         f'<div class="sp-step-body"><p class="sp-step-en">{esc(en)}</p>'
-        f'<h3 class="sp-step-ko">{esc(ko)}</h3><p class="sp-step-text">{esc(text)}</p></div></li>'
+        f'<h3 class="sp-step-ko">{esc(ko)}</h3><p class="sp-step-text">{nb(text)}</p></div></li>'
         for index, (en, ko, text) in enumerate(items, start=1)
     )
     return f'<ol class="sp-steps">{rows}</ol>'
@@ -1436,7 +1448,7 @@ def page_specs(config: dict) -> list[dict]:
             ("CONTENT", "콘텐츠",
              "비교에 필요한 정보를 글로 남깁니다. 가격, 진행 과정, 사진, 자주 묻는 질문까지. 읽는 사람이 결정할 수 있게 씁니다."),
             ("CHANNEL", "플레이스·채널",
-             "매장이면 플레이스, 온라인 사업자면 쇼핑몰·홈페이지·SNS. 채널마다 정보가 어긋나지 않게 맞춥니다."),
+             "매장이면 플레이스, 온라인 사업자면 [[쇼핑몰·홈페이지·SNS]]. 채널마다 정보가 어긋나지 않게 맞춥니다."),
             ("CONVERSION", "문의·예약",
              "행동 지점을 하나로 좁힙니다. 문의·예약·구매 중 무엇을 남길지 정하고 나머지는 뒤로 뺍니다."),
         ])),

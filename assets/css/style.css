@@ -3470,3 +3470,57 @@ body.nav-open .brand-mark { color: var(--ink); }
 .sp-block--wide { grid-template-columns: minmax(0, 1fr); gap: 18px; }
 .sp-block--wide .sp-block-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; }
 .sp-block--wide .sp-block-title { width: 100%; }
+
+/* ==========================================================================
+   모바일 가독성 보정 (390px 기준 라스트체크)
+   - 캡션·주석 9px 대신 읽히는 크기로
+   - 큰 제목 자간을 풀어 단어 사이가 붙지 않게
+   - 가격 조건표는 모바일에서 열 이름이 사라지므로 값 위에 표시
+   ========================================================================== */
+.nb { white-space: nowrap; }
+
+@media (max-width: 720px) {
+  .hero-title--display { letter-spacing: -.03em; line-height: .98; }
+  .hero-note { font-size: 11px; line-height: 1.75; }
+
+  .panel-note,
+  .checks-foot,
+  .area-foot,
+  .brands-note,
+  .exp-note,
+  .arch-foot { font-size: 10.5px; line-height: 1.8; }
+
+  .works-key { font-size: 10.5px; line-height: 1.75; }
+  .sample-note,
+  .doc-foot,
+  .doc-meta,
+  .doc-scale-label { font-size: 10px; line-height: 1.7; }
+  .mix-legend { font-size: 10px; line-height: 1.5; }
+  .funnel-label { font-size: 10px; letter-spacing: .1em; }
+
+  /* 브랜드 머리글: 390px에서 '브랜드 7'의 숫자만 다음 줄로 떨어지던 문제 */
+  .brands-head { flex-direction: column; align-items: flex-start; gap: 5px; }
+  .brands-ko { font-size: .95rem; line-height: 1.6; }
+
+  /* 가격 조건표: 열 제목이 숨겨진 모바일에서 값마다 어느 상품인지 표시 */
+  .cond-row p:nth-of-type(2)::before,
+  .cond-row p:nth-of-type(3)::before {
+    display: block;
+    margin-bottom: 1px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: .1em;
+    color: var(--ink-3);
+  }
+  .cond-row p:nth-of-type(2)::before { content: "입문 첫 세팅"; margin-top: 5px; }
+  .cond-row p:nth-of-type(3)::before { content: "월간 브랜드 관리"; }
+
+  /* 가격 아래 버튼은 다른 섹션처럼 폭을 꽉 채워 누르기 쉽게 */
+  .pricing-foot { flex-direction: column; align-items: stretch; }
+  .pricing-foot .btn-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .pricing-foot .btn { width: 100%; justify-content: space-between; }
+
+  /* 긴 문단의 마지막 줄에 한 단어만 남는 경우를 줄임 */
+  .article p,
+  .section-note { text-wrap: pretty; }
+}
