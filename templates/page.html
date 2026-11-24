@@ -1,0 +1,32 @@
+<section class="sp-hero" aria-labelledby="sp-title">
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="현재 위치">
+      <a href="/">홈</a>
+      <span aria-hidden="true">/</span>
+      <span aria-current="page">{{sp_label}}</span>
+    </nav>
+    <p class="sp-mark">{{sp_mark}}</p>
+    <h1 class="sp-title" id="sp-title">{{sp_title}}</h1>
+    <p class="sp-lede">{{sp_lede}}</p>
+    <div class="sp-actions">
+      {{sp_actions}}
+    </div>
+  </div>
+</section>
+
+<div class="sp-body">
+  <div class="wrap">
+    {{sp_blocks}}
+  </div>
+</div>
+
+<section class="sp-next" aria-label="다른 페이지">
+  <div class="wrap">
+    <p class="sp-next-label">NEXT</p>
+    <div class="sp-next-links">
+      {{sp_next}}
+    </div>
+  </div>
+</section>
+
+{{sp_closing}}

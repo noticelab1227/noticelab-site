@@ -60,7 +60,7 @@
   var stops = [];
 
   if (indicator) {
-    ["hero", "structure", "services", "samples", "process", "pricing", "faq", "latest", "region", "social"].forEach(function (id) {
+    ["hero", "works", "free-check", "services", "pricing", "experience", "process", "contact"].forEach(function (id) {
       var node = document.getElementById(id);
       if (node) stops.push(node);
     });

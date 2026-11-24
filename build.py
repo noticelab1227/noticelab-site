@@ -582,18 +582,36 @@ def build_base_context(config: dict) -> dict:
     }
 
 
+NAV_ITEMS = [
+    ("home", "/", "01", "HOME", "홈"),
+    ("works", "/portfolio/", "02", "SELECTED WORKS", "작업 사례"),
+    ("free-check", "/#free-check", "03", "FREE CHECK", "무료 점검"),
+    ("services", "/#services", "04", "WHAT WE DO", "서비스"),
+    ("pricing", "/#pricing", "05", "PRICING", "기준 가격"),
+    ("experience", "/about/", "06", "OUR EXPERIENCE", "대표 경험"),
+    ("insight", "/insights/", "07", "INSIGHT & PROCESS", "연구 노트"),
+    ("contact", "/contact/", "08", "LET'S TALK", "상담"),
+]
+
+NAV_SERVICE_LINKS = [
+    ("/marketing/", "광고·마케팅"),
+    ("/consulting/", "경영컨설팅"),
+    ("/studio/", "콘텐츠·디자인"),
+]
+
+NAV_PAGE_LINKS = [
+    ("/portfolio/", "작업 사례"),
+    ("/about/", "기업 소개"),
+    ("/contact/", "상담 안내"),
+    ("/privacy/", "개인정보처리방침"),
+    ("/rss.xml", "RSS 구독"),
+]
+
+
 def nav_html(config: dict, active: str) -> str:
-    items = [
-        ("home", "/", "01", "HOME", "홈"),
-        ("structure", "/#structure", "02", "APPROACH", "전환 구조"),
-        ("services", "/#services", "03", "CAPABILITIES", "핵심 서비스"),
-        ("samples", "/#samples", "04", "WORK SAMPLES", "작업 예시"),
-        ("pricing", "/#pricing", "05", "PRICING", "기준 가격"),
-        ("insights", "/insights/", "06", "INSIGHTS", "인사이트"),
-        ("social", "/#social", "07", "SOCIAL", "사회공헌"),
-    ]
+    """상단 메뉴. 번호는 홈 섹션 번호(01~08)와 1:1로 맞춥니다."""
     rows = []
-    for key, href, number, label, ko in items:
+    for key, href, number, label, ko in NAV_ITEMS:
         current = ' aria-current="page"' if key == active else ""
         rows.append(
             f'<li class="nav-item"><a class="nav-link" href="{href}"{current}>'
@@ -602,18 +620,20 @@ def nav_html(config: dict, active: str) -> str:
             f'<span class="nav-ko">{esc(ko)}</span>'
             f'<span class="nav-arrow" aria-hidden="true">→</span></a></li>'
         )
-    rows.append(
-        f'<li class="nav-item nav-item--talk"><a class="nav-link" href="{esc(config["consultUrl"])}" '
-        'target="_blank" rel="noopener noreferrer">'
-        '<span class="nav-no">08</span><span class="nav-en">TALK</span>'
-        f'<span class="nav-ko">{esc(config["siteNameKo"])} 상담</span>'
-        '<span class="nav-arrow" aria-hidden="true">→</span></a></li>'
-    )
+        if key == "services":
+            sub = "".join(
+                f'<li><a href="{sub_href}">{esc(sub_ko)}</a></li>'
+                for sub_href, sub_ko in NAV_SERVICE_LINKS
+            )
+            rows.append(f'<li class="nav-sub-item"><ul class="nav-sub">{sub}</ul></li>')
 
     business = config["business"]
+    pages = "".join(
+        f'<a href="{href}">{esc(ko)}</a>' for href, ko in NAV_PAGE_LINKS
+    )
     return (
         '<div class="nav-overlay" id="site-nav">\n'
-        f'  <p class="nav-topline"><span>MENU</span><span>{esc(config["siteName"])} — {esc(config["siteNameKo"])}</span></p>\n'
+        f'  <p class="nav-topline"><span>INDEX</span><span>{esc(config["siteName"])} — {esc(config["siteNameKo"])}</span></p>\n'
         '  <div class="nav-overlay-inner">\n'
         '    <nav class="nav-main" aria-label="주 메뉴">\n'
         '      <ol class="nav-list">\n        ' + "\n        ".join(rows) + "\n      </ol>\n"
@@ -625,6 +645,10 @@ def nav_html(config: dict, active: str) -> str:
         f'{esc(config["consultLabel"])} →</a>\n'
         f'        <a href="tel:{esc(business["phone"])}">{esc(business["phone"])}</a>\n'
         f'        <a href="mailto:{esc(business["email"])}">{esc(business["email"])}</a>\n'
+        '      </div>\n'
+        '      <div class="nav-meta-col">\n'
+        '        <p class="nav-meta-label">PAGES</p>\n'
+        f'        {pages}\n'
         '      </div>\n'
         '      <div class="nav-meta-col">\n'
         '        <p class="nav-meta-label">STUDIO</p>\n'
@@ -641,7 +665,7 @@ def organization_jsonld(config: dict) -> dict:
     business = config["business"]
     data = {
         "@context": "https://schema.org",
-        "@type": "ProfessionalService",
+        "@type": ["Organization", "ProfessionalService"],
         "@id": url_for(config, "/#organization"),
         "name": config["siteName"],
         "alternateName": config["siteNameKo"],
@@ -650,6 +674,7 @@ def organization_jsonld(config: dict) -> dict:
         "logo": url_for(config, "/assets/images/logo.png"),
         "image": url_for(config, "/assets/images/logo.png"),
         "description": config["description"],
+        "founder": {"@type": "Person", "name": business["ceo"]},
         "address": {
             "@type": "PostalAddress",
             "addressCountry": "KR",
@@ -684,14 +709,14 @@ def jsonld_block(*objects: dict) -> str:
 # 페이지 조각
 # --------------------------------------------------------------------------
 def cta_box(config: dict, variant: str = "inline") -> str:
-    return f"""<aside class="cta-box cta-box--{variant}" aria-label="무료 3가지 점검 안내">
+    return f"""<aside class="cta-box cta-box--{variant}" aria-label="무료 점검·견적 문의">
   <div class="cta-box-text">
     <p class="cta-box-kicker">FREE CHECK <span aria-hidden="true">/</span> 무료 3가지 점검</p>
-    <p class="cta-box-title">가게 이름이나 플레이스 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 정리해 드립니다.</p>
+    <p class="cta-box-title">가게 이름이나 채널 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 정리해 드립니다.</p>
     <p class="cta-box-sub">0원 · 카톡으로 전달하면 24시간 내 요약 · 영업 전화 없음</p>
   </div>
   <div class="cta-box-actions">
-    <a class="btn btn--kakao" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+    <a class="btn btn--solid" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
       카톡으로 3가지 무료 점검<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
     </a>
   </div>
@@ -853,45 +878,65 @@ def sample_html(sample: dict, index: int) -> str:
 HOME_FAQ = [
     (
         "무료 3가지 점검은 무엇을 보나요?",
-        "플레이스의 빠진 정보(영업시간·주차·대표 사진·공지), 블로그 첫 화면(첫 문단·글 순서·플레이스와의 정보 일치), "
-        "손님이 반복해서 묻는 문의(예약·가격·오시는 길)를 봅니다. 가게 이름이나 플레이스 링크만 보내 주시면 되고, "
-        "영업 전화는 걸지 않습니다.",
+        "매장·브랜드 정보(영업시간·주차·대표 사진·공지), 블로그·콘텐츠(첫 문단·글 순서·채널 간 정보 일치), "
+        "문의·예약 동선(예약 방법·가격·오시는 길)을 봅니다. 가게 이름이나 채널 링크만 보내 주시면 되고, 영업 전화는 걸지 않습니다.",
     ),
     (
-        "현장 촬영 없이 폰 사진만으로도 제작이 되나요?",
-        "됩니다. 보유하신 매장 사진·메뉴판·짧은 영상으로 기획·제작하고, 밝기와 색 보정, 편집까지 한 세트로 만듭니다. "
-        "현장 촬영이 꼭 필요한 경우에만 별도로 협의합니다.",
+        "무료 점검만 받고 계약하지 않아도 되나요?",
+        "네. 무료 점검은 현재 온라인 홍보 상태를 확인하는 서비스입니다. 유료 작업은 별도로 협의하고, "
+        "점검만 받으셔도 계약 의무는 없습니다.",
     ),
     (
-        "단발 입문 작업과 월간 관리는 어떻게 다른가요?",
-        "입문 첫 세팅은 신규 고객이 기준을 확인하는 1건짜리 작업입니다. 사전에 정한 범위에서 플레이스·공지·글·이미지 1세트를 정리하고 "
-        "수정은 1회까지 들어갑니다(기준 5만 원~, VAT 별도, 추가 제작은 별도 견적). "
-        "월간 브랜드 관리는 기획·발행·점검을 매달 이어가는 방식으로 기본형이 월 30만 원~(VAT 별도)이고, 블로그·숏폼 통합이나 신규 브랜드 홍보, "
-        "경영컨설팅은 매장 규모와 목표를 보고 진단 후 맞춤 견적을 냅니다. 처음에는 입문 세팅으로 기준을 확인하시고, "
-        "필요할 때 월간으로 넓히시는 편이 일반적입니다.",
+        "경영컨설팅만 받을 수 있나요?",
+        "네. 경영컨설팅과 광고·마케팅은 각각 상담할 수 있습니다. 컨설팅을 광고·마케팅과 묶어서 구매하도록 강제하지 않습니다.",
     ),
     (
-        "수정 횟수와 원본 파일 제공 기준은 어떻게 되나요?",
-        "작업 범위에 따라 다릅니다. 입문 첫 세팅은 수정 1회가 기준이고, 월간·패키지 작업은 사전 견적서에 수정 횟수와 원본 파일 제공 범위를 함께 적어 안내드립니다. "
-        "그 범위 안에서 진행하고, 견적 밖의 추가 수정은 시작 전에 금액을 먼저 알려 드립니다.",
+        "단발 작업도 가능한가요?",
+        "가능합니다. 필요한 작업 한 건부터 상담합니다. 입문 첫 세팅은 신규 고객 1건·사전 확정 범위·수정 1회 기준으로 "
+        "5만 원~(VAT 별도)이고, 범위 밖 추가 제작은 별도 견적입니다.",
+    ),
+    (
+        "월간 관리는 어떻게 운영되나요?",
+        "기획·발행·점검을 매달 이어가는 방식입니다. 기본형이 월 30만 원~(VAT 별도)이고, "
+        "블로그·숏폼 통합(풀 패키지)·신규 브랜드 홍보·경영컨설팅은 매장 규모와 목표를 보고 진단 후 맞춤 견적을 냅니다.",
     ),
     (
         "세금계산서 발행이 가능한가요?",
         "가능합니다. 일반과세자 개인사업자(노티스랩, 사업자등록번호 266-76-00532)로 전자세금계산서를 발행합니다. "
-        "가격표에 적힌 금액은 부가가치세(VAT) 별도 기준이라, 세금계산서에는 부가세가 함께 기재됩니다. "
-        "결제 조건과 발행 시점은 견적을 확정할 때 함께 안내드립니다.",
+        "가격표의 금액은 부가가치세(VAT) 별도 기준이라 세금계산서에는 부가세가 함께 기재됩니다.",
     ),
     (
         "상위 노출이나 매출 증가를 보장해 주나요?",
-        "보장하지 않습니다. 검색 순위와 매출은 저희가 통제할 수 없는 부분이 있습니다. "
-        "대신 확인한 문제와 바꾼 지점, 다음 달에 확인할 지표를 근거로 남깁니다. 확인되지 않은 수치나 후기는 쓰지 않습니다.",
+        "보장하지 않습니다. 검색 순위와 매출은 여러 요인의 영향을 받습니다. "
+        "대신 확인 가능한 문제와 개선 방향, 바꾼 지점을 근거로 남깁니다. 확인되지 않은 수치나 후기는 쓰지 않습니다.",
+    ),
+    (
+        "기존 매장 사진으로 제작할 수 있나요? 현장 촬영도 되나요?",
+        "보유하신 사진과 영상으로 기획·제작합니다. 현장 촬영은 기본 서비스에 포함되지 않고, "
+        "꼭 필요한 경우에만 별도로 협의합니다.",
     ),
     (
         "용인 외 타 지역도 진행할 수 있나요?",
-        "가능합니다. 용인·수원·화성·성남 등 경기 남부에서 시작해 수도권과 전국까지 진행합니다. "
+        "가능합니다. 용인·수원·화성·성남·경기 광주 등 경기 남부에서 시작해 수도권과 전국까지 진행합니다. "
         "원거리는 자료 정리와 화상 미팅으로 상담을 대신하고, 발행과 세팅은 원격으로 처리합니다.",
     ),
 ]
+
+
+def faq_html(items: list[tuple[str, str]], start: int = 1) -> str:
+    rows = []
+    for index, (question, answer) in enumerate(items, start=start):
+        rows.append(f"""<details class="faq-item">
+  <summary>
+    <span class="faq-no" aria-hidden="true">{index:02d}</span>
+    <h3 class="faq-q">{esc(question)}</h3>
+    <span class="faq-icon" aria-hidden="true"></span>
+  </summary>
+  <div class="faq-a">
+    <p>{esc(answer)}</p>
+  </div>
+</details>""")
+    return "\n".join(rows)
 
 
 def home_faq_jsonld(config: dict) -> dict:
@@ -911,45 +956,34 @@ def home_faq_jsonld(config: dict) -> dict:
     }
 
 
+def service_area_html(service: dict, index: int) -> str:
+    points = "".join(f"<li>{esc(point)}</li>" for point in service["points"])
+    return f"""<li class="area">
+  <span class="area-no" aria-hidden="true">{index:02d}</span>
+  <div class="area-head">
+    <p class="area-en">{esc(service['en'])}</p>
+    <h3 class="area-ko">{esc(service['title'])}</h3>
+    <p class="area-role">{esc(service['role'])} · {esc(service['ratio'])}%</p>
+  </div>
+  <div class="area-body">
+    <p class="area-text">{esc(service['summary'])}</p>
+    <ul class="area-list">{points}</ul>
+  </div>
+  <a class="area-link" href="{esc(service['href'])}">자세히<span aria-hidden="true"> →</span><span class="sr-only"> ({esc(service['title'])})</span></a>
+</li>"""
+
+
+def mix_html(services: list[dict]) -> str:
+    return "\n".join(
+        f'<span class="mix-seg" style="--w:{esc(service["ratio"])}%">'
+        f'<b>{esc(service["ratio"])}</b><span>{esc(service["title"])}</span></span>'
+        for service in services
+    )
+
+
 def build_home(config: dict, posts: list[dict], base: dict) -> str:
-    steps = [
-        ("SEARCH", "검색", "손님이 실제로 입력하는 조건에서 시작합니다. 업종·지역·상황이 겹치는 검색어를 먼저 찾습니다."),
-        ("CONTENT", "콘텐츠", "비교에 필요한 정보를 글로 남깁니다. 가격, 진행 과정, 전후 사진, 자주 묻는 질문까지."),
-        ("PLACE", "플레이스", "영업시간·가격·사진을 글과 일치시킵니다. 여기서 어긋나면 읽던 사람이 멈춥니다."),
-        ("CONVERSION", "상담·예약", "행동 지점을 하나로 좁힙니다. 카카오톡·전화·예약 중 하나만 남기고 나머지는 뒤로 뺍니다."),
-    ]
-    arch_items = []
-    for index, (en, ko, text) in enumerate(steps, start=1):
-        arch_items.append(f"""<li class="arch-step">
-  <span class="arch-no" aria-hidden="true">{index:02d}</span>
-  <div class="arch-head">
-    <p class="arch-en">{en}</p>
-    <h3 class="arch-ko">{ko}</h3>
-  </div>
-  <p class="arch-text">{text}</p>
-</li>""")
-
-    service_rows = []
-    for index, service in enumerate(config["services"], start=1):
-        points = "".join(f"<li>{esc(point)}</li>" for point in service["points"])
-        en = service.get("en", "")
-        service_rows.append(f"""<li class="service-row">
-  <span class="service-no" aria-hidden="true">{index:02d}</span>
-  <div class="service-head">
-    <p class="service-en">{esc(en)}</p>
-    <h3 class="service-title">{esc(service['title'])}</h3>
-  </div>
-  <p class="service-summary">{esc(service['summary'])}</p>
-  <ul class="service-points">{points}</ul>
-</li>""")
-
-    region_items = []
-    for index, region in enumerate(config["regions"], start=1):
-        wide = " region-item--wide" if index > 5 else ""
-        region_items.append(
-            f'<li class="region-item{wide}"><span class="region-no" aria-hidden="true">{index:02d}</span>'
-            f'<span class="region-name">{esc(region)}</span></li>'
-        )
+    services = config["services"]
+    service_rows = "\n".join(service_area_html(service, index) for index, service in enumerate(services, start=1))
 
     latest = "".join(post_card(config, post, eager=(i == 0), heading_level="h3", excerpt=False)
                      for i, post in enumerate(posts[:3]))
@@ -967,25 +1001,16 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
 </div>""")
     price_terms = "".join(f"<li>{esc(term)}</li>" for term in pricing.get("terms", []))
 
-    sample_media = picture("/assets/images/hero-atelier.jpg",
-                           "긴 자연광이 떨어지는 콘크리트 전시 공간과 유리벽",
-                           cls="sample-img", sizes="100vw")
-    coverage_media = picture("/assets/images/glass-light-study.jpg",
-                             "유리와 강철 패널 사이로 스치는 빛의 결",
-                             cls="coverage-img", sizes="(max-width: 900px) 100vw, 46vw")
-
     content = render_template("home.html", {
         **base,
-        "structure_steps": "\n".join(arch_items),
-        "services": "\n".join(service_rows),
-        "regions": "\n".join(region_items),
+        "services": service_rows,
+        "mix": mix_html(services),
         "latest_posts": latest,
         "samples": samples_html,
         "pricing_note": esc(pricing.get("note", "")),
         "pricing_rows": "\n".join(price_rows),
         "pricing_terms": price_terms,
-        "sample_media": sample_media,
-        "coverage_media": coverage_media,
+        "faq_items": faq_html(HOME_FAQ),
         "post_count": len(posts),
     })
 
@@ -1023,13 +1048,12 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
 
     context = {
         **base,
-        "page_title": f"{config['siteNameKo']} | 소상공인 네이버 플레이스·블로그 무료 3가지 점검",
-        "description": ("가게 이름이나 플레이스 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 무료로 정리해 드립니다. "
-                        "영업 전화 없이 카톡으로 24시간 내 답하고, 블로그·플레이스·숏폼 제작과 월간 운영을 경기 남부에서 전국까지 진행합니다."),
+        "page_title": f"{config['siteNameKo']} | 용인 광고·마케팅·경영컨설팅",
+        "description": config["description"],
         "canonical": url_for(config, "/"),
-        "og_title": f"{config['siteName']} | {config['slogan']}",
+        "og_title": f"{config['siteName']} — {config['slogan']}",
         "og_image": url_for(config, "/assets/images/og-notice-lab-blog-traffic-thumbnail.jpg"),
-        "og_image_alt": "노티스랩 공식 홈페이지 대표 이미지",
+        "og_image_alt": "노티스랩 — 조회수가 아닌 매출을 연구합니다",
         "nav": nav_html(config, "home"),
         "jsonld": jsonld,
         "body_class": "page-home",
@@ -1240,6 +1264,644 @@ def build_404(config: dict, base: dict) -> str:
     return render_template("base.html", context)
 
 
+# --------------------------------------------------------------------------
+# 서브페이지 — MARKETING · CONSULTING · STUDIO · PORTFOLIO · ABOUT · CONTACT · PRIVACY
+# --------------------------------------------------------------------------
+def sp_list(items: list[str], cls: str = "sp-list") -> str:
+    return f'<ul class="{cls}">' + "".join(f"<li>{esc(item)}</li>" for item in items) + "</ul>"
+
+
+def sp_paras(items: list[str]) -> str:
+    return "".join(f"<p>{esc(item)}</p>" for item in items)
+
+
+def sp_steps(items: list[tuple[str, str, str]]) -> str:
+    rows = "".join(
+        f'<li class="sp-step"><span class="sp-step-no" aria-hidden="true">{index:02d}</span>'
+        f'<div class="sp-step-body"><p class="sp-step-en">{esc(en)}</p>'
+        f'<h3 class="sp-step-ko">{esc(ko)}</h3><p class="sp-step-text">{esc(text)}</p></div></li>'
+        for index, (en, ko, text) in enumerate(items, start=1)
+    )
+    return f'<ol class="sp-steps">{rows}</ol>'
+
+
+def sp_cards(items: list[tuple[str, str, str, list[str]]]) -> str:
+    rows = []
+    for en, ko, text, points in items:
+        rows.append(
+            f'<article class="sp-card"><p class="sp-card-en">{esc(en)}</p>'
+            f'<h3 class="sp-card-ko">{esc(ko)}</h3><p class="sp-card-text">{esc(text)}</p>'
+            f'{sp_list(points, "sp-list sp-list--tight")}</article>'
+        )
+    return f'<div class="sp-cards">{"".join(rows)}</div>'
+
+
+def sp_table(rows: list[tuple[str, str]]) -> str:
+    body = "".join(f"<div><dt>{esc(key)}</dt><dd>{esc(value)}</dd></div>" for key, value in rows)
+    return f'<dl class="sp-table">{body}</dl>'
+
+
+def sp_block(no: str, label: str, title: str, body: str) -> str:
+    return f"""<section class="sp-block">
+  <div class="sp-block-head">
+    <p class="sp-block-no">{no}</p>
+    <p class="sp-block-label">{esc(label)}</p>
+    <h2 class="sp-block-title">{title}</h2>
+  </div>
+  <div class="sp-block-body">{body}</div>
+</section>"""
+
+
+def sp_price(config: dict) -> str:
+    items = (config.get("pricing") or {}).get("items", [])
+    rows = "".join(
+        f'<li><span class="sp-price-en">{esc(item.get("en", ""))}</span>'
+        f'<span class="sp-price-name">{esc(item["name"])}</span>'
+        f'<span class="sp-price-value">{esc(item["price"])}</span>'
+        f'<span class="sp-price-note">{esc(item.get("priceNote", ""))}</span></li>'
+        for item in items
+    )
+    return (
+        f'<ol class="sp-price">{rows}</ol>'
+        '<p class="sp-note">표시 금액은 부가가치세(VAT) 별도 기준입니다. 작업 기간·수정 횟수·원본 제공 범위는 상품마다 달라 견적서에 함께 적습니다.</p>'
+        '<p><a class="sp-link" href="/#pricing">기준 가격과 조건 자세히 보기 →</a></p>'
+    )
+
+
+def page_specs(config: dict) -> list[dict]:
+    business = config["business"]
+    regions_line = "용인 · 수원 · 화성 · 성남 · 경기 광주 → 수도권 · 전국"
+
+    marketing_faq = [
+        ("광고만, 또는 블로그만 맡길 수 있나요?",
+         "가능합니다. 블로그·플레이스·콘텐츠·디자인 중 필요한 영역만 골라 상담하실 수 있습니다. "
+         "전부 손대는 제안보다 지금 문의가 끊기는 지점 한 곳을 먼저 고치는 편을 택합니다."),
+        ("광고비도 대신 집행하나요?",
+         "매체 광고 집행은 실제 집행 역량과 계약 조건이 확인된 범위에서만 진행합니다. "
+         "광고비는 작업비와 분리해 안내하고, 확인되지 않은 매체나 단가를 약속하지 않습니다."),
+        ("최소 계약 기간이 있나요?",
+         "단발 작업은 1건부터, 월간 관리는 월 단위로 시작합니다. 해지 조건과 범위는 견적서에 함께 적어 확정합니다."),
+        ("결과를 보장해 주나요?",
+         "보장하지 않습니다. 검색 순위와 매출은 여러 요인의 영향을 받습니다. "
+         "대신 확인 가능한 문제와 바꾼 지점, 다음에 확인할 지표를 근거로 남깁니다."),
+        ("용인 외 지역도 진행하나요?",
+         "가능합니다. 용인을 시작으로 수원·화성·성남·경기 광주 등 경기 남부, 수도권과 전국까지 진행합니다. "
+         "원거리는 자료 정리와 화상 미팅으로 상담을 대신합니다."),
+    ]
+
+    consulting_faq = [
+        ("경영컨설팅만 받을 수 있나요?",
+         "네. 경영컨설팅과 광고·마케팅은 각각 상담할 수 있습니다. 컨설팅을 광고·마케팅과 묶어 구매하도록 강제하지 않습니다."),
+        ("무엇을 준비해야 하나요?",
+         "사업 현황을 알 수 있는 자료(메뉴·가격표, 운영 채널 링크, 비용 구조 메모)가 있으면 좋습니다. "
+         "정리되지 않았어도 상담에서 함께 확인합니다."),
+        ("세무·법률 상담도 되나요?",
+         "직접 수행하지 않습니다. 세무·법률·회계처럼 별도 자격이 필요한 업무는 해당 전문가를 안내합니다."),
+        ("비용은 어떻게 되나요?",
+         "진단 범위에 따라 별도 견적을 냅니다. 무료 3가지 점검(0원)은 공개된 온라인 정보를 확인하는 범위이고, "
+         "컨설팅은 사업 현황과 수익구조까지 다루므로 범위가 다릅니다."),
+    ]
+
+    studio_faq = [
+        ("촬영 없이도 제작이 되나요?",
+         "됩니다. 보유하신 매장 사진·메뉴판·짧은 영상으로 기획·제작합니다. 현장 촬영은 기본 서비스에 포함되지 않고, "
+         "꼭 필요한 경우에만 별도로 협의합니다."),
+        ("원본 파일을 받을 수 있나요?",
+         "상품별 계약 조건에 적어 안내합니다. 원본 제공 여부와 사용 범위(온라인·인쇄, 기간)를 견적서에 함께 명시합니다."),
+        ("수정은 몇 번까지 되나요?",
+         "작업 범위에 따라 다릅니다. 입문 첫 세팅은 수정 1회가 기준이고, 그 밖의 작업은 견적서에 횟수를 적습니다. "
+         "범위 밖 추가 수정은 시작 전에 금액을 먼저 알려 드립니다."),
+        ("어떤 파일을 보내면 되나요?",
+         "휴대폰 사진 원본, 짧은 영상, 로고·메뉴판·기존 홍보물이면 충분합니다. 정리되지 않은 상태로 보내셔도 됩니다."),
+    ]
+
+    portfolio_faq = [
+        ("실제 고객 사례가 없나요?",
+         "지금 공개된 작업은 서비스 설명용 예시(D)입니다. 실제 프로젝트가 진행되면 유형·목적·결과물 기준으로 추가하고, "
+         "성과는 확인된 경우에만 표시합니다."),
+        ("성과 수치는 왜 없나요?",
+         "확인되지 않은 매출 상승률·검색 순위·예약 증가율을 표시하지 않습니다. 대신 무엇을 왜 바꿨는지 적습니다."),
+        ("제 업종 사례를 볼 수 있나요?",
+         "같은 업종의 공개 사례가 없으면, 비슷한 구조의 점검 예시로 설명드립니다. 상담에서 업종을 알려 주세요."),
+    ]
+
+    contact_faq = [
+        ("상담에 비용이 있나요?",
+         "무료 3가지 점검은 0원입니다. 유료 작업은 범위를 확인한 뒤 견적을 내고, 견적 전에는 비용이 발생하지 않습니다."),
+        ("전화 상담은 안 하나요?",
+         "영업 전화는 걸지 않습니다. 필요하시면 원하실 때 통화나 화상 미팅으로 진행합니다."),
+        ("얼마나 걸리나요?",
+         "링크를 보내 주시면 24시간 안에 요약을 드립니다. 실제 작업 일정은 견적서에 적어 확정합니다."),
+        ("어떤 정보를 보내야 하나요?",
+         "업체명과 온라인 채널 링크면 됩니다. 지금 가장 고민되는 부분을 함께 적어 주시면 더 정확하게 봅니다."),
+    ]
+
+    marketing_blocks = [
+        sp_block("01", "WHAT WE RUN", "맡을 수 있는 일", sp_list([
+            "광고대행과 채널별 마케팅 전략",
+            "네이버 블로그·카페 운영",
+            "네이버 플레이스 정보 정리와 홍보",
+            "SNS 콘텐츠 기획·운영",
+            "지역 상권 마케팅",
+            "SEO·GEO 콘텐츠 전략",
+            "고객 유입·전환 동선 개선",
+            "브랜드 홍보 캠페인 구성",
+        ])),
+        sp_block("02", "THE FOUR STEPS", "네 칸으로 봅니다", sp_steps([
+            ("SEARCH", "검색",
+             "고객이 실제로 입력하는 업종·지역·상황의 말을 먼저 찾습니다. 예쁜 키워드보다 손님이 쓰는 말이 기준입니다."),
+            ("CONTENT", "콘텐츠",
+             "비교에 필요한 정보를 글로 남깁니다. 가격, 진행 과정, 사진, 자주 묻는 질문까지. 읽는 사람이 결정할 수 있게 씁니다."),
+            ("CHANNEL", "플레이스·채널",
+             "매장이면 플레이스, 온라인 사업자면 쇼핑몰·홈페이지·SNS. 채널마다 정보가 어긋나지 않게 맞춥니다."),
+            ("CONVERSION", "문의·예약",
+             "행동 지점을 하나로 좁힙니다. 문의·예약·구매 중 무엇을 남길지 정하고 나머지는 뒤로 뺍니다."),
+        ])),
+        sp_block("03", "HOW IT RUNS", "일하는 방식",
+                 sp_paras([
+                     "작업은 필요한 한 건부터 시작합니다. 네 칸을 모두 손대는 제안보다, 지금 문의가 끊기는 지점 한 곳을 먼저 고치는 편을 택합니다.",
+                     "범위와 금액은 말이 아니라 견적서에 적어 남깁니다.",
+                 ]) + sp_list([
+                     "범위를 먼저 적습니다 — 결과물, 수량, 수정 횟수, 일정, VAT 별도 여부",
+                     "광고비는 따로 — 매체에 지출되는 비용은 작업비와 분리해 안내",
+                     "확인 가능한 지표만 — 노출·유입·문의처럼 확인되는 것만 보고",
+                     "채널은 하나로 — 문의 창구를 여러 개 두면 새는 곳이 생깁니다",
+                 ])),
+        sp_block("04", "WHO IT'S FOR", "이런 분들과 일합니다", sp_list([
+            "소상공인·자영업자", "음식점·카페", "숙박·관광 사업자", "뷰티·미용업체",
+            "신규 창업자", "온라인 판매 사업자", "개인 브랜드 운영자", "전문 서비스 사업자", "중소기업",
+        ], cls="sp-chips")),
+        sp_block("05", "PRICE", "기준 가격", sp_price(config)),
+    ]
+
+    consulting_blocks = [
+        sp_block("01", "WHAT WE LOOK AT", "다루는 것", sp_list([
+            "사업 현황과 문제 진단",
+            "시장·경쟁업체 분석",
+            "고객층과 상품 구성 검토",
+            "가격 전략",
+            "마케팅 비용과 채널 검토",
+            "수익구조 검토",
+            "브랜드 포지셔닝",
+            "디지털 전환 방향",
+        ])),
+        sp_block("02", "WHO IT'S FOR", "이런 경우에 찾습니다", sp_list([
+            "새로 시작하는 사업의 방향을 정해야 할 때",
+            "매출은 있는데 남는 수익이 부족할 때",
+            "상품 구성과 가격을 다시 정리해야 할 때",
+            "광고비를 어디에 써야 할지 모르겠을 때",
+            "우리 브랜드만의 차별화 요소를 찾기 어려울 때",
+            "광고·마케팅과 별개로 사업 구조를 점검하고 싶을 때",
+        ])),
+        sp_block("03", "HOW IT RUNS", "진행 방식", sp_steps([
+            ("DIAGNOSIS", "현황 확인",
+             "지금의 상품·가격·채널·비용 구조를 확인합니다. 자료가 정리되어 있지 않아도 상담에서 함께 정리합니다."),
+            ("ANALYSIS", "문제와 원인 정리",
+             "보이는 증상과 원인을 나눠 적습니다. 우선순위를 정해 지금 손댈 것과 나중에 볼 것을 구분합니다."),
+            ("PROPOSAL", "개선 방향과 실행 순서",
+             "분석 정리, 개선 제안, 실행 순서를 문서로 전달합니다. 실행까지 필요하면 광고·마케팅·제작 범위에서 따로 견적합니다."),
+        ])),
+        sp_block("04", "SCOPE", "범위와 경계",
+                 sp_paras([
+                     "세무·법률·회계처럼 별도 자격이 필요한 업무는 직접 수행하지 않습니다. 필요한 경우 해당 전문가를 안내합니다.",
+                     "확인되지 않은 자격·실적·인증을 내세우지 않습니다. 컨설팅을 광고·마케팅과 묶어 구매하도록 강제하지도 않습니다.",
+                 ])),
+        sp_block("05", "FEE", "비용", sp_paras([
+            "컨설팅 비용은 진단 범위에 따라 별도 견적을 냅니다. 무료 3가지 점검(0원)은 공개된 온라인 정보를 확인하는 범위이고, "
+            "컨설팅은 사업 현황과 수익구조까지 다루므로 범위가 다릅니다.",
+            "견적 전에 무엇을 받게 되는지(분석 정리·개선 제안·실행 순서)를 먼저 적어 안내합니다.",
+        ])),
+    ]
+
+    studio_blocks = [
+        sp_block("01", "WHAT WE MAKE", "만드는 것", sp_cards([
+            ("TEXT", "글",
+             "브랜드 소개, 상품·서비스 설명, 블로그 콘텐츠, 스토리텔링.",
+             ["블로그 글·브랜드 소개문", "상품·서비스 설명", "자주 묻는 질문 정리"]),
+            ("IMAGE & DESIGN", "이미지·디자인",
+             "매장에서 바로 쓰는 홍보물부터 온라인 이미지까지.",
+             ["로고·브랜드 디자인", "포스터·메뉴판·배너", "상세페이지·SNS 이미지"]),
+            ("VIDEO", "영상",
+             "짧은 영상과 브랜드 영상. 보유하신 소재로 기획·편집합니다.",
+             ["릴스·클립·쇼츠", "브랜드 홍보 영상", "숏폼 편집"]),
+        ])),
+        sp_block("02", "HOW WE MAKE", "제작 방식", sp_steps([
+            ("ASSETS", "소재 확인", "가지고 계신 사진·영상·기존 홍보물을 먼저 봅니다. 쓸 수 있는 것부터 골라 냅니다."),
+            ("PLAN", "기획", "누가 어디서 보게 될 콘텐츠인지 정하고, 목적에 맞춰 구성과 문장을 잡습니다."),
+            ("BUILD", "제작", "원고·이미지·영상을 만들고 브랜드 톤에 맞춰 다듬습니다."),
+            ("REVIEW", "검수", "가격·영업시간·채널 정보가 서로 어긋나지 않는지 확인합니다."),
+            ("DELIVER", "전달", "채널에 바로 쓸 수 있는 형태로 전달하고, 쓰는 방법을 함께 안내합니다."),
+        ])),
+        sp_block("03", "RIGHTS", "원본과 사용권", sp_paras([
+            "원본 파일 제공 여부와 사용 범위(온라인·인쇄, 사용 기간)는 상품별 계약 조건에 적어 안내합니다.",
+            "폰트·이미지·음원은 사용 권한이 확인된 것만 씁니다. 별도 구매가 필요한 소재는 시작 전에 알려 드립니다.",
+        ])),
+        sp_block("04", "PRICE", "기준 가격", sp_price(config)),
+    ]
+
+    portfolio_blocks = [
+        sp_block("01", "TYPES", "네 가지로 구분합니다", sp_list([
+            "A — 노티스랩 공식 프로젝트",
+            "B — 대표 블로그·브랜드 협업 콘텐츠",
+            "C — 자체 제작 시안",
+            "D — 서비스 설명용 작업 예시",
+        ])),
+        sp_block("02", "CURRENT", "지금 공개된 작업",
+                 "<div class=\"samples samples--page\">" + "\n".join(
+                     sample_html(sample, index) for index, sample in enumerate(SAMPLES, start=1)
+                 ) + "</div>"
+                 + '<p class="sp-note">위 세 건은 D — 서비스 설명용 예시입니다. 실제 고객 화면 캡처가 아니며, 항목은 매장마다 달라집니다.</p>'),
+        sp_block("03", "HOW TO READ", "읽는 방법", sp_paras([
+            "이 페이지는 결과 숫자보다 무엇을 왜 바꿨는지를 먼저 적습니다. 확인되지 않은 매출 상승률·검색 순위·예약 증가율은 표시하지 않습니다.",
+            "실제 프로젝트가 진행되면 프로젝트명, 작업 목적, 대상 업종, 제작 방향, 결과물, 확인 가능한 성과를 기준으로 추가합니다.",
+        ])),
+    ]
+
+    about_blocks = [
+        sp_block("01", "STORY", "쿠폰 주머니에서 시작된 소비자의 시선", sp_paras([
+            "친구들이 쿠폰을 챙겨 다니지 않던 시절, 저는 따로 쿠폰 주머니를 들고 다니던 사람이었습니다.",
+            "같은 제품이라도 어디에서 구매하는 것이 합리적인지, 어떤 혜택을 받을 수 있는지 알아보는 일이 즐거웠습니다.",
+            "2007년부터 블로그를 운영하며 다양한 매장과 제품을 경험하고 여러 브랜드와 협업했습니다. 소비자가 어떤 정보를 찾고, 무엇을 비교하며, 어떤 이유로 지갑을 여는지 살펴왔습니다.",
+            "하지만 사업자의 입장에서는 또 다른 고민이 있습니다. 매출이 발생한다고 해서 반드시 충분한 마진이 남는 것은 아니고, 좋은 제품과 서비스가 있어도 필요한 정보가 전달되지 않으면 선택받기 어렵습니다.",
+            "광고를 더 많이 하는 것보다, 고객이 선택할 이유를 제대로 전달할 수는 없을까. 노티스랩은 그 질문에서 출발했습니다.",
+            "광고와 마케팅으로 브랜드를 알리고, 경영컨설팅으로 사업의 방향을 고민하며, 글과 이미지, 영상으로 실행합니다. 소비자의 시선으로 발견하고, 사업자의 입장에서 연구합니다.",
+        ])),
+        sp_block("02", "SINCE 2007", "블로그 경험은 2007년부터",
+                 '<p class="sp-display">BLOG EXPERIENCE<br><b>SINCE 2007.</b></p>'
+                 + sp_paras([
+                     "2007년부터 축적한 블로그 운영 경험, 소비자의 선택을 연구해 온 콘텐츠 제작 경험이 노티스랩의 출발점입니다.",
+                     "SINCE 2007은 대표자의 블로그 운영 경험을 뜻합니다. 노티스랩의 설립연도나 광고대행 시작 연도가 아닙니다.",
+                 ])),
+        sp_block("03", "ORGANIZATION", "하는 일", sp_list([
+            "광고·브랜드 마케팅 (주력, 홈페이지 콘텐츠 비중 50%)",
+            "경영컨설팅 (전략, 20%)",
+            "콘텐츠·영상 제작 (실행, 15%)",
+            "브랜드·시각디자인 (실행, 15%)",
+        ]) + '<p class="sp-note">비중은 홈페이지 콘텐츠 구성 기준이며 실제 매출 비중이 아닙니다.</p>'),
+        sp_block("04", "IMPACT", "우리의 성장이 누군가의 시작이 되도록",
+                 sp_paras([
+                     "노티스랩은 소상공인·기업 프로젝트(Track A)로 수익을 만듭니다. 그 수익과 일정의 일부를 신진 예술가, 청년 초기 창업자, 자립준비청년의 첫 홍보물을 만드는 데 쓰는 것을 목표로 합니다(Track B).",
+                     "전체 사업의 10% 환원을 목표로 두고 있습니다. 다만 매출·순이익·작업시간 중 어떤 기준으로 산정할지는 확정 전이라, 구체적인 지원 실적이나 확정된 배정으로 표현하지 않습니다.",
+                     "처음 일을 시작할 때 필요한 건 거창한 캠페인이 아닙니다. 내 일을 설명하는 소개서 한 장, 검색했을 때 걸리는 최소한의 구조입니다.",
+                 ])),
+        sp_block("05", "VISION", "장기 목표", sp_paras([
+            "기업 비전은 지속 가능한 동반 성장입니다. 일회성 홍보 지원을 넘어, 마케팅·브랜드 디자인·영상 제작 역량을 직접 배우고 활용할 수 있는 실무 교육 기반을 만드는 것을 장기 목표로 둡니다.",
+            "고객의 성장이 노티스랩의 성장으로, 노티스랩의 성장이 새로운 도전자의 기회로 이어지게 하는 것이 목표입니다.",
+        ])),
+        sp_block("06", "COMPANY", "기업 정보", sp_table([
+            ("상호", business["name"]),
+            ("대표", business["ceo"]),
+            ("사업자등록번호", business["registrationNumber"]),
+            ("주소", business["address"]),
+            ("이메일", business["email"]),
+            ("전화", business["phone"]),
+            ("업종", business["industries"]),
+            ("서비스 지역", regions_line),
+        ])),
+    ]
+
+    contact_blocks = [
+        sp_block("01", "TYPES", "상담 유형", sp_list([
+            "무료 온라인 홍보 3가지 점검",
+            "광고·마케팅 상담",
+            "경영컨설팅 상담",
+            "블로그·카페 운영 문의",
+            "영상·디자인 제작 문의",
+            "기타 브랜드 프로젝트",
+        ])),
+        sp_block("02", "HOW", "접수 방식", sp_steps([
+            ("SEND", "카카오톡으로 보내기",
+             "업체명과 채널 링크를 1:1 채팅으로 보내 주세요. 회원가입이나 긴 신청서는 없습니다."),
+            ("REPLY", "24시간 내 요약",
+             "공개된 정보에서 확인한 것과 바로 고칠 순서를 정리해 답합니다. 영업 전화는 걸지 않습니다."),
+            ("TALK", "필요하면 통화·화상",
+             "원하실 때만 통화나 화상으로 이어갑니다. 견적과 범위는 문서로 남깁니다."),
+        ])),
+        sp_block("03", "PREPARE", "미리 준비하면 좋은 것 (선택)", sp_list([
+            "업체명 또는 브랜드명",
+            "플레이스·블로그·쇼핑몰 등 운영 중인 채널 링크",
+            "지금 가장 고민되는 부분",
+            "가지고 계신 사진·영상(있으면)",
+        ])),
+        sp_block("04", "NOT", "하지 않는 것", sp_list([
+            "방문 영업·전화 영업",
+            "확인되지 않은 실적이나 보장 문구",
+            "반복 연락",
+            "상담을 위한 회원가입 요구",
+        ])),
+        sp_block("05", "INFO", "사업자 정보", sp_table([
+            ("상호", business["name"]),
+            ("대표", business["ceo"]),
+            ("사업자등록번호", business["registrationNumber"]),
+            ("이메일", business["email"]),
+            ("전화", business["phone"]),
+            ("주소", business["address"]),
+        ])),
+    ]
+
+    privacy_blocks = [
+        sp_block("01", "COLLECT", "수집하는 정보",
+                 sp_paras([
+                     "홈페이지는 회원가입이나 신청 폼을 운영하지 않습니다. 상담은 카카오톡 채널에서 진행되며, 이용자가 직접 보내는 정보만 받습니다.",
+                 ]) + sp_list([
+                     "업체명 또는 브랜드명",
+                     "온라인 채널 링크",
+                     "상담 내용",
+                     "이용자가 알려준 연락처",
+                 ])),
+        sp_block("02", "PURPOSE", "이용 목적", sp_list([
+            "상담 회신과 무료 점검 결과 안내",
+            "견적·작업 범위 안내",
+            "계약 이후 작업 진행과 결과 전달",
+        ])),
+        sp_block("03", "RETENTION", "보유 기간", sp_paras([
+            "상담이 끝나면 목적이 달성된 정보는 지체 없이 파기합니다. 계약이 진행되면 계약·세무 관련 법령이 정한 기간 동안 보관합니다.",
+        ])),
+        sp_block("04", "THIRD PARTY", "제3자 제공", sp_paras([
+            "상담에서 받은 정보를 제3자에게 제공하지 않습니다. 법령에 따라 요구되는 경우를 제외합니다.",
+        ])),
+        sp_block("05", "PROCESSOR", "처리 위탁과 국외 이전", sp_paras([
+            "상담은 카카오톡 채널에서 진행되어 카카오의 서비스 정책이 함께 적용됩니다. 홈페이지는 Cloudflare의 호스팅과 접속 통계를 사용하며, 페이지 요청 처리 과정에서 접속 정보가 국외 서버로 전송될 수 있습니다.",
+        ])),
+        sp_block("06", "ANALYTICS", "분석 도구", sp_paras([
+            "Cloudflare Web Analytics를 사용합니다. 쿠키를 쓰지 않고 개인을 식별하지 않는 방식의 접속 통계입니다. Google Analytics 4와 Google Tag Manager는 설치하지 않았습니다.",
+        ])),
+        sp_block("07", "RIGHTS", "이용자의 권리", sp_paras([
+            "본인이 제공한 정보의 열람·정정·삭제를 요청할 수 있습니다. 아래 문의처로 알려 주시면 확인 후 처리합니다.",
+        ])),
+        sp_block("08", "CONTACT", "문의", sp_table([
+            ("이메일", business["email"]),
+            ("전화", business["phone"]),
+            ("상호", business["name"]),
+            ("대표", business["ceo"]),
+        ]) + '<p class="sp-note">시행일 2026년 11월 25일</p>'),
+    ]
+
+    return [
+        {
+            "key": "marketing",
+            "path": "/marketing/",
+            "label": "광고·마케팅",
+            "mark": "BRAND MARKETING — 01",
+            "title": "고객에게 보이는 것에서,<br>고객에게 선택받는 것으로.",
+            "lede": "광고·마케팅은 노티스랩의 중심 사업입니다. 검색에서 시작해 문의·예약·구매까지, 브랜드가 고객과 만나는 접점을 정리합니다.",
+            "action": "광고·마케팅 상담",
+            "secondary": ("/#pricing", "기준 가격 보기"),
+            "meta_title": "광고·마케팅 | 노티스랩 — 플레이스·블로그·SEO·GEO",
+            "meta_desc": "네이버 플레이스·블로그·카페 운영, SNS 콘텐츠, 지역 상권 마케팅, SEO·GEO, 전환 동선 개선까지. 검색에서 문의까지 이어지는 구조를 설계합니다.",
+            "blocks": marketing_blocks,
+            "faq": marketing_faq,
+            "faq_no": "06",
+            "next": [("/consulting/", "BUSINESS CONSULTING", "경영컨설팅"),
+                     ("/studio/", "CONTENT STUDIO", "콘텐츠·디자인"),
+                     ("/portfolio/", "SELECTED WORKS", "작업 사례")],
+            "cta": ("FREE CHECK", "광고비를 더 쓰기 전에,<br>끊긴 지점부터.",
+                    "가게 이름이나 채널 링크만 보내 주세요. 공개된 정보에서 개선할 세 가지를 정리해 드립니다."),
+            "service": {"name": "광고·브랜드 마케팅", "serviceType": "광고대행 및 브랜드 마케팅"},
+        },
+        {
+            "key": "consulting",
+            "path": "/consulting/",
+            "label": "경영컨설팅",
+            "mark": "BUSINESS CONSULTING — 02",
+            "title": "사업의 고민을 분석하고,<br>성장의 방향을 설계합니다.",
+            "lede": "경영컨설팅은 광고·마케팅과 별도로 상담할 수 있는 서비스입니다. 사업 현황과 수익구조를 함께 봅니다.",
+            "action": "경영컨설팅 상담",
+            "secondary": ("/#free-check", "무료 점검 안내"),
+            "meta_title": "경영컨설팅 | 노티스랩 — 사업 현황·수익구조·가격 전략",
+            "meta_desc": "사업 현황과 문제 진단, 시장·경쟁 분석, 고객층과 상품 구성, 가격과 수익구조 검토. 광고·마케팅과 별도로 상담할 수 있는 경영컨설팅입니다.",
+            "blocks": consulting_blocks,
+            "faq": consulting_faq,
+            "faq_no": "06",
+            "next": [("/marketing/", "BRAND MARKETING", "광고·마케팅"),
+                     ("/about/", "ABOUT NOTICE LAB", "기업 소개"),
+                     ("/contact/", "CONTACT", "상담 안내")],
+            "cta": ("BUSINESS CONSULTING", "사업의 고민부터<br>정리해 보겠습니다.",
+                    "지금 상황을 알 수 있는 자료가 없어도 됩니다. 확인한 것부터 순서대로 정리합니다."),
+            "service": {"name": "경영컨설팅", "serviceType": "경영컨설팅"},
+        },
+        {
+            "key": "studio",
+            "path": "/studio/",
+            "label": "콘텐츠·디자인",
+            "mark": "CONTENT STUDIO — 03",
+            "title": "브랜드의 이야기를,<br>고객이 기억하는 콘텐츠로.",
+            "lede": "글, 이미지, 영상. 가지고 계신 사진과 영상으로 시작합니다. 현장 촬영은 기본 제공하지 않고, 필요한 경우에만 따로 협의합니다.",
+            "action": "콘텐츠 제작 견적 문의",
+            "secondary": ("/portfolio/", "작업 사례 보기"),
+            "meta_title": "콘텐츠·디자인 | 노티스랩 — 블로그·릴스·포스터·상세페이지",
+            "meta_desc": "블로그 콘텐츠, 브랜드 소개, 릴스·클립·쇼츠, 포스터·메뉴판·상세페이지 제작. 보유하신 사진과 영상으로 기획·제작합니다.",
+            "blocks": studio_blocks,
+            "faq": studio_faq,
+            "faq_no": "05",
+            "next": [("/portfolio/", "SELECTED WORKS", "작업 사례"),
+                     ("/marketing/", "BRAND MARKETING", "광고·마케팅"),
+                     ("/contact/", "CONTACT", "상담 안내")],
+            "cta": ("CONTENT STUDIO", "가지고 계신 사진으로<br>시작할 수 있습니다.",
+                    "매장 사진·메뉴판·짧은 영상만 있으면 첫 세트를 만들 수 있습니다."),
+            "service": {"name": "콘텐츠·영상·시각디자인 제작", "serviceType": "콘텐츠 제작 및 시각디자인"},
+        },
+        {
+            "key": "portfolio",
+            "path": "/portfolio/",
+            "label": "작업 사례",
+            "mark": "SELECTED WORKS — 04",
+            "title": "SELECTED<br>WORKS.",
+            "lede": "작업 유형을 네 가지로 구분해 표시합니다. 확인되지 않은 성과 수치나 실제 고객 화면처럼 보이는 조작은 하지 않습니다.",
+            "action": "제작 견적 문의",
+            "secondary": ("/#free-check", "무료 점검 안내"),
+            "meta_title": "작업 사례 | 노티스랩 — 플레이스·콘텐츠·문의 동선",
+            "meta_desc": "노티스랩의 작업 유형과 공개된 작업 예시입니다. 플레이스 정보 정리, 콘텐츠 세트, 문의 동선 개선을 전후 구성으로 보여 드립니다.",
+            "blocks": portfolio_blocks,
+            "faq": portfolio_faq,
+            "faq_no": "04",
+            "next": [("/marketing/", "BRAND MARKETING", "광고·마케팅"),
+                     ("/studio/", "CONTENT STUDIO", "콘텐츠·디자인"),
+                     ("/about/", "ABOUT NOTICE LAB", "기업 소개")],
+            "cta": ("PROJECT", "같은 방식으로<br>정리해 보겠습니다.",
+                    "업종과 상황이 다르면 바꾸는 항목도 달라집니다. 링크를 보내 주시면 확인한 것부터 정리합니다."),
+            "service": {"name": "브랜드 작업 사례", "serviceType": "브랜드 마케팅 제작"},
+        },
+        {
+            "key": "about",
+            "path": "/about/",
+            "label": "기업 소개",
+            "mark": "ABOUT NOTICE LAB — 05",
+            "title": "쿠폰 주머니에서 시작된<br>소비자의 시선.",
+            "lede": "노티스랩은 소비자의 시선과 사업자의 수익성을 함께 보는 회사입니다. 광고·마케팅을 중심으로 경영컨설팅과 콘텐츠 제작을 연결합니다.",
+            "action": "노티스랩에 문의",
+            "secondary": ("/insights/", "연구 노트 보기"),
+            "meta_title": "기업 소개 | 노티스랩 — 2007년부터 쌓은 소비자의 시선",
+            "meta_desc": "쿠폰 주머니에서 시작된 소비자의 시선, 2007년부터 이어온 블로그 경험, 노티스랩의 사회적 가치와 장기 목표를 소개합니다.",
+            "blocks": about_blocks,
+            "faq": [],
+            "next": [("/portfolio/", "SELECTED WORKS", "작업 사례"),
+                     ("/marketing/", "BRAND MARKETING", "광고·마케팅"),
+                     ("/contact/", "CONTACT", "상담 안내")],
+            "cta": ("NOTICE LAB", "브랜드의 이야기를<br>고객이 선택할 이유로.",
+                    "소상공인부터 기업까지. 필요한 이야기를 함께 찾아보겠습니다."),
+            "page_type": "AboutPage",
+        },
+        {
+            "key": "contact",
+            "path": "/contact/",
+            "label": "상담 안내",
+            "mark": "CONTACT — 06",
+            "title": "상담은 카카오톡 채널<br>하나로 받습니다.",
+            "lede": "업체명과 온라인 채널 링크만 보내 주세요. 영업 전화는 걸지 않고, 확인한 내용만 정리해 답합니다.",
+            "action": "카카오톡 채널 열기",
+            "secondary": ("/#free-check", "무료 점검 안내"),
+            "meta_title": "상담 안내 | 노티스랩 — 카카오톡 채널 1:1",
+            "meta_desc": "업체명과 채널 링크만 보내 주세요. 24시간 내 요약, 영업 전화 없음, 계약 의무 없음. 광고·마케팅과 경영컨설팅 상담을 함께 받습니다.",
+            "blocks": contact_blocks,
+            "faq": contact_faq,
+            "faq_no": "06",
+            "next": [("/marketing/", "BRAND MARKETING", "광고·마케팅"),
+                     ("/consulting/", "BUSINESS CONSULTING", "경영컨설팅"),
+                     ("/about/", "ABOUT NOTICE LAB", "기업 소개")],
+            "cta": None,
+            "page_type": "ContactPage",
+        },
+        {
+            "key": "privacy",
+            "path": "/privacy/",
+            "label": "개인정보처리방침",
+            "mark": "PRIVACY — 07",
+            "title": "개인정보<br>처리방침.",
+            "lede": "노티스랩은 상담에 필요한 최소한의 정보만 받습니다. 이 페이지는 실제 운영 방식만 적습니다.",
+            "action": "이메일로 문의",
+            "secondary": ("/contact/", "상담 안내"),
+            "meta_title": "개인정보처리방침 | 노티스랩",
+            "meta_desc": "노티스랩 홈페이지와 카카오톡 상담에서 받는 정보의 항목, 이용 목적, 보유 기간, 제3자 제공과 처리 위탁을 안내합니다.",
+            "blocks": privacy_blocks,
+            "faq": [],
+            "next": [("/contact/", "CONTACT", "상담 안내"),
+                     ("/about/", "ABOUT NOTICE LAB", "기업 소개"),
+                     ("/", "HOME", "홈")],
+            "cta": None,
+            "page_type": "WebPage",
+            "robots": "index,follow",
+            "action_href": f'mailto:{business["email"]}',
+        },
+    ]
+
+
+def build_page(config: dict, spec: dict, base: dict) -> str:
+    faq = spec.get("faq") or []
+    blocks = list(spec["blocks"])
+    if faq:
+        blocks.append(sp_block(spec["faq_no"], "FAQ", "자주 묻는 질문", faq_html(faq)))
+
+    next_html = "".join(
+        f'<a href="{href}"><span class="sp-next-en">{esc(en)}</span>'
+        f'<span class="sp-next-ko">{esc(ko)}</span>'
+        '<span class="sp-next-arrow" aria-hidden="true">→</span></a>'
+        for href, en, ko in spec["next"]
+    )
+
+    action_href = spec.get("action_href") or config["consultUrl"]
+    blank = "" if action_href.startswith("mailto:") else ' target="_blank" rel="noopener noreferrer"'
+    sr = "" if action_href.startswith("mailto:") else '<span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>'
+    actions = (
+        f'<a class="btn btn--solid" href="{esc(action_href)}"{blank}>'
+        f'{esc(spec["action"])}<span class="btn-arrow" aria-hidden="true">→</span>{sr}</a>'
+        f'<a class="btn btn--line" href="{spec["secondary"][0]}">{esc(spec["secondary"][1])}'
+        '<span class="btn-arrow" aria-hidden="true">→</span></a>'
+    )
+
+    cta = spec.get("cta")
+    if cta:
+        closing = f"""<section class="closing closing--page" aria-labelledby="sp-closing-title">
+  <div class="wrap closing-inner">
+    <p class="closing-label">{esc(cta[0])}</p>
+    <h2 class="closing-title" id="sp-closing-title">{cta[1]}</h2>
+    <p class="closing-lede">{esc(cta[2])}</p>
+    <div class="closing-actions">
+      <a class="btn btn--light btn--lg" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+        카카오톡으로 견적 문의<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+      </a>
+      <a class="btn btn--ghost-light btn--lg" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+        내 가게 3가지 무료 점검<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+      </a>
+    </div>
+    <p class="closing-notes">계약 의무 없음 · 영업 전화 없음 · 24시간 내 요약</p>
+  </div>
+</section>"""
+    else:
+        closing = ""
+
+    content = render_template("page.html", {
+        **base,
+        "sp_label": esc(spec["label"]),
+        "sp_mark": esc(spec["mark"]),
+        "sp_title": spec["title"],
+        "sp_lede": esc(spec["lede"]),
+        "sp_actions": actions,
+        "sp_blocks": "\n".join(blocks),
+        "sp_next": next_html,
+        "sp_closing": closing,
+    })
+
+    page_type = spec.get("page_type") or "WebPage"
+    page_jsonld: dict = {
+        "@context": "https://schema.org",
+        "@type": page_type,
+        "@id": url_for(config, spec["path"]),
+        "url": url_for(config, spec["path"]),
+        "name": re.sub(r"<br>", " ", spec["meta_title"]),
+        "description": spec["meta_desc"],
+        "inLanguage": "ko-KR",
+        "isPartOf": {"@id": url_for(config, "/#website")},
+        "about": {"@id": url_for(config, "/#organization")},
+    }
+    blocks_jsonld = [organization_jsonld(config), page_jsonld]
+    if spec.get("service"):
+        blocks_jsonld.append({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": spec["service"]["name"],
+            "serviceType": spec["service"]["serviceType"],
+            "description": spec["meta_desc"],
+            "provider": {"@id": url_for(config, "/#organization")},
+            "areaServed": [{"@type": "AdministrativeArea", "name": region} for region in config["regions"]],
+            "url": url_for(config, spec["path"]),
+        })
+    if faq:
+        blocks_jsonld.append({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": question,
+                 "acceptedAnswer": {"@type": "Answer", "text": answer}}
+                for question, answer in faq
+            ],
+        })
+    blocks_jsonld.append({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "홈", "item": url_for(config, "/")},
+            {"@type": "ListItem", "position": 2, "name": spec["label"], "item": url_for(config, spec["path"])},
+        ],
+    })
+
+    context = {
+        **base,
+        "page_title": spec["meta_title"],
+        "description": spec["meta_desc"],
+        "canonical": url_for(config, spec["path"]),
+        "og_title": re.sub(r"<br>", " ", spec["title"]),
+        "og_image": url_for(config, spec.get("og") or "/assets/images/og-go-linkhub.jpg"),
+        "og_image_alt": f"노티스랩 — {spec['label']}",
+        "nav": nav_html(config, spec["key"]),
+        "jsonld": jsonld_block(*blocks_jsonld),
+        "body_class": f"page-sub page-{spec['key']}",
+        "robots": spec.get("robots", "index,follow,max-image-preview:large"),
+        "content": content,
+    }
+    return render_template("base.html", context)
+
+
 # 인스타그램·스레드 프로필 링크용 멀티링크 허브 (/go/)
 GO_PATH = "/go/"
 
@@ -1274,21 +1936,27 @@ LINK_ICON_TILES = {
 
 GO_DEFAULT_LINKS = [
     {
-        "label": "카카오톡 채널 1:1 무료 상담",
-        "sub": "가장 빠른 문의 · 매장 진단 요청",
+        "label": "제작 · 세팅 견적 문의",
+        "sub": "필요한 작업 1건(5만 원~)부터 · 카카오톡 1:1",
         "url": "https://pf.kakao.com/_xdMIvX/chat",
         "icon_svg": "kakaotalk",
         "primary": True,
     },
     {
-        "label": "노티스랩 공식 홈페이지 · 인사이트",
-        "sub": "서비스 안내 · 무료 3가지 점검",
+        "label": "내 가게 3가지 무료 점검",
+        "sub": "0원 · 링크만 보내면 24시간 내 요약 · 영업 전화 없음",
+        "url": "https://pf.kakao.com/_xdMIvX/chat",
+        "icon_svg": "kakaotalk",
+    },
+    {
+        "label": "노티스랩 공식 홈페이지",
+        "sub": "서비스 · 기준 가격 · 작업 사례 · 연구 노트",
         "url": "https://noticelab.pages.dev/",
         "icon": "🌐",
     },
     {
         "label": "노티스랩 네이버 블로그",
-        "sub": "네이버 블로그 바로가기",
+        "sub": "현장 기록과 연구 노트",
         "url": "https://blog.naver.com/noticelab",
         "icon_svg": "naverblog",
     },
@@ -1343,18 +2011,18 @@ def build_go(config: dict, base: dict) -> str:
         "email": business["email"],
         "telephone": phone_intl,
         "founder": {"@type": "Person", "name": business["ceo"]},
-        "slogan": hub.get("slogan", "광고보다 결과, 조회수보다 매출을 연구합니다."),
+        "slogan": hub.get("slogan", "조회수가 아닌 매출을 연구합니다."),
         "sameAs": [link["url"] for link in (hub.get("links") or GO_DEFAULT_LINKS)
                    if link.get("url") and "noticelab.pages.dev" not in link["url"]],
     }
     context = {
         "page_title": "노티스랩 링크 | NOTICE LAB",
-        "description": ("노티스랩 공식 링크 모음입니다. 카카오톡 채널 1:1 무료 상담, "
+        "description": ("노티스랩 공식 링크입니다. 제작·세팅 견적 문의와 무료 3가지 점검, "
                         "홈페이지·인사이트, 네이버 블로그로 바로 이동할 수 있습니다."),
         "canonical": url_for(config, GO_PATH),
         "og_title": "NOTICE LAB · 노티스랩 — 링크",
         "og_image": url_for(config, "/assets/images/og-go-linkhub.jpg"),
-        "og_image_alt": "NOTICE LAB 노티스랩 링크 — 광고보다 결과, 조회수보다 매출을 연구합니다",
+        "og_image_alt": "NOTICE LAB 노티스랩 링크 — 조회수가 아닌 매출을 연구합니다",
         "jsonld": jsonld_block(organization),
         "region_line": "경기 남부 · 전국",
         "biz_tel": "tel:" + phone_intl,
@@ -1364,10 +2032,18 @@ def build_go(config: dict, base: dict) -> str:
 
 
 def build_sitemap(config: dict, posts: list[dict]) -> str:
+    today = datetime.now(KST).date().isoformat()
     entries = [
-        (url_for(config, "/"), datetime.now(KST).date().isoformat(), "1.0", "weekly"),
-        (url_for(config, "/insights/"), datetime.now(KST).date().isoformat(), "0.9", "daily"),
-        (url_for(config, GO_PATH), datetime.now(KST).date().isoformat(), "0.7", "monthly"),
+        (url_for(config, "/"), today, "1.0", "weekly"),
+        (url_for(config, "/marketing/"), today, "0.9", "monthly"),
+        (url_for(config, "/consulting/"), today, "0.9", "monthly"),
+        (url_for(config, "/studio/"), today, "0.8", "monthly"),
+        (url_for(config, "/portfolio/"), today, "0.8", "monthly"),
+        (url_for(config, "/about/"), today, "0.7", "monthly"),
+        (url_for(config, "/contact/"), today, "0.8", "monthly"),
+        (url_for(config, "/insights/"), today, "0.9", "daily"),
+        (url_for(config, "/privacy/"), today, "0.3", "yearly"),
+        (url_for(config, GO_PATH), today, "0.5", "monthly"),
     ]
     for post in posts:
         entries.append((url_for(config, post["path"]), post["updated"].date().isoformat(), "0.8", "monthly"))
@@ -1406,14 +2082,28 @@ def build_llms_txt(config: dict, posts: list[dict]) -> str:
         f"> {config['slogan']} {config['description']}",
         "",
         "## 핵심 정보",
-        f"- 대응 지역: {' · '.join(config['regions'])}",
+        f"- 영문 포지셔닝: {config.get('positioning', 'BRAND MARKETING & BUSINESS CONSULTING')}",
+        f"- 대표 지역: {' · '.join(config['regions'])}",
         f"- 업종: {business['industries']}",
         f"- 서비스: {' / '.join(service['title'] for service in config['services'])}",
         "- 제작 원칙: 업체가 제공한 기존 사진·영상을 바탕으로 기획·제작하며, 별도 현장 촬영은 기본 서비스로 제공하지 않습니다.",
         "- 상위 노출, 매출, AI 검색 인용을 보장하지 않습니다.",
-        "- 첫 제안: 가게 이름이나 플레이스 링크를 보내면 빠진 정보와 바로 고칠 3가지를 정리해 드립니다(무료, 카톡 전달 시 24시간 내 요약, 영업 전화 없음).",
-        f"- 기준 가격: {' / '.join(price_bits)}",
+        "- 첫 제안: 가게 이름이나 채널 링크를 보내면 빠진 정보와 바로 고칠 3가지를 정리해 드립니다(무료, 카톡 전달 시 24시간 내 요약, 영업 전화 없음).",
+        "- 기준 가격(모든 금액 VAT 별도): " + " / ".join(price_bits),
+        "- 입문 첫 세팅: 신규 고객 1건 · 사전 확정 범위 · 수정 1회 기준, 추가 제작은 별도 견적",
+        "- 월간 브랜드 관리: 기본형 시작가, 풀 패키지·신규 브랜드 홍보·경영컨설팅은 진단 후 맞춤 견적",
         f"- 상담(카카오톡 채널): {config['consultUrl']}",
+        f"- 사업자: {business['name']} / 대표 {business['ceo']} / 사업자등록번호 {business['registrationNumber']}",
+        "",
+        "## 페이지",
+        f"- [홈]({url_for(config, '/')}): 조회수가 아닌 매출을 연구합니다.",
+        f"- [광고·마케팅]({url_for(config, '/marketing/')}): 플레이스·블로그·SNS·SEO/GEO·전환 동선",
+        f"- [경영컨설팅]({url_for(config, '/consulting/')}): 사업 현황·수익구조·가격 전략 진단",
+        f"- [콘텐츠·디자인]({url_for(config, '/studio/')}): 글·이미지·영상 제작",
+        f"- [작업 사례]({url_for(config, '/portfolio/')}): 작업 유형과 설명용 예시",
+        f"- [기업 소개]({url_for(config, '/about/')}): 2007년부터 이어온 블로그 경험과 사회적 가치",
+        f"- [상담]({url_for(config, '/contact/')}): 카카오톡 채널 1:1 접수",
+        f"- [개인정보처리방침]({url_for(config, '/privacy/')})",
         "",
         "## 인사이트",
     ]
@@ -1484,6 +2174,9 @@ def main() -> int:
 
     pages: list[tuple[str, str]] = []
     pages.append((os.path.join(DIST_DIR, "index.html"), build_home(config, posts, base)))
+    for spec in page_specs(config):
+        slug = spec["path"].strip("/")
+        pages.append((os.path.join(DIST_DIR, slug, "index.html"), build_page(config, spec, base)))
     pages.append((os.path.join(DIST_DIR, "insights", "index.html"), build_insights_index(config, posts, base)))
     for post in posts:
         pages.append((os.path.join(DIST_DIR, "insights", post["slug"], "index.html"),
@@ -1491,18 +2184,13 @@ def main() -> int:
     pages.append((os.path.join(DIST_DIR, "404.html"), build_404(config, base)))
     pages.append((os.path.join(DIST_DIR, "go", "index.html"), build_go(config, base)))
 
-    depths = {
-        os.path.join(DIST_DIR, "index.html"): 0,
-        os.path.join(DIST_DIR, "insights", "index.html"): 1,
-        os.path.join(DIST_DIR, "go", "index.html"): 1,
-    }
     not_found = os.path.join(DIST_DIR, "404.html")
     for path, content in pages:
         if path == not_found:
             write(path, content, root_absolute=True)
             continue
-        depth = depths.get(path, 2)
-        write(path, content, depth)
+        rel = os.path.relpath(path, DIST_DIR).replace(os.sep, "/")
+        write(path, content, rel.count("/"))
 
     write(os.path.join(DIST_DIR, "sitemap.xml"), build_sitemap(config, posts))
     write(os.path.join(DIST_DIR, "robots.txt"), build_robots(config))
