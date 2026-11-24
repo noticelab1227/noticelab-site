@@ -963,8 +963,9 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
 
     context = {
         **base,
-        "page_title": f"{config['siteNameKo']} | 소상공인 마케팅·블로그 대행, 조회수가 아닌 매출",
-        "description": config["description"],
+        "page_title": f"{config['siteNameKo']} | 소상공인 네이버 플레이스·블로그 무료 3가지 점검",
+        "description": ("가게 이름이나 플레이스 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 무료로 정리해 드립니다. "
+                        "영업 전화 없이 카톡·톡톡으로 24시간 내 답하고, 블로그·플레이스·숏폼 제작과 월간 운영을 경기 남부에서 전국까지 진행합니다."),
         "canonical": url_for(config, "/"),
         "og_title": f"{config['siteName']} | {config['slogan']}",
         "og_image": url_for(config, "/assets/images/og-notice-lab-blog-traffic-thumbnail.jpg"),
