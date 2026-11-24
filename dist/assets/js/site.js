@@ -71,7 +71,7 @@
       stops.forEach(function (node, index) {
         if (node.getBoundingClientRect().top <= mark) active = index;
       });
-      var label = Math.max(1, Math.min(active, stops.length - 1));
+      var label = Math.max(1, Math.min(active + 1, stops.length));
       if (currentLabel) currentLabel.textContent = label < 10 ? "0" + label : String(label);
 
       /* 2026-11 밝은 톤 개편: 사이트 전체가 밝은 지면이라 인디케이터 색은 항상 같은 값을 씁니다. */

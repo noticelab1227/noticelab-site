@@ -81,13 +81,13 @@ def main() -> int:
 
     # 슬로건
     f1 = font(FONT_REG, 62)
-    line(draw, (78, 246), [("광고보다 ", INK), ("결과", CORAL_INK), (",", INK)], f1, bold=1)
-    line(draw, (78, 330), [("조회수보다 ", INK), ("매출", CORAL_INK), ("을 연구합니다.", INK)],
-         font(FONT_REG, 50), bold=1)
+    line(draw, (78, 246), [("조회수가 아닌 ", INK)], f1, bold=1)
+    line(draw, (78, 322), [("매출", CORAL_INK), ("을 연구합니다.", INK)], font(FONT_REG, 58), bold=1)
+    text(draw, (80, 404), "BRAND MARKETING & BUSINESS CONSULTING", font(FONT_MONO, 19), MUTED, spacing=2)
 
     # 하단 링크 요약
     draw.line([(80, 470), (W - 80, 470)], fill=HAIR, width=1)
-    text(draw, (80, 500), "카카오톡 1:1 무료 상담   ·   홈페이지 · 인사이트   ·   네이버 블로그",
+    text(draw, (80, 500), "제작·세팅 견적 문의   ·   무료 3가지 점검   ·   홈페이지   ·   블로그",
          font(FONT_REG, 23), MUTED, spacing=1)
 
     # 우하단 주소
@@ -96,7 +96,7 @@ def main() -> int:
     text(draw, (W - 80 - draw.textlength(addr, font=af), 500), addr, af, DIM)
 
     # 코랄 사각 마크
-    draw.rectangle([78, 434, 118, 446], fill=CORAL)
+    draw.rectangle([78, 430, 118, 442], fill=CORAL)
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     img.save(OUT, "JPEG", quality=90, optimize=True, progressive=True)

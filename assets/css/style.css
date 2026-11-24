@@ -359,6 +359,7 @@ body.nav-open .nav-overlay::before {
 .menu-toggle {
   position: relative;
   display: inline-flex;
+  min-width: 68px;
   align-items: center;
   justify-content: center;
   min-height: 38px;
@@ -2770,7 +2771,7 @@ body.nav-open .brand-mark { color: var(--ink); }
 .checks-foot {
   margin-top: 22px;
   font-family: var(--mono);
-  font-size: 9.5px;
+  font-size: 10px;
   line-height: 1.9;
   color: var(--ink-3);
   max-width: 100ch;
@@ -3249,8 +3250,9 @@ body.nav-open .brand-mark { color: var(--ink); }
   letter-spacing: -.04em;
   font-weight: 600;
 }
-.sp-block-body { display: grid; gap: 12px; align-content: start; font-size: .92rem; line-height: 1.85; color: var(--ink-2); }
+.sp-block-body { display: grid; gap: 16px; align-content: start; font-size: .92rem; line-height: 1.85; color: var(--ink-2); }
 .sp-block-body > p { max-width: 64ch; }
+.sp-block-body > p + p { margin-top: 2px; }
 
 .sp-list { display: grid; }
 .sp-list li {
