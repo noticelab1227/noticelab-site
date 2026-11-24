@@ -8,7 +8,7 @@ GitHub Pages · Vercel · Cloudflare Pages 어디에나 그대로 올릴 수 있
 - 상담 채널(모든 CTA): <https://pf.kakao.com/_xdMIvX/chat> — 카카오톡 채널 「노티스랩」 1:1 채팅 (새 탭)
 - 대응 지역: 용인 · 수원 · 화성 · 성남 · 경기 광주 → 수도권 · 전국
 - 첫 제안(전환 장치): **무료 3가지 점검** — 가게 이름·플레이스 링크만 카톡으로 받아 빠진 정보와 바로 고칠 3가지를 24시간 내 요약 (0원 · 영업 전화 없음)
-- 기준 가격: 무료 점검 0원 / 단발 정리·세팅 5만~15만 원 / 월간 운영·콘텐츠 대행 월 30만 원~ (값은 `site.json` 의 `pricing` 에서 고칩니다)
+- 기준 가격: 무료 점검 0원 / 입문 첫 세팅 5만 원~ (1건·수정 1회) / 월간 브랜드 관리 월 30만 원~ (기본형 시작가, 풀 패키지·경영컨설팅은 맞춤 견적) — 값은 `site.json` 의 `pricing` 에서 고칩니다
 
 ## 1. 폴더 구조
 
@@ -124,6 +124,7 @@ faq_heading: 자주 묻는 질문
 - 2026-11-24 홈 문구·CTA 수정: 히어로·하단 CTA 버튼을 `단발 세팅 · 제작 견적 문의`(카카오톡) / `내 가게 3가지 무료 점검`(네이버 톡톡)로 바꾸고, 버튼 아래에 `필요한 작업 1건(5만 원~)부터 가능 · 이번 달 진행 가능 일정 바로 안내` 한 줄을 넣었습니다. 반복되던 '촬영 없음' 안내는 04 가격표 하단 한 곳(`templates/home.html` 의 `arch-foot` 자리)만 남기고, `site.json` `pricing.terms` 의 현장 촬영 항목은 삭제했습니다. 07 SOCIAL COMMITMENT 는 '후원·기부' 문구를 빼고 제목을 `처음 시작하는 분이 혼자 시행착오를 겪지 않도록` 으로 바꿨습니다. `templates/home.html`·`site.json` 수정 후 `python3 build.py --clean && python3 verify.py` 로 `dist/index.html` 을 다시 만들었습니다.
 - 2026-11-24: 인사이트 48편으로 확장했습니다. 신규 3편(46 겨울 입구·주차 안내, 47 12월 예약 안내, 48 연말 대행 계약 기준)은 `scripts/prepare_day15_images.py` 로 이미지 파생본을 만듭니다. 시의성 출처는 기상청 11월 24일 예보(연합뉴스·경기일보 보도), 한국은행 10월 소비자동향조사, 한국신용데이터 2026년 3분기 소상공인 동향 리포트입니다. 네이버 블로그에는 발행하지 않았습니다.
 - 2026-11-25 CTA·버그 수정 3건: ① 네이버 톡톡(`talk.naver.com/ct/w5z4wz`, 개인 프로필 '꼬꼬찐이') 링크와 안내 문구를 히어로·가격표·FAQ 하단·클로징·푸터·인사이트 목록·`/go/`·글 하단 `cta-box`·`llms.txt` 에서 모두 걷어내고 카카오톡 채널(`https://pf.kakao.com/_xdMIvX/chat`) 하나로 통일했습니다(`site.json` 의 `consultNaverUrl`·`consultNaverLabel`·`linkHub` 톡톡 항목, `build.py` 의 `consult_naver_*`·`navertalk` 아이콘 삭제, 공유 카드 `scripts/prepare_go_og.py` 문구도 수정). 보조 버튼은 `카톡으로 3가지 무료 점검`, 클로징 두 번째 버튼 클래스는 `.closing-talk--sub` 로 바꿨습니다. ② `dist/404.html` 이 `./assets/...` 상대경로로 나와 `/foo/bar/baz/` 같은 하위 경로 404에서 CSS·링크가 깨지던 문제를 고쳤습니다. `build.py` 의 `write()` 에 `root_absolute` 옵션을 넣어 404만 루트 절대경로(`/assets/...`, `/insights/`)를 유지합니다. ③ `assets/css/style.css` 의 `.article` 에 `overflow-wrap: anywhere` 를 넣어 긴 구글 고객센터 URL이 모바일에서 잘리지 않고 줄바꿈됩니다. CSS 캐시 값은 `?v=13` 입니다.
+- 2026-11-25 가격표 전략 반영(`05 PRICING`): 저가 대행이 아닌 프리미엄 포지셔닝에 맞춰 3단 구조로 정리했습니다. ① `무료 3가지 점검 0원` 유지 ② `입문 첫 세팅 5만 원~` — 신규 고객 입문용 1건·사전 확정 범위·수정 1회 기준, 추가 제작은 별도 견적 ③ `월간 브랜드 관리 월 30만 원~` — 기본형 시작가로 두고 블로그·숏폼 통합(풀 패키지)·신규 브랜드 홍보·경영컨설팅은 진단 후 맞춤 견적으로 연결. `site.json` `pricing`(items·terms·note)을 고치고, `06 FAQ` 3번(입문/월간 차이)과 4번(수정 횟수) 답변을 `templates/home.html` 과 `build.py` 의 `HOME_FAQ`(FAQPage JSON-LD) 양쪽에 같은 문장으로 맞췄으며, Organization JSON-LD `priceRange` 도 새 구조로 바꿨습니다.
 - 2026-11-25 빌드 참고: 작업 사본이 `blob:none` sparse-checkout 이면 `build.py` 가 `assets/images` 를 못 읽어 WebP `<picture>` 가 빠집니다. 빌드 전에 전체 파일이 있는지 확인하고(`git ls-files` 대비 누락 0), `--clean` 대신 그냥 `python3 build.py` 로 돌린 뒤 `git diff dist/` 에서 webp·picture 삭제가 0건인지 확인합니다.
 
 ### 링크 허브(`/go/`) 문구·링크 고치기
