@@ -464,5 +464,29 @@
   "booking-button-frontdesk-body.png": {
     "webp": "booking-button-frontdesk-body-1086.webp",
     "og": null
+  },
+  "golmok-district-street-thumbnail.png": {
+    "webp": "golmok-district-street-thumbnail-1600.webp",
+    "og": "og-golmok-district-street-thumbnail.jpg"
+  },
+  "fresh-supply-gap-thumbnail.png": {
+    "webp": "fresh-supply-gap-thumbnail-1600.webp",
+    "og": "og-fresh-supply-gap-thumbnail.jpg"
+  },
+  "shop-handover-keys-thumbnail.png": {
+    "webp": "shop-handover-keys-thumbnail-1600.webp",
+    "og": "og-shop-handover-keys-thumbnail.jpg"
+  },
+  "golmok-district-alley-body.png": {
+    "webp": "golmok-district-alley-body-1400.webp",
+    "og": null
+  },
+  "fresh-supply-gap-body.png": {
+    "webp": "fresh-supply-gap-body-1400.webp",
+    "og": null
+  },
+  "shop-handover-keys-body.png": {
+    "webp": "shop-handover-keys-body-1400.webp",
+    "og": null
   }
 }
