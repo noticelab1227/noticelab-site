@@ -440,5 +440,29 @@
   "auto-ad-counter-body.png": {
     "webp": "auto-ad-counter-body-1086.webp",
     "og": null
+  },
+  "megashow-neighborhood-thumbnail.png": {
+    "webp": "megashow-neighborhood-thumbnail-1086.webp",
+    "og": "og-megashow-neighborhood-thumbnail.jpg"
+  },
+  "year-end-ads-desk-thumbnail.png": {
+    "webp": "year-end-ads-desk-thumbnail-1122.webp",
+    "og": "og-year-end-ads-desk-thumbnail.jpg"
+  },
+  "booking-button-frontdesk-thumbnail.png": {
+    "webp": "booking-button-frontdesk-thumbnail-1086.webp",
+    "og": "og-booking-button-frontdesk-thumbnail.jpg"
+  },
+  "megashow-neighborhood-body.png": {
+    "webp": "megashow-neighborhood-body-1086.webp",
+    "og": null
+  },
+  "year-end-ads-desk-body.png": {
+    "webp": "year-end-ads-desk-body-1086.webp",
+    "og": null
+  },
+  "booking-button-frontdesk-body.png": {
+    "webp": "booking-button-frontdesk-body-1086.webp",
+    "og": null
   }
 }
