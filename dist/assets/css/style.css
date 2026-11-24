@@ -571,8 +571,8 @@ body.nav-open .brand-mark { color: var(--ink); }
 .hero-copy { min-width: 0; }
 
 .hero-title {
-  font-size: clamp(2.15rem, 5.1vw, 5.1rem);
-  line-height: 1.04;
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  line-height: 1.05;
   letter-spacing: -.05em;
   font-weight: 600;
   color: var(--ink);
@@ -580,15 +580,15 @@ body.nav-open .brand-mark { color: var(--ink); }
   text-wrap: balance;
 }
 .hero-title span { display: block; }
-.hero-title em { font-style: normal; color: var(--coral); }
-.hero-title .hero-title-ko {
-  display: block;
-  margin-top: .28em;
-  font-size: .52em;
-  letter-spacing: -.04em;
-  color: var(--ink-2);
+.hero-title-top {
+  font-size: .32em;
+  line-height: 1.2;
+  letter-spacing: -.02em;
   font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: .26em;
 }
+.hero-title em { font-style: normal; color: var(--coral); }
 
 .hero-lede {
   max-width: 46ch;
@@ -1100,6 +1100,7 @@ body.nav-open .brand-mark { color: var(--ink); }
   text-transform: uppercase;
   color: var(--ink-3);
 }
+.price-row--head span:last-child { text-align: right; }
 .price-name {
   font-size: clamp(1rem, 1.45vw, 1.22rem);
   line-height: 1.35;
@@ -1350,12 +1351,13 @@ body.nav-open .brand-mark { color: var(--ink); }
   grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
   gap: clamp(24px, 4vw, 64px);
   margin-top: clamp(32px, 4.6vw, 64px);
-  align-items: stretch;
+  align-items: start;
 }
 .coverage-media {
   position: relative;
   overflow: hidden;
-  min-height: clamp(230px, 28vw, 380px);
+  aspect-ratio: 16 / 10;
+  max-height: 340px;
   border: 1px solid var(--hair);
 }
 .coverage-media img {
@@ -2377,8 +2379,8 @@ body.nav-open .brand-mark { color: var(--ink); }
   body { font-size: 15.5px; }
   .hero { padding-block: calc(var(--header-h) + 28px) clamp(26px, 5vh, 44px); }
   .hero-rules { background-size: 50% 100%; }
-  .hero-title { font-size: clamp(2rem, 9.4vw, 3.2rem); }
-  .hero-title .hero-title-ko { font-size: .58em; }
+  .hero-title { font-size: clamp(1.72rem, 8vw, 2.6rem); }
+  .hero-title-top { font-size: .4em; }
   .hero-slogan { display: none; }
   .hero-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
   .hero-meta > div { padding-left: 12px; }
