@@ -564,8 +564,6 @@ def build_base_context(config: dict) -> dict:
         "slogan": esc(config["slogan"]),
         "consult_url": esc(config["consultUrl"]),
         "consult_label": esc(config["consultLabel"]),
-        "consult_naver_url": esc(config.get("consultNaverUrl", config["consultUrl"])),
-        "consult_naver_label": esc(config.get("consultNaverLabel", "네이버 톡톡으로 보내기")),
         "business_name": ph(business["name"]),
         "business_ceo": ph(business["ceo"]),
         "business_registration": ph(business["registrationNumber"]),
@@ -694,10 +692,7 @@ def cta_box(config: dict, variant: str = "inline") -> str:
   </div>
   <div class="cta-box-actions">
     <a class="btn btn--kakao" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
-      카카오톡으로 보내기<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
-    </a>
-    <a class="btn btn--line" href="{esc(config.get('consultNaverUrl', config['consultUrl']))}" target="_blank" rel="noopener noreferrer">
-      네이버 톡톡<span aria-hidden="true"> →</span><span class="sr-only"> (네이버 톡톡, 새 탭에서 열림)</span>
+      카톡으로 3가지 무료 점검<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
     </a>
   </div>
 </aside>"""
@@ -744,11 +739,14 @@ def toc_html(post: dict, consult_url: str) -> str:
 # --------------------------------------------------------------------------
 # 페이지 빌드
 # --------------------------------------------------------------------------
-def write(path: str, content: str, depth: int = 0) -> None:
+def write(path: str, content: str, depth: int = 0, root_absolute: bool = False) -> None:
     """파일을 쓰기 전에 사이트 내부 절대 경로(/assets/...)를 상대 경로로 바꿉니다.
 
     GitHub Pages 처럼 /저장소명/ 하위 경로에 배포해도 CSS·이미지·링크가 그대로 동작합니다.
     canonical, OG, JSON-LD 의 절대 URL(https://...)은 건드리지 않습니다.
+
+    root_absolute=True 면 변환하지 않고 루트 절대 경로(/assets/...)를 그대로 둡니다.
+    404.html 은 어떤 주소 깊이에서도 로드되므로(예: /foo/bar/baz/) 상대 경로를 쓸 수 없습니다.
     """
     prefix = "../" * depth if depth else "./"
 
@@ -766,7 +764,7 @@ def write(path: str, content: str, depth: int = 0) -> None:
             return f'{attr}="{esc(", ".join(parts))}"'
         return f'{attr}="{prefix}{value[1:]}"'
 
-    content = re.sub(r'(href|src|srcset)="(/[^"]*)"', rewrite, content)
+    content = re.sub(r'(href|src|srcset)="(/[^"]*)"', rewrite, content) if not root_absolute else content
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(content)
@@ -1024,7 +1022,7 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
         **base,
         "page_title": f"{config['siteNameKo']} | 소상공인 네이버 플레이스·블로그 무료 3가지 점검",
         "description": ("가게 이름이나 플레이스 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 무료로 정리해 드립니다. "
-                        "영업 전화 없이 카톡·톡톡으로 24시간 내 답하고, 블로그·플레이스·숏폼 제작과 월간 운영을 경기 남부에서 전국까지 진행합니다."),
+                        "영업 전화 없이 카톡으로 24시간 내 답하고, 블로그·플레이스·숏폼 제작과 월간 운영을 경기 남부에서 전국까지 진행합니다."),
         "canonical": url_for(config, "/"),
         "og_title": f"{config['siteName']} | {config['slogan']}",
         "og_image": url_for(config, "/assets/images/og-notice-lab-blog-traffic-thumbnail.jpg"),
@@ -1264,22 +1262,11 @@ LINK_ICON_SVGS = {
         '<path fill="#03C75A" d="M8 14.4V6h2.6l3 4.5V6h2.6v8.4h-2.6l-3-4.5v4.5Z"/>'
         '</svg>'
     ),
-    # 네이버 톡톡 — 흰 말풍선 + 말풍선 안의 톡 점 3개
-    "navertalk": (
-        '<svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" '
-        'aria-hidden="true" focusable="false">'
-        '<path fill="#fff" d="M12 2.4c-5.4 0-9.8 3.5-9.8 7.8 0 2.5 1.4 4.7 3.7 6.2L5 21.6l4.2-2.6c.9.2 1.9.3 2.8.3 5.4 0 9.8-3.5 9.8-7.8S17.4 2.4 12 2.4Z"/>'
-        '<circle cx="8" cy="10.2" r="1.15" fill="#03C75A"/>'
-        '<circle cx="12" cy="10.2" r="1.15" fill="#03C75A"/>'
-        '<circle cx="16" cy="10.2" r="1.15" fill="#03C75A"/>'
-        '</svg>'
-    ),
 }
 
 # 아이콘 타일 색 — SVG 이름별로 타일 배경 클래스를 붙입니다.
 LINK_ICON_TILES = {
     "naverblog": "naver",
-    "navertalk": "naver",
 }
 
 GO_DEFAULT_LINKS = [
@@ -1289,12 +1276,6 @@ GO_DEFAULT_LINKS = [
         "url": "https://pf.kakao.com/_xdMIvX/chat",
         "icon_svg": "kakaotalk",
         "primary": True,
-    },
-    {
-        "label": "네이버 톡톡 1:1 문의",
-        "sub": "카카오톡이 어려우면 톡톡으로",
-        "url": "https://talk.naver.com/ct/w5z4wz?frm=mblog#nafullscreen",
-        "icon_svg": "navertalk",
     },
     {
         "label": "노티스랩 공식 홈페이지 · 인사이트",
@@ -1365,7 +1346,7 @@ def build_go(config: dict, base: dict) -> str:
     }
     context = {
         "page_title": "노티스랩 링크 | NOTICE LAB",
-        "description": ("노티스랩 공식 링크 모음입니다. 카카오톡 채널·네이버 톡톡 1:1 문의, "
+        "description": ("노티스랩 공식 링크 모음입니다. 카카오톡 채널 1:1 무료 상담, "
                         "홈페이지·인사이트, 네이버 블로그로 바로 이동할 수 있습니다."),
         "canonical": url_for(config, GO_PATH),
         "og_title": "NOTICE LAB · 노티스랩 — 링크",
@@ -1429,8 +1410,7 @@ def build_llms_txt(config: dict, posts: list[dict]) -> str:
         "- 상위 노출, 매출, AI 검색 인용을 보장하지 않습니다.",
         "- 첫 제안: 가게 이름이나 플레이스 링크를 보내면 빠진 정보와 바로 고칠 3가지를 정리해 드립니다(무료, 카톡 전달 시 24시간 내 요약, 영업 전화 없음).",
         f"- 기준 가격: {' / '.join(price_bits)}",
-        f"- 상담: {config['consultUrl']}",
-        f"- 네이버 톡톡: {config.get('consultNaverUrl', '')}",
+        f"- 상담(카카오톡 채널): {config['consultUrl']}",
         "",
         "## 인사이트",
     ]
@@ -1510,11 +1490,14 @@ def main() -> int:
 
     depths = {
         os.path.join(DIST_DIR, "index.html"): 0,
-        os.path.join(DIST_DIR, "404.html"): 0,
         os.path.join(DIST_DIR, "insights", "index.html"): 1,
         os.path.join(DIST_DIR, "go", "index.html"): 1,
     }
+    not_found = os.path.join(DIST_DIR, "404.html")
     for path, content in pages:
+        if path == not_found:
+            write(path, content, root_absolute=True)
+            continue
         depth = depths.get(path, 2)
         write(path, content, depth)
 

@@ -87,7 +87,7 @@ def main() -> int:
 
     # 하단 링크 요약
     draw.line([(80, 470), (W - 80, 470)], fill=HAIR, width=1)
-    text(draw, (80, 500), "카카오톡 · 네이버 톡톡 1:1 문의   ·   홈페이지 · 인사이트   ·   네이버 블로그",
+    text(draw, (80, 500), "카카오톡 1:1 무료 상담   ·   홈페이지 · 인사이트   ·   네이버 블로그",
          font(FONT_REG, 23), MUTED, spacing=1)
 
     # 우하단 주소
