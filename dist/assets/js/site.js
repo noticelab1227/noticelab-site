@@ -60,7 +60,7 @@
   var stops = [];
 
   if (indicator) {
-    ["hero", "structure", "services", "latest", "region", "social"].forEach(function (id) {
+    ["hero", "structure", "services", "samples", "pricing", "latest", "region", "social"].forEach(function (id) {
       var node = document.getElementById(id);
       if (node) stops.push(node);
     });
@@ -74,17 +74,8 @@
       var label = Math.max(1, Math.min(active, stops.length - 1));
       if (currentLabel) currentLabel.textContent = label < 10 ? "0" + label : String(label);
 
-      if (stops[active].classList.contains("section--paper")) {
-        indicator.classList.add("is-light");
-      } else {
-        indicator.classList.remove("is-light");
-      }
-
-      var probeX = Math.max(8, window.innerWidth - 12);
-      var probeY = Math.max(8, window.innerHeight - 26);
-      var probe = document.elementFromPoint(probeX, probeY);
-      var lightBox = probe && probe.closest(".section--paper, .archive, .post-paper, .closing");
-      indicator.classList.toggle("is-light", Boolean(lightBox));
+      /* 2026-11 밝은 톤 개편: 사이트 전체가 밝은 지면이라 인디케이터 색은 항상 같은 값을 씁니다. */
+      indicator.classList.add("is-light");
     };
 
     var goTo = function (direction) {

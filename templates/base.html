@@ -7,7 +7,8 @@
 <meta name="description" content="{{description}}">
 <meta name="robots" content="{{robots}}">
 <meta name="author" content="NOTICE LAB">
-<meta name="theme-color" content="#0A0A0C">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
 <link rel="canonical" href="{{canonical}}">
 <meta property="og:type" content="{{og_type}}">
 <meta property="og:site_name" content="NOTICE LAB">
@@ -30,7 +31,7 @@
 <link rel="alternate" type="application/rss+xml" title="NOTICE LAB 인사이트" href="/rss.xml">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/assets/css/style.css?v=11">
+<link rel="stylesheet" href="/assets/css/style.css?v=12">
 <script>document.documentElement.classList.add('js');</script>
 {{jsonld}}{{analytics_head}}
 </head>
@@ -83,9 +84,14 @@
   <div class="wrap footer-head">
     <p class="footer-label">STUDIO NOTE</p>
     <p class="footer-line">조회수가 아닌 매출을 연구합니다.<br>유입에서 문의까지 끊긴 지점을 먼저 확인합니다.</p>
-    <a class="footer-talk" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">
-      <span>카카오톡 채널로 상담하기</span><span class="footer-talk-arrow" aria-hidden="true">→</span>
-    </a>
+    <div class="footer-cta">
+      <a class="footer-talk" href="{{consult_url}}" target="_blank" rel="noopener noreferrer">
+        <span>카카오톡으로 무료 점검 받기</span><span class="footer-talk-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="footer-talk" href="{{consult_naver_url}}" target="_blank" rel="noopener noreferrer">
+        <span>네이버 톡톡으로 보내기</span><span class="footer-talk-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
   </div>
 
   <div class="wrap footer-grid">
@@ -94,7 +100,8 @@
       <ul class="footer-links">
         <li><a href="/">홈</a></li>
         <li><a href="/#structure">전환 구조</a></li>
-        <li><a href="/#services">핵심 서비스</a></li>
+        <li><a href="/#samples">작업 예시</a></li>
+        <li><a href="/#pricing">기준 가격</a></li>
         <li><a href="/insights/">인사이트</a></li>
         <li><a href="/#region">대응 지역</a></li>
         <li><a href="/#social">사회공헌</a></li>
@@ -130,6 +137,6 @@
   </div>
 </footer>
 
-<script src="/assets/js/site.js?v=8" defer></script>
+<script src="/assets/js/site.js?v=9" defer></script>
 </body>
 </html>

@@ -564,6 +564,8 @@ def build_base_context(config: dict) -> dict:
         "slogan": esc(config["slogan"]),
         "consult_url": esc(config["consultUrl"]),
         "consult_label": esc(config["consultLabel"]),
+        "consult_naver_url": esc(config.get("consultNaverUrl", config["consultUrl"])),
+        "consult_naver_label": esc(config.get("consultNaverLabel", "네이버 톡톡으로 보내기")),
         "business_name": ph(business["name"]),
         "business_ceo": ph(business["ceo"]),
         "business_registration": ph(business["registrationNumber"]),
@@ -587,9 +589,10 @@ def nav_html(config: dict, active: str) -> str:
         ("home", "/", "01", "HOME", "홈"),
         ("structure", "/#structure", "02", "APPROACH", "전환 구조"),
         ("services", "/#services", "03", "CAPABILITIES", "핵심 서비스"),
-        ("insights", "/insights/", "04", "INSIGHTS", "인사이트"),
-        ("region", "/#region", "05", "COVERAGE", "대응 지역"),
-        ("social", "/#social", "06", "SOCIAL", "사회공헌"),
+        ("samples", "/#samples", "04", "WORK SAMPLES", "작업 예시"),
+        ("pricing", "/#pricing", "05", "PRICING", "기준 가격"),
+        ("insights", "/insights/", "06", "INSIGHTS", "인사이트"),
+        ("social", "/#social", "07", "SOCIAL", "사회공헌"),
     ]
     rows = []
     for key, href, number, label, ko in items:
@@ -604,7 +607,7 @@ def nav_html(config: dict, active: str) -> str:
     rows.append(
         f'<li class="nav-item nav-item--talk"><a class="nav-link" href="{esc(config["consultUrl"])}" '
         'target="_blank" rel="noopener noreferrer">'
-        '<span class="nav-no">07</span><span class="nav-en">TALK</span>'
+        '<span class="nav-no">08</span><span class="nav-en">TALK</span>'
         f'<span class="nav-ko">{esc(config["siteNameKo"])} 상담</span>'
         '<span class="nav-arrow" aria-hidden="true">→</span></a></li>'
     )
@@ -659,7 +662,7 @@ def organization_jsonld(config: dict) -> dict:
         "areaServed": [{"@type": "AdministrativeArea", "name": region} for region in config["regions"]],
         "knowsAbout": [service["title"] for service in config["services"]],
         "sameAs": [config["consultUrl"]],
-        "priceRange": "상담 후 안내",
+        "priceRange": "무료 점검 0원 · 단발 정리 5만~15만 원 · 월간 운영 월 30만 원~",
     }
     if not business["email"].startswith("["):
         data["email"] = business["email"]
@@ -683,15 +686,20 @@ def jsonld_block(*objects: dict) -> str:
 # 페이지 조각
 # --------------------------------------------------------------------------
 def cta_box(config: dict, variant: str = "inline") -> str:
-    return f"""<aside class="cta-box cta-box--{variant}" aria-label="상담 안내">
+    return f"""<aside class="cta-box cta-box--{variant}" aria-label="무료 3가지 점검 안내">
   <div class="cta-box-text">
-    <p class="cta-box-kicker">FREE DIAGNOSIS <span aria-hidden="true">/</span> 무료 진단</p>
-    <p class="cta-box-title">운영 중인 블로그·플레이스 링크를 보내주시면, 흐름이 끊긴 지점을 정리해 드립니다.</p>
-    <p class="cta-box-sub">진단 내용을 보시고 진행 여부를 정하셔도 됩니다. 별도 비용은 없습니다.</p>
+    <p class="cta-box-kicker">FREE CHECK <span aria-hidden="true">/</span> 무료 3가지 점검</p>
+    <p class="cta-box-title">가게 이름이나 플레이스 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 정리해 드립니다.</p>
+    <p class="cta-box-sub">0원 · 카톡으로 전달하면 24시간 내 요약 · 영업 전화 없음</p>
   </div>
-  <a class="btn btn--solid" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
-    {esc(config['consultLabel'])}<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
-  </a>
+  <div class="cta-box-actions">
+    <a class="btn btn--kakao" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+      카카오톡으로 보내기<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+    </a>
+    <a class="btn btn--line" href="{esc(config.get('consultNaverUrl', config['consultUrl']))}" target="_blank" rel="noopener noreferrer">
+      네이버 톡톡<span aria-hidden="true"> →</span><span class="sr-only"> (네이버 톡톡, 새 탭에서 열림)</span>
+    </a>
+  </div>
 </aside>"""
 
 
@@ -764,6 +772,86 @@ def write(path: str, content: str, depth: int = 0) -> None:
         fh.write(content)
 
 
+SAMPLES = [
+    {
+        "tag": "01 — NAVER PLACE",
+        "title": "네이버 플레이스 첫인상·공지·주차/영업시간 정리",
+        "line": "손님이 첫 화면에서 ‘오늘 열었나, 차 가져가도 되나’를 다시 묻지 않아도 되게 만듭니다.",
+        "before": [
+            ("영업시간", "매일 10:00–22:00, 한 줄만"),
+            ("주차", "안내 없음"),
+            ("공지", "비어 있음"),
+            ("대표 사진", "메뉴판 사진 1장"),
+        ],
+        "after": [
+            ("영업시간", "요일별 시간 + 라스트오더 21:20"),
+            ("주차", "매장 앞 3대, 발렛 없음"),
+            ("공지", "이번 주 예약 마감일·신메뉴"),
+            ("대표 사진", "외관 + 대표 메뉴 2장"),
+        ],
+    },
+    {
+        "tag": "02 — CONTENT SET",
+        "title": "사장님이 갖고 계신 사진으로 만든 블로그·인스타·안내문 한 세트",
+        "line": "촬영을 새로 잡지 않아도 됩니다. 이미 갖고 계신 사진에서 쓸 수 있는 것부터 골라 냅니다.",
+        "before": [
+            ("사진", "휴대폰 사진 40장, 보정 없이 그대로"),
+            ("글", "3편, 말투와 가격 표기가 제각각"),
+            ("안내문", "없음"),
+        ],
+        "after": [
+            ("사진", "10장 선별, 밝기·색 통일"),
+            ("글", "블로그 1편 + 인스타 3장"),
+            ("안내문", "A4 1장, 매장에 바로 게시"),
+            ("문구", "가격·영업시간을 한 곳에서 통일"),
+        ],
+    },
+    {
+        "tag": "03 — INQUIRY",
+        "title": "손님이 묻기 전에 답하는 예약·가격·오시는 길 문구 정리",
+        "line": "같은 질문에 매번 답하지 않도록, 답을 먼저 적어 둡니다. 상담 전에 확인하는 시간도 줄어듭니다.",
+        "before": [
+            ("단골 질문", "‘주차 되나요?’ ‘예약 돼요?’ ‘얼마예요?’"),
+            ("답변", "받는 사람마다 다름"),
+            ("오시는 길", "설명 없음"),
+        ],
+        "after": [
+            ("예약", "네이버 예약·전화 중 하나로 통일"),
+            ("가격", "대표 메뉴 3개 기준으로 표기"),
+            ("오시는 길", "주차·대중교통을 한 문단으로"),
+        ],
+    },
+]
+
+
+def sample_html(sample: dict, index: int) -> str:
+    def rows(items: list[tuple[str, str]]) -> str:
+        return "".join(
+            f'<div class="ba-row"><span class="ba-key">{esc(key)}</span>'
+            f'<span class="ba-val">{esc(value)}</span></div>'
+            for key, value in items
+        )
+
+    return f"""<article class="sample" data-reveal>
+  <div class="sample-head">
+    <p class="sample-no">{esc(sample['tag'])}</p>
+    <h3 class="sample-title">{esc(sample['title'])}</h3>
+    <p class="sample-line">{esc(sample['line'])}</p>
+  </div>
+  <div class="ba">
+    <div class="ba-panel ba-panel--before">
+      <p class="ba-label">BEFORE <span>정리 전</span></p>
+      <div class="ba-rows">{rows(sample['before'])}</div>
+    </div>
+    <div class="ba-panel ba-panel--after">
+      <p class="ba-label">AFTER <span>정리 후</span></p>
+      <div class="ba-rows">{rows(sample['after'])}</div>
+    </div>
+  </div>
+  <p class="sample-note">※ 예시 구성입니다. 실제 매장 화면 캡처가 아니며, 항목은 매장마다 달라집니다.</p>
+</article>"""
+
+
 def build_home(config: dict, posts: list[dict], base: dict) -> str:
     steps = [
         ("SEARCH", "검색", "손님이 실제로 입력하는 조건에서 시작합니다. 업종·지역·상황이 겹치는 검색어를 먼저 찾습니다."),
@@ -807,11 +895,24 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
     latest = "".join(post_card(config, post, eager=(i == 0), heading_level="h3", excerpt=False)
                      for i, post in enumerate(posts[:3]))
 
-    hero_media = picture("/assets/images/hero-atelier.jpg",
-                         "어두운 콘크리트 전시 공간으로 길게 떨어지는 자연광과 유리벽",
-                         cls="hero-img", eager=True, sizes="100vw")
+    samples_html = "\n".join(sample_html(sample, index) for index, sample in enumerate(SAMPLES, start=1))
+
+    pricing = config.get("pricing") or {}
+    price_rows = []
+    for item in pricing.get("items", []):
+        free = " price-row--free" if item.get("free") else ""
+        price_rows.append(f"""<div class="price-row{free}">
+  <p class="price-name"><span class="price-en">{esc(item.get('en', ''))}</span>{esc(item['name'])}</p>
+  <p class="price-scope">{esc(item.get('scope', ''))}</p>
+  <p class="price-tag">{esc(item['price'])}<small>{esc(item.get('priceNote', ''))}</small></p>
+</div>""")
+    price_terms = "".join(f"<li>{esc(term)}</li>" for term in pricing.get("terms", []))
+
+    sample_media = picture("/assets/images/hero-atelier.jpg",
+                           "긴 자연광이 떨어지는 콘크리트 전시 공간과 유리벽",
+                           cls="sample-img", sizes="100vw")
     coverage_media = picture("/assets/images/glass-light-study.jpg",
-                             "검은 유리와 강철 패널 사이로 스치는 날카로운 빛의 결",
+                             "유리와 강철 패널 사이로 스치는 빛의 결",
                              cls="coverage-img", sizes="(max-width: 900px) 100vw, 46vw")
 
     content = render_template("home.html", {
@@ -820,7 +921,11 @@ def build_home(config: dict, posts: list[dict], base: dict) -> str:
         "services": "\n".join(service_rows),
         "regions": "\n".join(region_items),
         "latest_posts": latest,
-        "hero_media": hero_media,
+        "samples": samples_html,
+        "pricing_note": esc(pricing.get("note", "")),
+        "pricing_rows": "\n".join(price_rows),
+        "pricing_terms": price_terms,
+        "sample_media": sample_media,
         "coverage_media": coverage_media,
         "post_count": len(posts),
     })
@@ -1099,11 +1204,22 @@ LINK_ICON_SVGS = {
         '<path fill="#03C75A" d="M8 14.4V6h2.6l3 4.5V6h2.6v8.4h-2.6l-3-4.5v4.5Z"/>'
         '</svg>'
     ),
+    # 네이버 톡톡 — 흰 말풍선 + 말풍선 안의 톡 점 3개
+    "navertalk": (
+        '<svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" '
+        'aria-hidden="true" focusable="false">'
+        '<path fill="#fff" d="M12 2.4c-5.4 0-9.8 3.5-9.8 7.8 0 2.5 1.4 4.7 3.7 6.2L5 21.6l4.2-2.6c.9.2 1.9.3 2.8.3 5.4 0 9.8-3.5 9.8-7.8S17.4 2.4 12 2.4Z"/>'
+        '<circle cx="8" cy="10.2" r="1.15" fill="#03C75A"/>'
+        '<circle cx="12" cy="10.2" r="1.15" fill="#03C75A"/>'
+        '<circle cx="16" cy="10.2" r="1.15" fill="#03C75A"/>'
+        '</svg>'
+    ),
 }
 
 # 아이콘 타일 색 — SVG 이름별로 타일 배경 클래스를 붙입니다.
 LINK_ICON_TILES = {
     "naverblog": "naver",
+    "navertalk": "naver",
 }
 
 GO_DEFAULT_LINKS = [
@@ -1115,8 +1231,14 @@ GO_DEFAULT_LINKS = [
         "primary": True,
     },
     {
+        "label": "네이버 톡톡 1:1 문의",
+        "sub": "카카오톡이 어려우면 톡톡으로",
+        "url": "https://talk.naver.com/ct/w5z4wz?frm=mblog#nafullscreen",
+        "icon_svg": "navertalk",
+    },
+    {
         "label": "노티스랩 공식 홈페이지 · 인사이트",
-        "sub": "서비스 안내 · 실무 노트 보기",
+        "sub": "서비스 안내 · 무료 3가지 점검",
         "url": "https://noticelab.pages.dev/",
         "icon": "🌐",
     },
@@ -1183,7 +1305,7 @@ def build_go(config: dict, base: dict) -> str:
     }
     context = {
         "page_title": "노티스랩 링크 | NOTICE LAB",
-        "description": ("노티스랩 공식 링크 모음입니다. 카카오톡 채널 1:1 무료 상담, "
+        "description": ("노티스랩 공식 링크 모음입니다. 카카오톡 채널·네이버 톡톡 1:1 문의, "
                         "홈페이지·인사이트, 네이버 블로그로 바로 이동할 수 있습니다."),
         "canonical": url_for(config, GO_PATH),
         "og_title": "NOTICE LAB · 노티스랩 — 링크",
@@ -1233,6 +1355,7 @@ def build_robots(config: dict) -> str:
 def build_llms_txt(config: dict, posts: list[dict]) -> str:
     """AI 검색·요약 엔진이 사이트를 빠르게 이해하도록 만드는 llms.txt (llmstxt.org 관례)."""
     business = config["business"]
+    price_bits = [f"{item['name']} {item['price']}" for item in (config.get("pricing") or {}).get("items", [])]
     lines = [
         f"# {config['siteName']} ({config['siteNameKo']})",
         "",
@@ -1244,7 +1367,10 @@ def build_llms_txt(config: dict, posts: list[dict]) -> str:
         f"- 서비스: {' / '.join(service['title'] for service in config['services'])}",
         "- 제작 원칙: 업체가 제공한 기존 사진·영상을 바탕으로 기획·제작하며, 별도 현장 촬영은 기본 서비스로 제공하지 않습니다.",
         "- 상위 노출, 매출, AI 검색 인용을 보장하지 않습니다.",
+        "- 첫 제안: 가게 이름이나 플레이스 링크를 보내면 빠진 정보와 바로 고칠 3가지를 정리해 드립니다(무료, 카톡 전달 시 24시간 내 요약, 영업 전화 없음).",
+        f"- 기준 가격: {' / '.join(price_bits)}",
         f"- 상담: {config['consultUrl']}",
+        f"- 네이버 톡톡: {config.get('consultNaverUrl', '')}",
         "",
         "## 인사이트",
     ]
