@@ -210,6 +210,9 @@ def picture(src: str, alt: str, *, cls: str = "", eager: bool = False, sizes: st
 # --------------------------------------------------------------------------
 # 마크다운 -> HTML
 # --------------------------------------------------------------------------
+BARE_URL_RE = re.compile(r"https?://[^\s<>\"'\x00]+")
+
+
 class MarkdownRenderer:
     def __init__(self):
         self.headings: list[dict] = []
@@ -230,12 +233,27 @@ class MarkdownRenderer:
 
         text = re.sub(r"`([^`]+)`", lambda m: keep(f"<code>{esc(m.group(1))}</code>"), text)
         text = esc(text)
-        text = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: self._link(m.group(1), m.group(2)), text)
+        text = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", lambda m: keep(self._link(m.group(1), m.group(2))), text)
+        # 본문에 그대로 적힌 주소(예: '확인한 자료'의 출처)도 눌러서 열 수 있게 링크로 바꿉니다.
+        text = BARE_URL_RE.sub(lambda m: keep(self._autolink(m.group(0))), text)
         text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
         text = text.replace("\\*", "*")
         for i, markup in enumerate(stash):
             text = text.replace(f"\x00{i}\x00", markup)
         return text
+
+    @staticmethod
+    def _autolink(url: str) -> str:
+        """본문에 맨몸으로 적힌 http(s) 주소를 새 탭 링크로 만듭니다."""
+        tail = ""
+        while url and url[-1] in ".,;:!?)]}":
+            if url[-1] == ")" and url.count("(") >= url.count(")"):
+                break
+            tail = url[-1] + tail
+            url = url[:-1]
+        label = esc(html.unescape(url))
+        return (f'<a href="{label}" target="_blank" rel="noopener noreferrer">{label}'
+                f'<span class="sr-only"> (새 탭에서 열림)</span></a>{tail}')
 
     @staticmethod
     def _link(label: str, url: str) -> str:
@@ -430,7 +448,12 @@ def parse_front_matter(text: str) -> tuple[dict, str]:
             items = [item.strip().strip('"').strip("'") for item in value[1:-1].split(",")]
             meta[key.strip()] = [item for item in items if item]
         else:
-            meta[key.strip()] = value.strip('"').strip("'")
+            value = value.strip()
+            # 바깥을 감싼 따옴표 한 쌍만 벗깁니다. 제목이 '…' 처럼 작은따옴표로 시작해도
+            # 그 따옴표가 제목의 일부이므로 지우지 않습니다.
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+                value = value[1:-1]
+            meta[key.strip()] = value
     return meta, parts[2].lstrip("\n")
 
 
@@ -596,13 +619,13 @@ def build_base_context(config: dict) -> dict:
 
 NAV_ITEMS = [
     ("home", "/", "01", "HOME", "홈"),
-    ("works", "/portfolio/", "02", "SELECTED WORKS", "작업 사례"),
+    ("works", "/portfolio/", "02", "INDUSTRY DESIGN", "업종별 설계"),
     ("free-check", "/#free-check", "03", "FREE CHECK", "무료 점검"),
     ("services", "/#services", "04", "WHAT WE DO", "서비스"),
     ("pricing", "/#pricing", "05", "PRICING", "기준 가격"),
-    ("experience", "/about/", "06", "OUR EXPERIENCE", "대표 경험"),
-    ("insight", "/insights/", "07", "INSIGHT & PROCESS", "연구 노트"),
-    ("contact", "/contact/", "08", "LET'S TALK", "상담"),
+    ("experience", "/#experience", "06", "OUR EXPERIENCE", "대표 경험"),
+    ("insight", "/#process", "07", "INSIGHT & PROCESS", "연구 노트"),
+    ("contact", "/#contact", "08", "LET'S TALK", "상담"),
 ]
 
 NAV_SERVICE_LINKS = [
@@ -612,8 +635,9 @@ NAV_SERVICE_LINKS = [
 ]
 
 NAV_PAGE_LINKS = [
-    ("/portfolio/", "작업 사례"),
+    ("/portfolio/", "업종별 설계"),
     ("/about/", "기업 소개"),
+    ("/insights/", "인사이트"),
     ("/contact/", "상담 안내"),
     ("/privacy/", "개인정보처리방침"),
     ("/rss.xml", "RSS 구독"),
@@ -1411,18 +1435,16 @@ def page_specs(config: dict) -> list[dict]:
     ]
 
     portfolio_faq = [
-        ("실제 작업 사례는 어디서 볼 수 있나요?",
-         "고객사·매장의 비밀유지와 내부 지표 보호를 위해 실제 진행 프로젝트의 상세 사례와 성과 데이터는 "
-         "홈페이지에 공개하지 않습니다. 카카오톡 1:1 문의로 업종을 알려 주시면 같은 업종의 맞춤 레퍼런스를 "
-         "비공개로 전달해 드리고, 대표 채널에서 콘텐츠로 함께한 주요 브랜드 7곳은 기업 소개(/about/)에서 "
-         "확인하실 수 있습니다."),
-        ("매출·조회수 보장 수치를 적어두지 않는 이유는 무엇인가요?",
-         "상권과 업종, 매장 규모에 따라 결과가 달라지기 때문에 일괄 보장 수치를 적지 않습니다. "
-         "과장된 숫자로 계약을 서두르지 않고, 상담에서 합의한 범위와 지표를 기준으로 진행 상황을 "
-         "투명하게 공유합니다."),
-        ("제 업종에 맞는 레퍼런스를 먼저 볼 수 있나요?",
-         "네. 카카오톡 1:1 문의로 업체명과 온라인 채널 링크를 보내 주시면 같은 업종의 레퍼런스와 함께 "
-         "무료 3가지 점검에서 확인한 개선 지점을 안내해 드립니다."),
+        ("업종별 설계는 실제 작업 사례인가요?",
+         "아닙니다. 업종마다 먼저 확인하는 항목과 바꾸는 순서를 정리한 기준입니다. "
+         "특정 매장의 화면 캡처나 성과 수치가 아니며, 같은 업종이라도 상권과 매장 상황에 따라 항목은 달라집니다."),
+        ("무료 점검에서는 무엇까지 확인하나요?",
+         "공개된 플레이스·블로그·SNS에서 확인되는 범위로 세 가지 항목까지 정리합니다. "
+         "경쟁사 심층 분석, 전체 광고 전략 수립, 수익구조 분석, 제작 작업은 포함되지 않으며 "
+         "그 이상이 필요하면 유료 작업으로 안내합니다."),
+        ("우리 업종이 예시에 없으면 어떻게 하나요?",
+         "예시에 없는 업종도 같은 방식으로 확인 항목을 정합니다. 업체명과 운영 중인 채널 링크를 카카오톡 1:1로 "
+         "보내 주시면 공개된 정보에서 먼저 볼 항목부터 정리해 드립니다."),
     ]
 
     contact_faq = [
@@ -1536,38 +1558,48 @@ def page_specs(config: dict) -> list[dict]:
             "원본 파일 제공 여부와 사용 범위(온라인·인쇄, 사용 기간)는 상품별 계약 조건에 적어 안내합니다.",
             "폰트·이미지·음원은 사용 권한이 확인된 것만 씁니다. 별도 구매가 필요한 소재는 시작 전에 알려 드립니다.",
         ])),
-        sp_block("04", "PRICE", "기준 가격", sp_price(config)),
+        sp_block("04", "PRICE", "기준 가격", sp_price(config)
+                 + '<p class="sp-note">5만 원~은 플레이스 정보·안내 문구 1세트 기준입니다. 디자인·영상은 범위에 따라 별도 견적입니다.</p>'),
     ]
 
     portfolio_blocks = [
-        sp_block("01", "REFERENCE POLICY", "레퍼런스 공개 원칙", sp_paras([
-            "고객사·매장의 비밀유지와 내부 지표 보호를 위해 실제 진행 프로젝트의 이름과 상세 성과 데이터는 "
-            "홈페이지에 일괄 공개하지 않습니다.",
-            "아래에서는 업종별 설계 구조만 먼저 확인하실 수 있습니다. 내 업종에 맞는 실제 레퍼런스는 "
-            "카카오톡 1:1 문의 시 비공개로 전달해 드립니다.",
-        ]) + sp_list([
-            "고객사·매장명 비공개 — 계약 과정에서 확인한 정보와 내부 지표는 외부에 공개하지 않습니다",
-            "성과 데이터는 상담에서 — 매출·조회수는 상담에서 합의한 지표 기준으로만 안내합니다",
-            "업종별 설계 구조 공개 — 아래 세 건은 업종별로 무엇을 어떻게 바꾸는지 정리한 구조 안내입니다",
-            "대표 채널 협업 이력 공개 — 콘텐츠로 함께한 주요 브랜드 7곳은 기업 소개에서 확인하실 수 있습니다",
-        ])),
+        sp_block("01", "CHECK STANDARD", "업종마다 먼저 보는 항목",
+                 sp_paras([
+                     "손님이 확인하는 정보는 업종마다 다릅니다. 음식점은 오늘 열었는지와 주차, 뷰티숍은 시술 가격과 "
+                     "예약 가능 시간, 숙박은 객실 사진과 취소 규정을 먼저 봅니다. 그래서 점검도 같은 순서로 하지 않습니다.",
+                 ])
+                 + sp_table([
+                     ("음식점·카페", "영업시간·라스트오더, 주차, 대표 메뉴 가격, 예약 방식"),
+                     ("뷰티·미용", "시술 메뉴와 가격, 예약 가능 시간, 오시는 길, 리뷰 답변"),
+                     ("숙박·공간", "공간 사진, 요금 기준, 취소·환불 규정, 오시는 길"),
+                     ("온라인 판매", "상품 정보의 양, 배송·교환 기준, 후기, 문의 동선"),
+                 ])
+                 + '<p class="sp-note">표의 항목은 예시입니다. 실제 점검에서는 공개된 화면에서 확인되는 것만 다룹니다.</p>'),
         sp_block("02", "STRUCTURE", "업종별 설계 구조",
                  "<div class=\"samples samples--page\">" + "\n".join(
                      sample_html(sample, index) for index, sample in enumerate(SAMPLES, start=1)
                  ) + "</div>"
-                 + '<p class="sp-note">위 세 건은 업종별 설계 구조를 보여 드리는 레퍼런스입니다. 실제 매장의 화면 캡처나 성과 수치가 아니며, 실제 프로젝트에서는 상권과 매장 상황에 맞춰 항목을 다시 설계합니다.</p>',
+                 + '<p class="sp-note">위 세 건은 업종별 설계 구조를 보여 드리는 예시입니다. 상담에서는 상권과 매장 상황에 맞춰 항목을 다시 설계합니다.</p>',
                  wide=True),
-        sp_block("03", "HOW TO READ", "읽는 방법", sp_paras([
-            "이 페이지는 결과 숫자보다 무엇을 왜 바꾸는지를 먼저 적습니다. 확인되지 않은 매출 상승률·검색 순위·예약 증가율은 표시하지 않습니다.",
-            "실제 프로젝트의 상세 결과는 고객사 동의 범위 안에서만 공유합니다. 같은 업종이라도 상권과 규모에 따라 설계가 달라지므로, 상담에서 상황을 확인한 뒤 맞춤 레퍼런스를 골라 드립니다.",
-        ])),
-        sp_block("04", "REQUEST", "내 업종 레퍼런스 받기",
+        sp_block("03", "FREE CHECK", "3가지 무료 점검에서 보는 것",
                  sp_paras([
-                     "업체명과 온라인 채널 링크만 보내 주시면, 같은 업종의 레퍼런스와 무료 3가지 점검에서 "
-                     "확인한 개선 지점을 함께 안내해 드립니다. 영업 전화는 걸지 않습니다.",
+                     "무료 점검은 아래 세 가지 범주에서 확인되는 것만 정리합니다. 범주마다 네 개 항목을 보지만, "
+                     "정리해 드리는 것은 그중 지금 고칠 세 가지입니다.",
+                 ])
+                 + sp_list([
+                     "매장·브랜드 정보 — 영업시간·주차·대표 사진·공지",
+                     "블로그·콘텐츠 — 검색하는 말, 첫 문단, 채널 간 정보 일치",
+                     "문의·구매 동선 — 예약 방법, 가격, 오시는 길",
+                 ])
+                 + '<p class="sp-note">무료 점검은 3가지 항목까지 정리하며, 그 이상은 유료 작업으로 안내합니다. '
+                   '경쟁사 심층 분석·전체 광고 전략·수익구조 분석·제작 작업은 무료 범위에 포함되지 않습니다.</p>'),
+        sp_block("04", "REQUEST", "신청 방법",
+                 sp_paras([
+                     "업체명과 온라인 채널 링크만 보내 주시면 됩니다. 공개된 정보에서 확인한 것과 바로 고칠 순서를 "
+                     "정리해 24시간 안에 답합니다. 영업 전화는 걸지 않습니다.",
                  ])
                  + f'<p><a class="sp-link" href="{esc(config["consultUrl"])}" target="_blank" rel="noopener noreferrer">'
-                   '카카오톡 채널로 내 업종 레퍼런스 받기 →<span class="sr-only"> (새 탭에서 열림)</span></a></p>'),
+                   '카톡으로 무료 점검 신청 →<span class="sr-only"> (새 탭에서 열림)</span></a></p>'),
     ]
 
     about_blocks = [
@@ -1579,11 +1611,11 @@ def page_specs(config: dict) -> list[dict]:
             "광고를 더 많이 하는 것보다, 고객이 선택할 이유를 제대로 전달할 수는 없을까. 노티스랩은 그 질문에서 출발했습니다.",
             "광고와 마케팅으로 브랜드를 알리고, 경영컨설팅으로 사업의 방향을 고민하며, 글과 이미지, 영상으로 실행합니다. 소비자의 시선으로 발견하고, 사업자의 입장에서 연구합니다.",
         ])),
-        sp_block("02", "SINCE 2007", "블로그 경험은 2007년부터",
-                 '<p class="sp-display">BLOG EXPERIENCE<br><b>SINCE 2007.</b></p>'
+        sp_block("02", "NAVER BLOG SINCE 2007", "블로그 경험은 2007년부터",
+                 '<p class="sp-display">NAVER BLOG<br><b>SINCE 2007.</b></p>'
                  + sp_paras([
-                     "2007년부터 축적한 블로그 운영 경험, 소비자의 선택을 연구해 온 콘텐츠 제작 경험이 노티스랩의 출발점입니다.",
-                     "SINCE 2007은 대표자의 블로그 운영 경험을 뜻합니다. 노티스랩의 설립연도나 광고대행 시작 연도가 아닙니다.",
+                     "2007년부터 축적한 네이버 블로그 운영 경험, 소비자의 선택을 연구해 온 콘텐츠 제작 경험이 노티스랩의 출발점입니다.",
+                     "NAVER BLOG SINCE 2007은 대표자가 2007년부터 운영해 온 네이버 블로그 경험을 뜻합니다. 노티스랩의 설립연도나 광고대행 시작 연도가 아닙니다.",
                  ])),
         sp_block("03", "BRANDS", "콘텐츠로 함께한 브랜드",
                  f'<p class="sp-display">BRAND COLLABORATION<br><b>{BRAND_COUNT} BRANDS</b></p>'
@@ -1609,7 +1641,6 @@ def page_specs(config: dict) -> list[dict]:
         sp_block("05", "IMPACT", "우리의 성장이 누군가의 시작이 되도록",
                  sp_paras([
                      "노티스랩은 소상공인·기업 프로젝트(Track A)로 수익을 만듭니다. 그 수익과 일정의 일부를 신진 예술가, 청년 초기 창업자, 자립준비청년의 첫 홍보물을 만드는 데 쓰는 것을 목표로 합니다(Track B).",
-                     "전체 사업의 10% 환원을 목표로 두고 있습니다. 다만 매출·순이익·작업시간 중 어떤 기준으로 산정할지는 확정 전이라, 구체적인 지원 실적이나 확정된 배정으로 표현하지 않습니다.",
                      "처음 일을 시작할 때 필요한 건 거창한 캠페인이 아닙니다. 내 일을 설명하는 소개서 한 장, 검색했을 때 걸리는 최소한의 구조입니다.",
                  ])),
         sp_block("06", "VISION", "장기 목표", sp_paras([
@@ -1685,19 +1716,39 @@ def page_specs(config: dict) -> list[dict]:
         sp_block("03", "RETENTION", "보유 기간", sp_paras([
             "상담이 끝나면 목적이 달성된 정보는 지체 없이 파기합니다. 계약이 진행되면 계약·세무 관련 법령이 정한 기간 동안 보관합니다.",
         ])),
-        sp_block("04", "THIRD PARTY", "제3자 제공", sp_paras([
+        sp_block("04", "DESTRUCTION", "파기 절차와 방법", sp_paras([
+            "보유 기간이 끝나거나 목적이 달성되면 파기 대상으로 정하고, 개인정보 보호책임자의 확인을 거쳐 파기합니다.",
+        ]) + sp_list([
+            "전자 파일 — 복구할 수 없는 방법으로 삭제합니다",
+            "종이 문서 — 분쇄하거나 소각합니다",
+            "카카오톡·메일로 받은 자료 — 상담 종료 후 대화·메일함에서 삭제합니다",
+        ])),
+        sp_block("05", "THIRD PARTY", "제3자 제공", sp_paras([
             "상담에서 받은 정보를 제3자에게 제공하지 않습니다. 법령에 따라 요구되는 경우를 제외합니다.",
         ])),
-        sp_block("05", "PROCESSOR", "처리 위탁과 국외 이전", sp_paras([
+        sp_block("06", "PROCESSOR", "처리 위탁과 국외 이전", sp_paras([
             "상담은 카카오톡 채널에서 진행되어 카카오의 서비스 정책이 함께 적용됩니다. 홈페이지는 Cloudflare의 호스팅과 접속 통계를 사용하며, 페이지 요청 처리 과정에서 접속 정보가 국외 서버로 전송될 수 있습니다.",
         ])),
-        sp_block("06", "ANALYTICS", "분석 도구", sp_paras([
+        sp_block("07", "ANALYTICS", "분석 도구", sp_paras([
             "Cloudflare Web Analytics를 사용합니다. 쿠키를 쓰지 않고 개인을 식별하지 않는 방식의 접속 통계입니다. Google Analytics 4와 Google Tag Manager는 설치하지 않았습니다.",
         ])),
-        sp_block("07", "RIGHTS", "이용자의 권리", sp_paras([
+        sp_block("08", "RIGHTS", "이용자의 권리", sp_paras([
             "본인이 제공한 정보의 열람·정정·삭제를 요청할 수 있습니다. 아래 문의처로 알려 주시면 확인 후 처리합니다.",
         ])),
-        sp_block("08", "CONTACT", "문의", sp_table([
+        sp_block("09", "OFFICER", "개인정보 보호책임자", sp_table([
+            ("성명", business["ceo"]),
+            ("역할", "개인정보 처리 업무 총괄"),
+            ("이메일", business["email"]),
+            ("전화", business["phone"]),
+        ])),
+        sp_block("10", "GRIEVANCE", "고충처리 절차", sp_paras([
+            "개인정보와 관련한 문의·불만·피해 구제는 위 보호책임자에게 접수합니다. 접수한 날부터 10일 안에 확인 결과와 처리 방향을 답합니다.",
+            "회신이 충분하지 않다고 느끼시면 개인정보침해 신고센터(privacy.kisa.or.kr, 국번 없이 118)나 개인정보 분쟁조정위원회(kopico.go.kr, 1833-6972)에 도움을 요청하실 수 있습니다.",
+        ])),
+        sp_block("11", "CHANGES", "처리방침 변경", sp_paras([
+            "이 방침을 바꾸는 경우에는 시행 7일 전부터 이 페이지에 변경 내용과 시행일을 알립니다. 이용자 권리에 중요한 변경은 그보다 일찍 알리고, 가능한 범위에서 개별로도 안내합니다.",
+        ])),
+        sp_block("12", "CONTACT", "문의", sp_table([
             ("이메일", business["email"]),
             ("전화", business["phone"]),
             ("상호", business["name"]),
@@ -1710,8 +1761,8 @@ def page_specs(config: dict) -> list[dict]:
             "key": "marketing",
             "path": "/marketing/",
             "label": "광고·마케팅",
-            "mark": "BRAND MARKETING — 01",
-            "title": "고객에게 보이는 것에서,<br>고객에게 선택받는 것으로.",
+            "mark": "BRAND MARKETING",
+            "title": "고객에게 보이는 것에서,<br> 고객에게 선택받는 것으로.",
             "lede": "광고·마케팅은 노티스랩의 중심 사업입니다. 검색에서 시작해 문의·예약·구매까지, 브랜드가 고객과 만나는 접점을 정리합니다.",
             "action": "광고·마케팅 상담",
             "secondary": ("/#pricing", "기준 가격 보기"),
@@ -1722,7 +1773,7 @@ def page_specs(config: dict) -> list[dict]:
             "faq_no": "06",
             "next": [("/consulting/", "BUSINESS CONSULTING", "경영컨설팅"),
                      ("/studio/", "CONTENT STUDIO", "콘텐츠·디자인"),
-                     ("/portfolio/", "SELECTED WORKS", "작업 사례")],
+                     ("/portfolio/", "INDUSTRY DESIGN", "업종별 설계")],
             "cta": ("FREE CHECK", "광고비를 더 쓰기 전에,<br>끊긴 지점부터.",
                     "가게 이름이나 채널 링크만 보내 주세요. 공개된 정보에서 개선할 세 가지를 정리해 드립니다."),
             "service": {"name": "광고·브랜드 마케팅", "serviceType": "광고대행 및 브랜드 마케팅"},
@@ -1731,8 +1782,8 @@ def page_specs(config: dict) -> list[dict]:
             "key": "consulting",
             "path": "/consulting/",
             "label": "경영컨설팅",
-            "mark": "BUSINESS CONSULTING — 02",
-            "title": "사업의 고민을 분석하고,<br>성장의 방향을 설계합니다.",
+            "mark": "BUSINESS CONSULTING",
+            "title": "사업의 고민을 분석하고,<br> 성장의 방향을 설계합니다.",
             "lede": "경영컨설팅은 광고·마케팅과 별도로 상담할 수 있는 서비스입니다. 사업 현황과 수익구조를 함께 봅니다.",
             "action": "경영컨설팅 상담",
             "secondary": ("/#free-check", "무료 점검 안내"),
@@ -1752,50 +1803,50 @@ def page_specs(config: dict) -> list[dict]:
             "key": "studio",
             "path": "/studio/",
             "label": "콘텐츠·디자인",
-            "mark": "CONTENT STUDIO — 03",
-            "title": "브랜드의 이야기를,<br>고객이 기억하는 콘텐츠로.",
+            "mark": "CONTENT STUDIO",
+            "title": "브랜드의 이야기를,<br> 고객이 기억하는 콘텐츠로.",
             "lede": "글, 이미지, 영상. 가지고 계신 사진과 영상으로 시작합니다. 현장 촬영은 기본 제공하지 않고, 필요한 경우에만 따로 협의합니다.",
             "action": "콘텐츠 제작 견적 문의",
-            "secondary": ("/portfolio/", "작업 사례 보기"),
+            "secondary": ("/portfolio/", "업종별 설계 보기"),
             "meta_title": "콘텐츠·디자인 | 노티스랩 — 블로그·릴스·포스터·상세페이지",
             "meta_desc": "블로그 콘텐츠, 브랜드 소개, 릴스·클립·쇼츠, 포스터·메뉴판·상세페이지 제작. 보유하신 사진과 영상으로 기획·제작합니다.",
             "blocks": studio_blocks,
             "faq": studio_faq,
             "faq_no": "05",
-            "next": [("/portfolio/", "SELECTED WORKS", "작업 사례"),
+            "next": [("/portfolio/", "INDUSTRY DESIGN", "업종별 설계"),
                      ("/marketing/", "BRAND MARKETING", "광고·마케팅"),
                      ("/contact/", "CONTACT", "상담 안내")],
-            "cta": ("CONTENT STUDIO", "가지고 계신 사진으로<br>시작할 수 있습니다.",
+            "cta": ("CONTENT STUDIO", "가지고 계신 사진으로<br> 시작할 수 있습니다.",
                     "매장 사진·메뉴판·짧은 영상만 있으면 첫 세트를 만들 수 있습니다."),
             "service": {"name": "콘텐츠·영상·시각디자인 제작", "serviceType": "콘텐츠 제작 및 시각디자인"},
         },
         {
             "key": "portfolio",
             "path": "/portfolio/",
-            "label": "작업 사례",
-            "mark": "SELECTED WORKS — 04",
-            "title": "SELECTED<br>WORKS.",
-            "lede": "고객사·매장의 비밀유지와 내부 지표 보호를 위해 실제 프로젝트와 상세 성과는 홈페이지에 일괄 공개하지 않습니다. 업종별 설계 구조를 먼저 확인하시고, 내 업종에 맞는 실제 레퍼런스는 카카오톡 1:1 문의로 비공개 전달받으실 수 있습니다.",
-            "action": "내 업종 레퍼런스 문의",
-            "secondary": ("/#free-check", "무료 점검 안내"),
-            "meta_title": "작업 사례·레퍼런스 | 노티스랩 — 업종별 설계 구조",
-            "meta_desc": "고객사 비밀유지 원칙에 따라 실제 프로젝트의 상세 사례와 성과 데이터는 홈페이지에 공개하지 않습니다. 업종별 설계 구조를 먼저 확인하시고, 내 업종 레퍼런스는 카카오톡 1:1로 받으실 수 있습니다.",
+            "label": "업종별 설계",
+            "mark": "INDUSTRY DESIGN",
+            "title": "업종별 설계로<br> 무엇을 바꾸는지 먼저.",
+            "lede": "업종마다 먼저 확인하는 항목이 다릅니다. 이 페이지에서는 업종별 체크 기준과 3가지 무료 점검에서 보는 범위를 정리했습니다. 실제 상담에서는 상권과 매장 상황에 맞춰 다시 설계합니다.",
+            "action": "카톡으로 무료 점검 신청",
+            "secondary": ("/#pricing", "기준 가격 보기"),
+            "meta_title": "업종별 설계 | 노티스랩 — 업종별 체크 기준과 3가지 무료 점검",
+            "meta_desc": "음식점·뷰티·숙박·온라인 판매까지, 업종마다 먼저 보는 항목과 바꾸는 순서를 정리했습니다. 무료 점검은 3가지 항목까지, 그 이상은 유료 작업으로 안내합니다.",
             "blocks": portfolio_blocks,
             "faq": portfolio_faq,
             "faq_no": "05",
             "next": [("/marketing/", "BRAND MARKETING", "광고·마케팅"),
                      ("/studio/", "CONTENT STUDIO", "콘텐츠·디자인"),
                      ("/about/", "ABOUT NOTICE LAB", "기업 소개")],
-            "cta": ("PROJECT", "같은 방식으로<br>정리해 보겠습니다.",
-                    "업종과 상황이 다르면 바꾸는 항목도 달라집니다. 링크를 보내 주시면 확인한 것부터 정리합니다."),
-            "service": {"name": "브랜드 작업 사례", "serviceType": "브랜드 마케팅 제작"},
+            "cta": ("FREE CHECK", "내 업종에서<br> 먼저 볼 항목부터.",
+                    "업체명과 채널 링크만 보내 주세요. 3가지 무료 점검에서 확인한 것부터 정리합니다."),
+            "service": {"name": "업종별 설계", "serviceType": "브랜드 마케팅 설계"},
         },
         {
             "key": "about",
             "path": "/about/",
             "label": "기업 소개",
-            "mark": "ABOUT NOTICE LAB — 05",
-            "title": "쿠폰 주머니에서 시작된<br>소비자의 시선.",
+            "mark": "ABOUT NOTICE LAB",
+            "title": "쿠폰 주머니에서 시작된<br> 소비자의 시선.",
             "lede": "노티스랩은 소비자의 시선과 사업자의 수익성을 함께 보는 회사입니다. 광고·마케팅을 중심으로 경영컨설팅과 콘텐츠 제작을 연결합니다.",
             "action": "노티스랩에 문의",
             "secondary": ("/insights/", "연구 노트 보기"),
@@ -1803,10 +1854,10 @@ def page_specs(config: dict) -> list[dict]:
             "meta_desc": "쿠폰 주머니에서 시작된 소비자의 시선, 2007년부터 이어온 블로그 경험, 노티스랩의 사회적 가치와 장기 목표를 소개합니다.",
             "blocks": about_blocks,
             "faq": [],
-            "next": [("/portfolio/", "SELECTED WORKS", "작업 사례"),
+            "next": [("/portfolio/", "INDUSTRY DESIGN", "업종별 설계"),
                      ("/marketing/", "BRAND MARKETING", "광고·마케팅"),
                      ("/contact/", "CONTACT", "상담 안내")],
-            "cta": ("NOTICE LAB", "브랜드의 이야기를<br>고객이 선택할 이유로.",
+            "cta": ("NOTICE LAB", "브랜드의 이야기를<br> 고객이 선택할 이유로.",
                     "소상공인부터 기업까지. 필요한 이야기를 함께 찾아보겠습니다."),
             "page_type": "AboutPage",
         },
@@ -1814,8 +1865,8 @@ def page_specs(config: dict) -> list[dict]:
             "key": "contact",
             "path": "/contact/",
             "label": "상담 안내",
-            "mark": "CONTACT — 06",
-            "title": "상담은 카카오톡 채널<br>하나로 받습니다.",
+            "mark": "CONTACT",
+            "title": "상담은 카카오톡 채널<br> 하나로 받습니다.",
             "lede": "업체명과 온라인 채널 링크만 보내 주세요. 영업 전화는 걸지 않고, 확인한 내용만 정리해 답합니다.",
             "action": "카카오톡 채널 열기",
             "secondary": ("/#free-check", "무료 점검 안내"),
@@ -1834,8 +1885,8 @@ def page_specs(config: dict) -> list[dict]:
             "key": "privacy",
             "path": "/privacy/",
             "label": "개인정보처리방침",
-            "mark": "PRIVACY — 07",
-            "title": "개인정보<br>처리방침.",
+            "mark": "PRIVACY POLICY",
+            "title": "개인정보<br> 처리방침.",
             "lede": "노티스랩은 상담에 필요한 최소한의 정보만 받습니다. 이 페이지는 실제 운영 방식만 적습니다.",
             "action": "이메일로 문의",
             "secondary": ("/contact/", "상담 안내"),
@@ -1879,17 +1930,27 @@ def build_page(config: dict, spec: dict, base: dict) -> str:
 
     cta = spec.get("cta")
     if cta:
+        # 무료 점검을 내세우는 마무리 블록에서는 무료 점검 신청을 첫 버튼으로 둡니다.
+        free_first = cta[0] == "FREE CHECK" or spec.get("key") == "studio"
+        if free_first:
+            first_label = "카톡으로 무료 점검 신청"
+            second_label = "카카오톡으로 견적 문의"
+            first_class, second_class = "btn--light", "btn--ghost-light"
+        else:
+            first_label = "카카오톡으로 견적 문의"
+            second_label = "내 가게 3가지 무료 점검"
+            first_class, second_class = "btn--light", "btn--ghost-light"
         closing = f"""<section class="closing closing--page" aria-labelledby="sp-closing-title">
   <div class="wrap closing-inner">
     <p class="closing-label">{esc(cta[0])}</p>
     <h2 class="closing-title" id="sp-closing-title">{cta[1]}</h2>
     <p class="closing-lede">{esc(cta[2])}</p>
     <div class="closing-actions">
-      <a class="btn btn--light btn--lg" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
-        카카오톡으로 견적 문의<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+      <a class="btn {first_class} btn--lg" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+        {first_label}<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
       </a>
-      <a class="btn btn--ghost-light btn--lg" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
-        내 가게 3가지 무료 점검<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+      <a class="btn {second_class} btn--lg" href="{esc(config['consultUrl'])}" target="_blank" rel="noopener noreferrer">
+        {second_label}<span class="btn-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
       </a>
     </div>
     <p class="closing-notes">계약 의무 없음 · 영업 전화 없음 · 24시간 내 요약</p>
@@ -1995,6 +2056,14 @@ LINK_ICON_SVGS = {
         '<path fill="#03C75A" d="M8 14.4V6h2.6l3 4.5V6h2.6v8.4h-2.6l-3-4.5v4.5Z"/>'
         '</svg>'
     ),
+    # 홈페이지 — 이모지 대신 쓰는 얇은 선 지구본(경락선). 카카오·네이버 아이콘과 같은 획 두께로 맞춥니다.
+    "globe": (
+        '<svg class="link-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" '
+        'aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.5">'
+        '<circle cx="12" cy="12" r="8.4"/>'
+        '<path d="M3.6 12h16.8M12 3.6c2.4 2.3 3.7 5.2 3.7 8.4s-1.3 6.1-3.7 8.4c-2.4-2.3-3.7-5.2-3.7-8.4S9.6 5.9 12 3.6Z"/>'
+        '</svg>'
+    ),
 }
 
 # 아이콘 타일 색 — SVG 이름별로 타일 배경 클래스를 붙입니다.
@@ -2018,9 +2087,9 @@ GO_DEFAULT_LINKS = [
     },
     {
         "label": "노티스랩 공식 홈페이지",
-        "sub": "서비스 · 기준 가격 · 작업 사례 · 연구 노트",
+        "sub": "서비스 · 기준 가격 · 업종별 설계 · 연구 노트",
         "url": "https://noticelab.pages.dev/",
-        "icon": "🌐",
+        "icon_svg": "globe",
     },
     {
         "label": "노티스랩 네이버 블로그",
@@ -2168,7 +2237,7 @@ def build_llms_txt(config: dict, posts: list[dict]) -> str:
         f"- [광고·마케팅]({url_for(config, '/marketing/')}): 플레이스·블로그·SNS·SEO/GEO·전환 동선",
         f"- [경영컨설팅]({url_for(config, '/consulting/')}): 사업 현황·수익구조·가격 전략 진단",
         f"- [콘텐츠·디자인]({url_for(config, '/studio/')}): 글·이미지·영상 제작",
-        f"- [작업 사례]({url_for(config, '/portfolio/')}): 업종별 설계 구조 공개, 상세 레퍼런스는 카카오톡 1:1로 비공개 전달",
+        f"- [업종별 설계]({url_for(config, '/portfolio/')}): 업종마다 먼저 보는 체크 기준과 3가지 무료 점검 안내",
         f"- [기업 소개]({url_for(config, '/about/')}): 2007년부터 이어온 블로그 경험과 사회적 가치",
         f"- [상담]({url_for(config, '/contact/')}): 카카오톡 채널 1:1 접수",
         f"- [개인정보처리방침]({url_for(config, '/privacy/')})",

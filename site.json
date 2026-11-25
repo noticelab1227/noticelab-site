@@ -153,7 +153,7 @@
     "links": [
       {
         "label": "제작 · 세팅 견적 문의",
-        "sub": "필요한 작업 1건(5만 원~)부터 · 카카오톡 1:1",
+        "sub": "필요한 작업 1건(5만 원~, VAT 별도)부터 · 카카오톡 1:1",
         "url": "https://pf.kakao.com/_xdMIvX/chat",
         "icon_svg": "kakaotalk",
         "primary": true
@@ -166,9 +166,9 @@
       },
       {
         "label": "노티스랩 공식 홈페이지",
-        "sub": "서비스 · 기준 가격 · 작업 사례 · 연구 노트",
+        "sub": "서비스 · 기준 가격 · 업종별 설계 · 연구 노트",
         "url": "https://noticelab.pages.dev/",
-        "icon": "🌐"
+        "icon_svg": "globe"
       },
       {
         "label": "노티스랩 네이버 블로그",

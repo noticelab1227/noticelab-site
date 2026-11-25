@@ -322,8 +322,14 @@ body.nav-open .nav-overlay::before {
   position: relative;
   overflow: hidden;
   min-width: 0;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  /* 왼쪽은 로고 옆에서 넓게 사라지고, 오른쪽은 MENU/TALK 앞에서 사라집니다.
+     좌우 폭이 좁은 완만한 페이드만 두면 단어 중간이 칼로 자른 듯 보입니다. */
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0, rgba(0,0,0,.04) 22px, rgba(0,0,0,.45) 96px, #000 190px,
+    #000 calc(100% - 130px), transparent 100%);
+  mask-image: linear-gradient(90deg,
+    transparent 0, rgba(0,0,0,.04) 22px, rgba(0,0,0,.45) 96px, #000 190px,
+    #000 calc(100% - 130px), transparent 100%);
   transition: opacity .3s;
 }
 .ticker-track {
@@ -3016,7 +3022,7 @@ body.nav-open .brand-mark { color: var(--ink); }
   color: #FFFFFF;
   overflow: hidden;
 }
-.mix-seg:last-child { border-right: 0; background: var(--coral); }
+.mix-seg:last-child { border-right: 0; background: var(--coral-ink); }
 .mix-seg b { font-size: 12px; font-weight: 600; }
 .mix-seg span { white-space: nowrap; }
 .mix-legend {
@@ -3184,6 +3190,8 @@ body.nav-open .brand-mark { color: var(--ink); }
   padding: clamp(72px, 9vw, 140px) 0;
 }
 .closing-inner { display: grid; justify-items: start; }
+.closing-mark { margin-bottom: 0; color: #9C9C97; }
+.closing-mark .section-no { color: var(--coral); }
 .closing-label {
   font-family: var(--mono);
   font-size: 10px;
@@ -3427,6 +3435,12 @@ body.nav-open .brand-mark { color: var(--ink); }
   .sp-next-links { grid-template-columns: minmax(0, 1fr); }
   .cond-row { grid-template-columns: 110px minmax(0, 1fr) minmax(0, 1fr); font-size: .8rem; }
   .faq-block { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* 1620px 이하(1280·1366·1440 노트북)에서는 본문 오른쪽 여백이 좁아
+   고정 섹션 인디케이터가 히어로 카드·가격표 글자를 덮습니다. 이 폭에서는 숨깁니다. */
+@media (max-width: 1620px) {
+  .section-indicator { display: none; }
 }
 
 @media (max-width: 720px) {
