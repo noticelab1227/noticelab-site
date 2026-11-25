@@ -488,5 +488,29 @@
   "shop-handover-keys-body.png": {
     "webp": "shop-handover-keys-body-1400.webp",
     "og": null
+  },
+  "review-count-thumbnail.png": {
+    "webp": "review-count-thumbnail-1600.webp",
+    "og": "og-review-count-thumbnail.jpg"
+  },
+  "min-wage-shift-thumbnail.png": {
+    "webp": "min-wage-shift-thumbnail-1448.webp",
+    "og": "og-min-wage-shift-thumbnail.jpg"
+  },
+  "kakao-night-chat-thumbnail.png": {
+    "webp": "kakao-night-chat-thumbnail-1600.webp",
+    "og": "og-kakao-night-chat-thumbnail.jpg"
+  },
+  "review-count-body.png": {
+    "webp": "review-count-body-1400.webp",
+    "og": null
+  },
+  "min-wage-desk-body.png": {
+    "webp": "min-wage-desk-body-1086.webp",
+    "og": null
+  },
+  "kakao-night-chat-body.png": {
+    "webp": "kakao-night-chat-body-1400.webp",
+    "og": null
   }
 }

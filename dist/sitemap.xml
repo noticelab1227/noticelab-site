@@ -61,6 +61,24 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://noticelab.pages.dev/insights/kakao-channel-chat-hours/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://noticelab.pages.dev/insights/minimum-wage-2027-labor-cost/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://noticelab.pages.dev/insights/place-review-count-november/</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://noticelab.pages.dev/insights/shop-handover-invisible-assets/</loc>
     <lastmod>2026-11-25</lastmod>
     <changefreq>monthly</changefreq>
