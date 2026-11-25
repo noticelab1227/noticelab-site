@@ -512,5 +512,29 @@
   "kakao-night-chat-body.png": {
     "webp": "kakao-night-chat-body-1400.webp",
     "og": null
+  },
+  "grant-name-thumbnail.png": {
+    "webp": "grant-name-thumbnail-1536.webp",
+    "og": "og-grant-name-thumbnail.jpg"
+  },
+  "profit-gap-thumbnail.png": {
+    "webp": "profit-gap-thumbnail-1536.webp",
+    "og": "og-profit-gap-thumbnail.jpg"
+  },
+  "single-channel-thumbnail.png": {
+    "webp": "single-channel-thumbnail-1536.webp",
+    "og": "og-single-channel-thumbnail.jpg"
+  },
+  "grant-name-body.png": {
+    "webp": "grant-name-body-1400.webp",
+    "og": null
+  },
+  "profit-gap-body.png": {
+    "webp": "profit-gap-body-1400.webp",
+    "og": null
+  },
+  "single-channel-body.png": {
+    "webp": "single-channel-body-1400.webp",
+    "og": null
   }
 }
