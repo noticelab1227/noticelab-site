@@ -536,5 +536,29 @@
   "single-channel-body.png": {
     "webp": "single-channel-body-1400.webp",
     "og": null
+  },
+  "ai-local-recommend-thumbnail.png": {
+    "webp": "ai-local-recommend-thumbnail-1600.webp",
+    "og": "og-ai-local-recommend-thumbnail.jpg"
+  },
+  "five-employee-labor-law-thumbnail.png": {
+    "webp": "five-employee-labor-law-thumbnail-1600.webp",
+    "og": "og-five-employee-labor-law-thumbnail.jpg"
+  },
+  "storepro-agency-benchmark-thumbnail.png": {
+    "webp": "storepro-agency-benchmark-thumbnail-1600.webp",
+    "og": "og-storepro-agency-benchmark-thumbnail.jpg"
+  },
+  "ai-local-recommend-body.png": {
+    "webp": "ai-local-recommend-body-1400.webp",
+    "og": null
+  },
+  "five-employee-labor-law-body.png": {
+    "webp": "five-employee-labor-law-body-1400.webp",
+    "og": null
+  },
+  "storepro-agency-benchmark-body.png": {
+    "webp": "storepro-agency-benchmark-body-1400.webp",
+    "og": null
   }
 }
