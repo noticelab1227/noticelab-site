@@ -560,5 +560,29 @@
   "storepro-agency-benchmark-body.png": {
     "webp": "storepro-agency-benchmark-body-1400.webp",
     "og": null
+  },
+  "yellow-umbrella-thumbnail.png": {
+    "webp": "yellow-umbrella-thumbnail-1536.webp",
+    "og": "og-yellow-umbrella-thumbnail.jpg"
+  },
+  "bank-passbook-thumbnail.png": {
+    "webp": "bank-passbook-thumbnail-1536.webp",
+    "og": "og-bank-passbook-thumbnail.jpg"
+  },
+  "closing-shutter-thumbnail.png": {
+    "webp": "closing-shutter-thumbnail-1536.webp",
+    "og": "og-closing-shutter-thumbnail.jpg"
+  },
+  "yellow-umbrella-body.png": {
+    "webp": "yellow-umbrella-body-1400.webp",
+    "og": null
+  },
+  "bank-passbook-body.png": {
+    "webp": "bank-passbook-body-1400.webp",
+    "og": null
+  },
+  "closing-shutter-body.png": {
+    "webp": "closing-shutter-body-1400.webp",
+    "og": null
   }
 }
