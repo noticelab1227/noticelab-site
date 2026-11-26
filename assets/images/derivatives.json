@@ -584,5 +584,21 @@
   "closing-shutter-body.png": {
     "webp": "closing-shutter-body-1400.webp",
     "og": null
+  },
+  "place-plus-filter-thumbnail.png": {
+    "webp": "place-plus-filter-thumbnail-1122.webp",
+    "og": "og-place-plus-filter-thumbnail.jpg"
+  },
+  "ai-expert-ad-ban-thumbnail.png": {
+    "webp": "ai-expert-ad-ban-thumbnail-1086.webp",
+    "og": "og-ai-expert-ad-ban-thumbnail.jpg"
+  },
+  "place-plus-filter-body.png": {
+    "webp": "place-plus-filter-body-1086.webp",
+    "og": null
+  },
+  "ai-expert-ad-ban-body.png": {
+    "webp": "ai-expert-ad-ban-body-1086.webp",
+    "og": null
   }
 }
