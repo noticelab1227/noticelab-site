@@ -600,5 +600,29 @@
   "ai-expert-ad-ban-body.png": {
     "webp": "ai-expert-ad-ban-body-1086.webp",
     "og": null
+  },
+  "reservation-lead-time-thumbnail.png": {
+    "webp": "reservation-lead-time-thumbnail-1086.webp",
+    "og": "og-reservation-lead-time-thumbnail.jpg"
+  },
+  "voucher-25-deadline-thumbnail.png": {
+    "webp": "voucher-25-deadline-thumbnail-1086.webp",
+    "og": "og-voucher-25-deadline-thumbnail.jpg"
+  },
+  "black-friday-discount-rate-thumbnail.png": {
+    "webp": "black-friday-discount-rate-thumbnail-1086.webp",
+    "og": "og-black-friday-discount-rate-thumbnail.jpg"
+  },
+  "reservation-lead-time-body.png": {
+    "webp": "reservation-lead-time-body-1086.webp",
+    "og": null
+  },
+  "voucher-25-deadline-body.png": {
+    "webp": "voucher-25-deadline-body-1086.webp",
+    "og": null
+  },
+  "black-friday-discount-rate-body.png": {
+    "webp": "black-friday-discount-rate-body-1086.webp",
+    "og": null
   }
 }
