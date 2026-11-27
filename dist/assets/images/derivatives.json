@@ -648,5 +648,29 @@
   "beer-tax-menu-body.png": {
     "webp": "beer-tax-menu-body-1400.webp",
     "og": null
+  },
+  "reservation-rookie-thumbnail.png": {
+    "webp": "reservation-rookie-thumbnail-1149.webp",
+    "og": "og-reservation-rookie-thumbnail.jpg"
+  },
+  "card-credit-thumbnail.png": {
+    "webp": "card-credit-thumbnail-1086.webp",
+    "og": "og-card-credit-thumbnail.jpg"
+  },
+  "free-support-thumbnail.png": {
+    "webp": "free-support-thumbnail-1086.webp",
+    "og": "og-free-support-thumbnail.jpg"
+  },
+  "reservation-rookie-body.png": {
+    "webp": "reservation-rookie-body-1086.webp",
+    "og": null
+  },
+  "card-credit-body.png": {
+    "webp": "card-credit-body-1086.webp",
+    "og": null
+  },
+  "free-support-body.png": {
+    "webp": "free-support-body-1086.webp",
+    "og": null
   }
 }
