@@ -624,5 +624,29 @@
   "black-friday-discount-rate-body.png": {
     "webp": "black-friday-discount-rate-body-1086.webp",
     "og": null
+  },
+  "tax-audit-deferral-thumbnail.png": {
+    "webp": "tax-audit-deferral-thumbnail-1536.webp",
+    "og": "og-tax-audit-deferral-thumbnail.jpg"
+  },
+  "rate-325-thumbnail.png": {
+    "webp": "rate-325-thumbnail-1537.webp",
+    "og": "og-rate-325-thumbnail.jpg"
+  },
+  "beer-tax-menu-thumbnail.png": {
+    "webp": "beer-tax-menu-thumbnail-1536.webp",
+    "og": "og-beer-tax-menu-thumbnail.jpg"
+  },
+  "tax-audit-deferral-body.png": {
+    "webp": "tax-audit-deferral-body-1400.webp",
+    "og": null
+  },
+  "rate-325-body.png": {
+    "webp": "rate-325-body-1400.webp",
+    "og": null
+  },
+  "beer-tax-menu-body.png": {
+    "webp": "beer-tax-menu-body-1400.webp",
+    "og": null
   }
 }
