@@ -161,20 +161,12 @@
     "webp": "support-fund-thumbnail-1600.webp",
     "og": "og-support-fund-thumbnail.jpg"
   },
-  "gift-card-thumbnail.png": {
-    "webp": "gift-card-thumbnail-1600.webp",
-    "og": "og-gift-card-thumbnail.jpg"
-  },
   "ai-answer-slips.png": {
     "webp": "ai-answer-slips-1400.webp",
     "og": null
   },
   "support-four-forms.png": {
     "webp": "support-four-forms-1400.webp",
-    "og": null
-  },
-  "gift-card-ledger.png": {
-    "webp": "gift-card-ledger-1400.webp",
     "og": null
   },
   "gyeonggi-eight-cities-thumbnail.png": {
@@ -671,6 +663,38 @@
   },
   "free-support-body.png": {
     "webp": "free-support-body-1086.webp",
+    "og": null
+  },
+  "policy-loan-thumbnail.png": {
+    "webp": "policy-loan-thumbnail-1086.webp",
+    "og": "og-policy-loan-thumbnail.jpg"
+  },
+  "policy-loan-body.png": {
+    "webp": "policy-loan-body-1086.webp",
+    "og": null
+  },
+  "symptom-keyword-thumbnail.png": {
+    "webp": "symptom-keyword-thumbnail-1086.webp",
+    "og": "og-symptom-keyword-thumbnail.jpg"
+  },
+  "delivery-cap-thumbnail.png": {
+    "webp": "delivery-cap-thumbnail-1086.webp",
+    "og": "og-delivery-cap-thumbnail.jpg"
+  },
+  "symptom-keyword-body.png": {
+    "webp": "symptom-keyword-body-1122.webp",
+    "og": null
+  },
+  "delivery-cap-body.png": {
+    "webp": "delivery-cap-body-1086.webp",
+    "og": null
+  },
+  "gift-card-thumbnail.png": {
+    "webp": "gift-card-thumbnail-1600.webp",
+    "og": "og-gift-card-thumbnail.jpg"
+  },
+  "gift-card-ledger.png": {
+    "webp": "gift-card-ledger-1400.webp",
     "og": null
   }
 }

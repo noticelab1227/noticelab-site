@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>수수료 15% 상한이 오면 배달이 남을까요. 계산해 보니 배달비가 먼저입니다 | NOTICE LAB</title>
+<meta name="description" content="국회에 계류 중인 배달앱 수수료 상한 법안 3건은 배달비를 포함하느냐에서 갈립니다. 예산정책처 사례(2만 원 주문에 앱 비용 6,116원)로 계산하면 수수료만 묶는 안은 이미 13.6%라 달라지는 게 거의 없습니다. 내 정산서로 확인할 세 줄을 적었습니다.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="NOTICE LAB">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://noticelab.pages.dev/insights/delivery-fee-cap-15-percent-math/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="NOTICE LAB">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="수수료 15% 상한이 오면 배달이 남을까요. 계산해 보니 배달비가 먼저입니다">
+<meta property="og:description" content="국회에 계류 중인 배달앱 수수료 상한 법안 3건은 배달비를 포함하느냐에서 갈립니다. 예산정책처 사례(2만 원 주문에 앱 비용 6,116원)로 계산하면 수수료만 묶는 안은 이미 13.6%라 달라지는 게 거의 없습니다. 내 정산서로 확인할 세 줄을 적었습니다.">
+<meta property="og:url" content="https://noticelab.pages.dev/insights/delivery-fee-cap-15-percent-math/">
+<meta property="og:image" content="https://noticelab.pages.dev/assets/images/og-delivery-cap-thumbnail.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="수수료 15% 상한, 배달비가 먼저입니다 — 노티스랩 인사이트">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="수수료 15% 상한이 오면 배달이 남을까요. 계산해 보니 배달비가 먼저입니다">
+<meta name="twitter:description" content="국회에 계류 중인 배달앱 수수료 상한 법안 3건은 배달비를 포함하느냐에서 갈립니다. 예산정책처 사례(2만 원 주문에 앱 비용 6,116원)로 계산하면 수수료만 묶는 안은 이미 13.6%라 달라지는 게 거의 없습니다. 내 정산서로 확인할 세 줄을 적었습니다.">
+<meta name="twitter:image" content="https://noticelab.pages.dev/assets/images/og-delivery-cap-thumbnail.jpg">
+<meta name="google-site-verification" content="8lNAgSQtSbjfogpFWahgRxSOPI7ny4AQVYZhbtRlh0k">
+<meta name="google-site-verification" content="BovIgHhduOAlDU-Ko6QmQ0eEtTw2BeddDCCzGDa41Qo">
+<meta name="naver-site-verification" content="96a2e5b179f30e42b8f2b4504fd5e21fd85bef22">
+<meta property="article:published_time" content="2026-11-28T12:30:00+09:00">
+<meta property="article:modified_time" content="2026-11-28T12:30:00+09:00">
+<meta property="article:section" content="전환·대행 기준">
+<meta name="keywords" content="배달앱 수수료 상한제, 배달비, 배달 수수료 15%, 이중가격, 배달 정산서, 자영업 배달 비용, 배달플랫폼 공정화법">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../../assets/images/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../../assets/images/apple-touch-icon.png">
+<link rel="alternate" type="application/rss+xml" title="NOTICE LAB 인사이트" href="../../rss.xml">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="../../assets/css/style.css?v=19">
+<script>document.documentElement.classList.add('js');</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "수수료 15% 상한이 오면 배달이 남을까요. 계산해 보니 배달비가 먼저입니다",
+  "description": "국회에 계류 중인 배달앱 수수료 상한 법안 3건은 배달비를 포함하느냐에서 갈립니다. 예산정책처 사례(2만 원 주문에 앱 비용 6,116원)로 계산하면 수수료만 묶는 안은 이미 13.6%라 달라지는 게 거의 없습니다. 내 정산서로 확인할 세 줄을 적었습니다.",
+  "image": [
+    "https://noticelab.pages.dev/assets/images/og-delivery-cap-thumbnail.jpg"
+  ],
+  "datePublished": "2026-11-28T12:30:00+09:00",
+  "dateModified": "2026-11-28T12:30:00+09:00",
+  "inLanguage": "ko-KR",
+  "articleSection": "전환·대행 기준",
+  "keywords": "배달앱 수수료 상한제, 배달비, 배달 수수료 15%, 이중가격, 배달 정산서, 자영업 배달 비용, 배달플랫폼 공정화법",
+  "wordCount": 2765,
+  "isAccessibleForFree": true,
+  "author": {
+    "@type": "Organization",
+    "name": "NOTICE LAB",
+    "url": "https://noticelab.pages.dev/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "NOTICE LAB",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://noticelab.pages.dev/assets/images/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://noticelab.pages.dev/insights/delivery-fee-cap-15-percent-math/"
+  },
+  "isPartOf": {
+    "@id": "https://noticelab.pages.dev/insights/#blog"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "상한제가 되면 수수료가 바로 내려가나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "아닙니다. 법이 국회를 통과하고 시행령이 만들어져야 요율과 범위가 정해집니다. 지금은 법안 세 건이 위원회에 계류 중이고, 11월 25일 소위에는 상정되지 않았습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "배달비까지 15%에 묶이면 가게에 유리한가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "단기적으로는 한 건당 나가는 돈이 줄 수 있습니다. 다만 플랫폼이 배달비 분담 구조를 바꾸거나 무료배달 혜택을 줄이면 주문량이 줄 수 있습니다. 비용과 주문량을 같이 봐야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "지금 당장 무엇을 확인해야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "최근 정산서에서 중개수수료·배달비·결제수수료·광고비를 항목별로 나눠 보고, 배달이 전체 매출에서 차지하는 비중을 적는 것입니다. 그 두 숫자가 있으면 어떤 법안이 와도 내 가게 영향을 계산할 수 있습니다."
+      }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "홈",
+      "item": "https://noticelab.pages.dev/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "인사이트",
+      "item": "https://noticelab.pages.dev/insights/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "수수료 15% 상한이 오면 배달이 남을까요. 계산해 보니 배달비가 먼저입니다",
+      "item": "https://noticelab.pages.dev/insights/delivery-fee-cap-15-percent-math/"
+    }
+  ]
+}
+</script>
+</head>
+<body class="page-post">
+<a class="skip-link" href="#main">본문으로 바로가기</a>
+
+<header class="site-header" id="site-header">
+  <a class="brand" href="../../" aria-label="NOTICE LAB 노티스랩 홈">
+    <svg class="brand-mark" viewBox="0 0 391 194" fill="none" aria-hidden="true" focusable="false">
+      <path d="M0 0h40l125 193h-40z" fill="currentColor"/>
+      <rect width="40" height="193" fill="currentColor"/>
+      <rect x="125" width="40" height="193" fill="currentColor"/>
+      <rect x="201" width="40" height="193" fill="currentColor"/>
+      <rect x="201" y="157" width="126" height="36" fill="currentColor"/>
+      <rect x="353" y="156" width="38" height="38" fill="#FF382C"/>
+    </svg>
+    <span class="brand-word">NOTICE LAB</span>
+  </a>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span class="ticker-item">BRAND MARKETING &amp; BUSINESS CONSULTING</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item">NOTICE LAB — 조회수가 아닌 매출을 연구합니다</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item">SEO / GEO / PLACE / CONTENT / DESIGN</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item">BRAND MARKETING &amp; BUSINESS CONSULTING</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item">NOTICE LAB — 조회수가 아닌 매출을 연구합니다</span>
+      <span class="ticker-sep">·</span>
+      <span class="ticker-item">SEO / GEO / PLACE / CONTENT / DESIGN</span>
+      <span class="ticker-sep">·</span>
+    </div>
+  </div>
+
+  <div class="header-tools">
+    <button class="menu-toggle" type="button" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="메뉴 열기">
+      <span class="menu-label">MENU</span>
+      <span class="menu-label menu-label--close">CLOSE</span>
+    </button>
+    <a class="btn-talk" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">TALK<span class="btn-talk-arrow" aria-hidden="true">→</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span></a>
+  </div>
+</header>
+
+<div class="nav-overlay" id="site-nav">
+  <p class="nav-topline"><span>INDEX</span><span>NOTICE LAB — 노티스랩</span></p>
+  <div class="nav-overlay-inner">
+    <nav class="nav-main" aria-label="주 메뉴">
+      <ol class="nav-list">
+        <li class="nav-item"><a class="nav-link" href="../../"><span class="nav-no">01</span><span class="nav-en">HOME</span><span class="nav-ko">홈</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../../portfolio/"><span class="nav-no">02</span><span class="nav-en">INDUSTRY DESIGN</span><span class="nav-ko">업종별 설계</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../../#free-check"><span class="nav-no">03</span><span class="nav-en">FREE CHECK</span><span class="nav-ko">무료 점검</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../../#services"><span class="nav-no">04</span><span class="nav-en">WHAT WE DO</span><span class="nav-ko">서비스</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-sub-item"><ul class="nav-sub"><li><a href="../../marketing/">광고·마케팅</a></li><li><a href="../../consulting/">경영컨설팅</a></li><li><a href="../../studio/">콘텐츠·디자인</a></li></ul></li>
+        <li class="nav-item"><a class="nav-link" href="../../#pricing"><span class="nav-no">05</span><span class="nav-en">PRICING</span><span class="nav-ko">기준 가격</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../../#experience"><span class="nav-no">06</span><span class="nav-en">OUR EXPERIENCE</span><span class="nav-ko">대표 경험</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../../#process" aria-current="page"><span class="nav-no">07</span><span class="nav-en">INSIGHT &amp; PROCESS</span><span class="nav-ko">연구 노트</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="../../#contact"><span class="nav-no">08</span><span class="nav-en">LET&#x27;S TALK</span><span class="nav-ko">상담</span><span class="nav-arrow" aria-hidden="true">→</span></a></li>
+      </ol>
+    </nav>
+    <div class="nav-meta">
+      <div class="nav-meta-col">
+        <p class="nav-meta-label">CONSULT</p>
+        <a href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">카카오톡으로 견적 문의 →</a>
+        <a href="tel:010-2000-0239">010-2000-0239</a>
+        <a href="mailto:noticelab@naver.com">noticelab@naver.com</a>
+      </div>
+      <div class="nav-meta-col">
+        <p class="nav-meta-label">PAGES</p>
+        <a href="../../portfolio/">업종별 설계</a><a href="../../about/">기업 소개</a><a href="../../insights/">인사이트</a><a href="../../contact/">상담 안내</a><a href="../../privacy/">개인정보처리방침</a><a href="../../rss.xml">RSS 구독</a>
+      </div>
+      <div class="nav-meta-col">
+        <p class="nav-meta-label">STUDIO</p>
+        <p>경기도 용인시 처인구 포곡읍</p>
+        <p>사업자등록번호 266-76-00532</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main">
+<article class="post">
+  <header class="post-hero">
+    <div class="wrap">
+      <nav class="breadcrumb" aria-label="현재 위치">
+        <a href="../../">홈</a><span aria-hidden="true">/</span>
+        <a href="../../insights/">인사이트</a><span aria-hidden="true">/</span>
+        <span aria-current="page">전환·대행 기준</span>
+      </nav>
+
+      <p class="post-meta">
+        <span class="post-cat">전환·대행 기준</span>
+        <span class="post-sep" aria-hidden="true">/</span>
+        <time datetime="2026-11-28T12:30:00+09:00">2026년 11월 28일</time>
+        <span class="post-sep" aria-hidden="true">/</span>
+        <span>READ 6 MIN</span>
+      </p>
+
+      <h1 class="post-title">수수료 15% 상한이 오면 배달이 남을까요. 계산해 보니 배달비가 먼저입니다</h1>
+      <p class="post-lede">국회에 계류 중인 배달앱 수수료 상한 법안 3건은 배달비를 포함하느냐에서 갈립니다. 예산정책처 사례(2만 원 주문에 앱 비용 6,116원)로 계산하면 수수료만 묶는 안은 이미 13.6%라 달라지는 게 거의 없습니다. 내 정산서로 확인할 세 줄을 적었습니다.</p>
+    </div>
+  </header>
+
+  <div class="post-media"><picture><source type="image/webp" srcset="../../assets/images/delivery-cap-thumbnail-1086.webp" sizes="100vw"><img src="../../assets/images/delivery-cap-thumbnail.png" alt="밤에 조명이 켜진 식당 카운터 위에 쌓인 검은 배달 가방 세 개" width="1086" height="1448" loading="eager" decoding="async" fetchpriority="high" class="post-cover-img"></picture></div>
+
+  <div class="post-paper">
+    <div class="wrap post-layout">
+      <aside class="post-aside">
+        <nav class="toc is-collapsed" aria-label="이 글의 목차">
+  <button class="toc-toggle" type="button" aria-expanded="false" aria-controls="toc-panel">
+    <span class="toc-toggle-text">목차 보기 <span class="toc-toggle-count">(7)</span></span>
+    <span class="toc-toggle-icon" aria-hidden="true"></span>
+  </button>
+  <div class="toc-panel" id="toc-panel">
+    <p class="toc-title">CONTENTS</p>
+    <ol class="toc-list"><li><a href="#국회에-올라와-있는-세-가지">국회에 올라와 있는 세 가지</a></li><li><a href="#6-116원을-뜯어-보면">6,116원을 뜯어 보면</a></li><li><a href="#그런데-업주들은-왜-걱정할까">그런데 업주들은 왜 걱정할까</a></li><li><a href="#지금-내-가게에서-할-세-가지">지금 내 가게에서 할 세 가지</a></li><li><a href="#법이-지나가도-달라지지-않는-것">법이 지나가도 달라지지 않는 것</a></li><li><a href="#확인한-자료">확인한 자료</a></li><li><a href="#자주-묻는-질문">자주 묻는 질문</a></li></ol>
+    <a class="toc-cta" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">카카오톡으로 질문하기 <span aria-hidden="true">→</span></a>
+  </div>
+</nav>
+      </aside>
+
+      <div class="post-main">
+        <div class="article">
+          <p>배달 수수료를 15% 안팎으로 묶자는 법이 국회에 있습니다. 그런데 2만 원짜리 주문에서 앱에 나가는 6,116원을 뜯어 보면, 배달비가 3,400원입니다. 나머지 2,716원이 수수료와 결제비용입니다.</p>
+<p>수수료 항목만 15%로 묶는 안이라면, 이 가게는 지금도 13.6%입니다. 법이 지나가도 통장에 남는 돈은 거의 그대로입니다.</p>
+<aside class="cta-box cta-box--top" aria-label="무료 점검·견적 문의">
+  <div class="cta-box-text">
+    <p class="cta-box-kicker">FREE CHECK <span aria-hidden="true">/</span> 무료 3가지 점검</p>
+    <p class="cta-box-title">가게 이름이나 채널 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 정리해 드립니다.</p>
+    <p class="cta-box-sub">0원 · 카톡으로 전달하면 24시간 내 요약 · 영업 전화 없음</p>
+  </div>
+  <div class="cta-box-actions">
+    <a class="btn btn--solid" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">
+      카톡으로 3가지 무료 점검<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+    </a>
+  </div>
+</aside>
+<h2 id="국회에-올라와-있는-세-가지">국회에 올라와 있는 세 가지<a class="anchor" href="#국회에-올라와-있는-세-가지" aria-label="국회에 올라와 있는 세 가지 섹션 링크">#</a></h2>
+<p>11월 27일 기준 국회 정무위원회에 계류 중인 법안은 세 건입니다. 셋 다 &quot;15%&quot;를 말하지만, 무엇을 15% 안에 넣느냐가 다릅니다.</p>
+<div class="table-wrap" data-cols="3"><table><thead><tr><th>법안</th><th>묶는 범위</th><th>배달비</th></tr></thead><tbody><tr><td data-label="법안">이강일 의원안</td><td data-label="묶는 범위">중개·결제수수료와 광고비를 15% 이내</td><td data-label="배달비">상·하한을 따로 정함</td></tr><tr><td data-label="법안">김남근 의원안</td><td data-label="묶는 범위">영세 업체 우대 수수료율</td><td data-label="배달비">배달방식과 분담 수준을 가게가 선택</td></tr><tr><td data-label="법안">박정훈 의원안</td><td data-label="묶는 범위">수수료 등 비용과 배달비를 모두 15% 이내</td><td data-label="배달비">포함</td></tr></tbody></table></div>
+<p>가장 센 쪽은 세 번째입니다. 가게가 내는 돈을 전부 합쳐 15%를 넘기지 말자는 것입니다. 첫 번째는 수수료와 광고비만 묶고, 라이더 배달비는 별도 기준으로 두겠다는 것입니다.</p>
+<p>11월 25일 법안심사소위에서는 세 건 모두 상정되지 않았습니다. 11월 30일 제2법안심사소위에 오를지가 다음 관전 포인트입니다.</p>
+<h2 id="6-116원을-뜯어-보면">6,116원을 뜯어 보면<a class="anchor" href="#6-116원을-뜯어-보면" aria-label="6,116원을 뜯어 보면 섹션 링크">#</a></h2>
+<p>국회 예산정책처가 2025년 11월에 낸 소상공인 지원 재정사업 평가 보고서에 사례 하나가 실려 있습니다. 2024년 배달플랫폼 상생안 기준으로, 서울에서 배달앱 매출 상위 35%에 속한 점포가 2만 원어치를 팔면 앱 비용으로 6,116원이 빠져나갑니다. 주문금액의 30.6%입니다.</p>
+<p>이 6,116원 가운데 배달비가 3,400원입니다. 그러면 나머지는 2,716원, 13.6%입니다. 여기에 중개수수료와 결제수수료가 섞여 있습니다. 항목별로 얼마씩인지는 이 사례에 나와 있지 않습니다.</p>
+<p>그래서 계산이 이렇게 갈립니다.</p>
+<ul><li><strong>수수료만 15%로 묶으면</strong>: 이 가게의 나머지 2,716원은 이미 15% 아래입니다. 상한이 생겨도 줄어드는 돈이 거의 없습니다. 광고비를 어디까지 포함하느냐에 따라 달라질 수는 있습니다.</li><li><strong>배달비까지 15%로 묶으면</strong>: 2만 원의 15%는 3,000원입니다. 지금 6,116원에서 3,000원으로 줄면 한 건에 3,116원이 남습니다. 하루 30건이면 9만 원이 넘습니다.</li></ul>
+<p>같은 &quot;15%&quot;인데, 어느 안이 통과하느냐에 따라 우리 가게 통장이 달라집니다.</p>
+<h2 id="그런데-업주들은-왜-걱정할까">그런데 업주들은 왜 걱정할까<a class="anchor" href="#그런데-업주들은-왜-걱정할까" aria-label="그런데 업주들은 왜 걱정할까 섹션 링크">#</a></h2>
+<p>수수료가 줄면 좋은 것 아닌가 싶은데, 현장 반응은 다릅니다. 11월 27일 세계일보가 인터뷰한 사장님들의 말은 같은 방향입니다. 수수료가 낮아져도 라이더 배달비는 사라지지 않고, 배달비가 소비자에게 붙거나 무료배달이 줄면 주문 자체가 줄어든다는 것입니다.</p>
+<p>한 분식집 사장님은 &quot;수수료 몇백 원 줄어드는 것보다 주문이 계속 들어오는 게 훨씬 중요하다&quot;고 말했습니다. 배달 한 건에 라이더가 4,000~5,000원은 받아야 한다는 이야기도 함께 나옵니다.</p>
+<p>소비자 쪽 숫자도 있습니다. 배달앱 이용자 1,000명을 조사했더니 10명 중 7명이 &quot;수수료 상한제로 배달비가 오르고 무료배달이 사라지면 주문을 줄이겠다&quot;고 답했습니다. 가게에 남는 돈이 늘어도, 주문이 줄면 남는 게 없습니다.</p>
+<h2 id="지금-내-가게에서-할-세-가지">지금 내 가게에서 할 세 가지<a class="anchor" href="#지금-내-가게에서-할-세-가지" aria-label="지금 내 가게에서 할 세 가지 섹션 링크">#</a></h2>
+<p>법을 기다리지 않고 오늘 할 수 있는 일입니다.</p>
+<ol><li><strong>최근 정산서 한 장을 항목별로 쪼갭니다.</strong> 중개수수료, 배달비, 결제수수료, 광고비, 부가세를 각각 적고, 2만 원 주문 기준으로 환산해 보세요. 합계만 보면 어디가 큰지 안 보입니다.</li><li><strong>배달·홀·포장 비중을 적습니다.</strong> 배달 의존도가 높은 가게일수록 상한제 영향이 큽니다. 홀이 절반 이상이면 법이 바뀌어도 체감이 작습니다.</li><li><strong>가격 표시를 점검합니다.</strong> 한국소비자연맹이 11월 27일 공개한 조사에서, 방문 조사한 음식점 45곳 중 31곳(68.9%)이 배달앱 가격을 매장보다 높게 받았습니다. 차이는 메뉴 하나에 400원에서 3,500원, 1,000원이 가장 많았습니다. 그중 54.8%는 포장 주문에도 배달가를 적용했습니다.</li></ol>
+<p>세 번째는 법과 별개로 지금 손님에게 보이는 숫자입니다. 배달가와 매장가를 다르게 받는 것 자체가 문제는 아닙니다. 다만 포장 주문에도 배달가가 붙으면, 손님은 그 차이를 리뷰에 적습니다. 플랫폼에서 포장 가격을 따로 설정할 수 있는지 확인해 두세요.</p>
+<figure class="post-figure"><picture><source type="image/webp" srcset="../../assets/images/delivery-cap-body-1086.webp"><img src="../../assets/images/delivery-cap-body.png" alt="영수증 프린터에서 나온 긴 영수증 더미와 이를 찢는 손" width="1086" height="1448" loading="lazy" decoding="async" class="post-figure-img"></picture><figcaption>정산서는 합계보다 항목이 먼저입니다.</figcaption></figure>
+<h2 id="법이-지나가도-달라지지-않는-것">법이 지나가도 달라지지 않는 것<a class="anchor" href="#법이-지나가도-달라지지-않는-것" aria-label="법이 지나가도 달라지지 않는 것 섹션 링크">#</a></h2>
+<p>세 법안 모두 계류 중입니다. 통과 여부도, 시행 시기도, 최종 숫자도 정해지지 않았습니다. 11월 30일 소위에 오르지 않으면 논의는 다음으로 또 밀립니다.</p>
+<p>상한제가 시행되면 비용이 사라지는 게 아니라 부담 주체가 바뀔 수 있습니다. 라이더 보수가 줄거나, 소비자 배달비가 오르거나, 플랫폼이 다른 항목을 조정할 수 있습니다. 어느 쪽이든 가게의 주문량에 영향을 줍니다.</p>
+<p>여기 적은 6,116원은 2024년 사례 한 건입니다. 매출 상위 35% 구간에 적용되는 상생요금제 기준이라, 하위 구간이거나 다른 지역이면 숫자가 다릅니다. 내 가게 정산서와 같은 잣대로 비교하지 마세요.</p>
+<p>정산서에서 어디를 먼저 봐야 하는지는 <a href="../../insights/delivery-platform-cost-262/">배달 매출 100만 원 중 26만 원이 플랫폼으로</a>에, 플랫폼 없이 손님을 만드는 방법은 <a href="../../insights/outside-platform-customers/">수수료 협상권이 생겨도, 협상할 손님이 없으면 소용없습니다</a>에 정리해 두었습니다.</p>
+<p>우리 정산서에서 어느 항목이 큰지 혼자 보기 어려우면, 업종과 최근 달 배달 매출 구간만 <a href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">카카오톡 채널<span class="sr-only"> (새 탭에서 열림)</span></a>로 보내 주세요. 먼저 줄일 수 있는 항목 세 가지를 짚어 드립니다.</p>
+<h2 id="확인한-자료">확인한 자료<a class="anchor" href="#확인한-자료" aria-label="확인한 자료 섹션 링크">#</a></h2>
+<ul><li>세계일보, 「&quot;배달앱 수수료 상한제 시행되면 동네 식당 문 닫아&quot;…업주들 우려 확산」, 2026년 11월 27일 — <a href="https://www.segye.com/newsView/20261127512348" target="_blank" rel="noopener noreferrer">https://www.segye.com/newsView/20261127512348<span class="sr-only"> (새 탭에서 열림)</span></a></li><li>연합뉴스, 「소비자연맹 &quot;배달 매장 68.9% 이중가격…포장에도 배달가 적용&quot;」, 2026년 11월 27일 — <a href="https://www.yna.co.kr/view/AKR20261127072000030" target="_blank" rel="noopener noreferrer">https://www.yna.co.kr/view/AKR20261127072000030<span class="sr-only"> (새 탭에서 열림)</span></a></li><li>머니투데이, 「&quot;공짜 배달이라 좋아했는데&quot;…사장님도 손님도 웃지 못하는 이유」, 2026년 11월 23일 — <a href="https://www.mt.co.kr/living/2026/11/23/2026112219544755147" target="_blank" rel="noopener noreferrer">https://www.mt.co.kr/living/2026/11/23/2026112219544755147<span class="sr-only"> (새 탭에서 열림)</span></a></li><li>얼리어답터뉴스, 「소상공인의 절규 외면하는 국회, 온플법·배달수수료 상한제 또 상정 무산」, 2026년 11월 25일 — <a href="https://www.eanews.kr/news/1059183" target="_blank" rel="noopener noreferrer">https://www.eanews.kr/news/1059183<span class="sr-only"> (새 탭에서 열림)</span></a></li></ul>
+<h2 id="자주-묻는-질문">자주 묻는 질문<a class="anchor" href="#자주-묻는-질문" aria-label="자주 묻는 질문 섹션 링크">#</a></h2>
+<h3 id="상한제가-되면-수수료가-바로-내려가나요">상한제가 되면 수수료가 바로 내려가나요?<a class="anchor" href="#상한제가-되면-수수료가-바로-내려가나요" aria-label="상한제가 되면 수수료가 바로 내려가나요? 섹션 링크">#</a></h3>
+<p>아닙니다. 법이 국회를 통과하고 시행령이 만들어져야 요율과 범위가 정해집니다. 지금은 법안 세 건이 위원회에 계류 중이고, 11월 25일 소위에는 상정되지 않았습니다.</p>
+<h3 id="배달비까지-15-에-묶이면-가게에-유리한가요">배달비까지 15%에 묶이면 가게에 유리한가요?<a class="anchor" href="#배달비까지-15-에-묶이면-가게에-유리한가요" aria-label="배달비까지 15%에 묶이면 가게에 유리한가요? 섹션 링크">#</a></h3>
+<p>단기적으로는 한 건당 나가는 돈이 줄 수 있습니다. 다만 플랫폼이 배달비 분담 구조를 바꾸거나 무료배달 혜택을 줄이면 주문량이 줄 수 있습니다. 비용과 주문량을 같이 봐야 합니다.</p>
+<h3 id="지금-당장-무엇을-확인해야-하나요">지금 당장 무엇을 확인해야 하나요?<a class="anchor" href="#지금-당장-무엇을-확인해야-하나요" aria-label="지금 당장 무엇을 확인해야 하나요? 섹션 링크">#</a></h3>
+<p>최근 정산서에서 중개수수료·배달비·결제수수료·광고비를 항목별로 나눠 보고, 배달이 전체 매출에서 차지하는 비중을 적는 것입니다. 그 두 숫자가 있으면 어떤 법안이 와도 내 가게 영향을 계산할 수 있습니다.</p>
+          <aside class="cta-box cta-box--bottom" aria-label="무료 점검·견적 문의">
+  <div class="cta-box-text">
+    <p class="cta-box-kicker">FREE CHECK <span aria-hidden="true">/</span> 무료 3가지 점검</p>
+    <p class="cta-box-title">가게 이름이나 채널 링크만 보내 주시면, 빠진 정보와 바로 고칠 3가지를 정리해 드립니다.</p>
+    <p class="cta-box-sub">0원 · 카톡으로 전달하면 24시간 내 요약 · 영업 전화 없음</p>
+  </div>
+  <div class="cta-box-actions">
+    <a class="btn btn--solid" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">
+      카톡으로 3가지 무료 점검<span aria-hidden="true"> →</span><span class="sr-only"> (카카오톡 채널, 새 탭에서 열림)</span>
+    </a>
+  </div>
+</aside>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section section--tint related" aria-labelledby="related-title">
+    <div class="wrap">
+      <header class="section-head section-head--split">
+        <div class="section-head-main">
+          <p class="section-mark"><span class="section-label">KEEP READING</span></p>
+          <h2 class="section-title" id="related-title">이어서 읽기</h2>
+        </div>
+        <p class="section-note">같은 흐름에서 이어지는 글입니다. 지금 매장에 해당하는 지점부터 읽으시면 됩니다.</p>
+      </header>
+      <div class="cards cards--index cards--related">
+        <article class="card" data-category="전환·대행 기준">
+  <a class="card-media" href="../../insights/outside-platform-customers/" tabindex="-1" aria-hidden="true"><picture><source type="image/webp" srcset="../../assets/images/own-channel-thumbnail-1537.webp" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 420px"><img src="../../assets/images/own-channel-thumbnail.png" alt="비 온 밤, 가게 앞 보도에 놓인 배달 가방과 종이 봉투" width="1537" height="1023" loading="lazy" decoding="async"></picture></a>
+  <div class="card-body">
+    <p class="card-meta"><span class="card-cat">전환·대행 기준</span><span class="card-sep" aria-hidden="true">/</span><time datetime="2026-11-24T08:00:00+09:00">2026.11.24</time><span class="card-sep" aria-hidden="true">/</span><span>읽기 5분</span></p>
+    <h3 class="card-title"><a href="../../insights/outside-platform-customers/">수수료 협상권이 생겨도, 협상할 손님이 없으면 소용없습니다 — 대행사에 물을 한 가지</a></h3>
+    <p class="card-text">배달앱 정산을 열어 보면 매출의 20~34%가 빠집니다. 소상공인의 거래조건 협상권을 두고 국회 논의도 진행 중입니다. 다만 협상은 손님이 있을 때 힘이 생깁니다. 대행사를 고를 때 물어야 할 한 가지를 정리했습니다.</p>
+    <span class="card-link" aria-hidden="true">READ <span>→</span></span>
+  </div>
+</article><article class="card" data-category="시장·제작 방식">
+  <a class="card-media" href="../../insights/delivery-platform-cost-262/" tabindex="-1" aria-hidden="true"><picture><source type="image/webp" srcset="../../assets/images/delivery-cost-thumbnail-1600.webp" sizes="(max-width: 720px) 100vw, (max-width: 1200px) 50vw, 420px"><img src="../../assets/images/delivery-cost-thumbnail.png" alt="어두운 탁자 위에 세워 둔 갈색 종이 배달 가방과 빈 영수증, 옆에 놓인 동전 더미" width="1672" height="941" loading="lazy" decoding="async"></picture></a>
+  <div class="card-body">
+    <p class="card-meta"><span class="card-cat">시장·제작 방식</span><span class="card-sep" aria-hidden="true">/</span><time datetime="2026-11-20T12:30:00+09:00">2026.11.20</time><span class="card-sep" aria-hidden="true">/</span><span>읽기 6분</span></p>
+    <h3 class="card-title"><a href="../../insights/delivery-platform-cost-262/">배달 매출 100만 원 중 26만 원이 플랫폼으로 — 수수료율보다 정산서 네 줄</a></h3>
+    <p class="card-text">중기중앙회 조사에서 배달앱 입점사의 거래비용은 매출의 26.2%였습니다. 같은 플랫폼 안에서도 3.0%와 45.0%로 갈렸습니다. 이번 달 정산서에서 확인할 네 줄을 정리했습니다.</p>
+    <span class="card-link" aria-hidden="true">READ <span>→</span></span>
+  </div>
+</article>
+      </div>
+    </div>
+  </section>
+</article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-head">
+    <p class="footer-label">LET'S TALK</p>
+    <p class="footer-line">브랜드의 이야기를<br>고객이 선택할 이유로.</p>
+    <div class="footer-cta">
+      <a class="footer-talk" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">
+        <span>카카오톡으로 견적 문의</span><span class="footer-talk-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="footer-talk" href="https://pf.kakao.com/_xdMIvX/chat" target="_blank" rel="noopener noreferrer">
+        <span>내 가게 3가지 무료 점검</span><span class="footer-talk-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="wrap footer-grid">
+    <nav class="footer-col footer-col--nav" aria-label="홈 섹션 안내">
+      <h2 class="footer-col-title">INDEX</h2>
+      <ul class="footer-links footer-links--no">
+        <li><a href="../../"><span>01</span>홈</a></li>
+        <li><a href="../../portfolio/"><span>02</span>업종별 설계</a></li>
+        <li><a href="../../#free-check"><span>03</span>무료 점검</a></li>
+        <li><a href="../../#services"><span>04</span>서비스</a></li>
+        <li><a href="../../#pricing"><span>05</span>기준 가격</a></li>
+        <li><a href="../../#experience"><span>06</span>대표 경험</a></li>
+        <li><a href="../../#process"><span>07</span>연구 노트</a></li>
+        <li><a href="../../#contact"><span>08</span>상담</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer-col" aria-label="페이지 안내">
+      <h2 class="footer-col-title">PAGES</h2>
+      <ul class="footer-links">
+        <li><a href="../../marketing/">광고·마케팅</a></li>
+        <li><a href="../../consulting/">경영컨설팅</a></li>
+        <li><a href="../../studio/">콘텐츠·디자인</a></li>
+        <li><a href="../../insights/">인사이트</a></li>
+        <li><a href="../../about/">기업 소개</a></li>
+        <li><a href="../../contact/">상담 안내</a></li>
+        <li><a href="../../privacy/">개인정보처리방침</a></li>
+        <li><a href="../../rss.xml">RSS 구독</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer-col">
+      <h2 class="footer-col-title">BUSINESS</h2>
+      <dl class="biz">
+        <div><dt>상호</dt><dd>NOTICE LAB (노티스랩)</dd></div>
+        <div><dt>대표</dt><dd>김지은</dd></div>
+        <div><dt>사업자등록번호</dt><dd>266-76-00532</dd></div>
+        <div><dt>주소</dt><dd>경기도 용인시 처인구 포곡읍</dd></div>
+        <div><dt>이메일</dt><dd><a href="mailto:noticelab@naver.com">noticelab@naver.com</a></dd></div>
+        <div><dt>전화</dt><dd><a href="tel:010-2000-0239">010-2000-0239</a></dd></div>
+        <div><dt>업종</dt><dd>광고대행업 · 경영컨설팅업 · 시각디자인업 · 전자상거래 소매업</dd></div>
+      </dl>
+    </div>
+
+    <div class="footer-col footer-col--note">
+      <h2 class="footer-col-title">NOTE</h2>
+      <p>업체가 제공한 기존 사진·영상을 바탕으로 제작하며, 별도 현장 촬영은 기본 서비스로 제공하지 않습니다.</p>
+      <p>상위 노출이나 매출을 보장하지 않습니다. 확인한 문제와 개선 방향만 안내합니다.</p>
+    </div>
+  </div>
+
+  <div class="wrap footer-word" aria-hidden="true">NOTICE LAB</div>
+
+  <div class="wrap footer-bottom">
+    <p>© 2026 NOTICE LAB (노티스랩). All rights reserved.</p>
+    <p>NAVER BLOG SINCE 2007 · YONGIN · SUWON · HWASEONG · SEONGNAM · GWANGJU</p>
+  </div>
+</footer>
+
+<script src="../../assets/js/site.js?v=10" defer></script>
+</body>
+</html>
